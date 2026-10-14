@@ -6,6 +6,7 @@
 <title>{{docTitle}}</title>
 <meta name="description" content="{{summary}}">
 <link rel="icon" href="/assets/brand/saga-s-for-light-bgs.svg">
+<link rel="alternate" type="text/markdown" href="{{mdPath}}">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
@@ -28,6 +29,8 @@
 		<li><a href="/showcase/">Component showcase</a></li>
 		<li><a href="/decisions/">Decisions ledger</a></li>
 		<li><a href="/css/tokens.css">tokens.css</a></li>
+		<li><a href="/llms.txt">llms.txt</a></li>
+		<li><a href="/agent-bundle.md">Agent bundle (one file)</a></li>
 		<li><a href="/starter/saga-starter.html" download>Starter template</a></li>
 		<li><a href="/starter/saga-starter-offline.html" download>Starter (offline copy)</a></li>
 		<li><a href="https://github.com/saga-ed/product-style">GitHub</a></li>
@@ -36,7 +39,10 @@
 </nav>
 <main id="main" class="site-main">
 	<article class="site-article">
-		<h1>{{title}}</h1>
+		<div class="site-article__head">
+			<h1>{{title}}</h1>
+			<a class="site-md-link" href="{{mdPath}}" data-md="{{mdPath}}">View as Markdown</a>
+		</div>
 		<p class="site-summary">{{summary}}</p>
 		{{content}}
 	</article>

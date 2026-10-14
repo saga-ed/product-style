@@ -64,7 +64,7 @@ async function loadGuide() {
 	return pages;
 }
 
-async function layout({ title, summary, nav, content, path: here, buildInfo }) {
+async function layout({ title, summary, nav, content, path: here, buildInfo, mdPath }) {
 	const tpl = await readFile(path.join(ROOT, "site", "layout.html"), "utf8");
 	const navHtml = nav
 		.map((p) => `<li><a href="/guide/${p.name}/"${p.name === here ? ' aria-current="page"' : ""}>${esc(p.title)}</a></li>`)
@@ -75,6 +75,7 @@ async function layout({ title, summary, nav, content, path: here, buildInfo }) {
 		.replaceAll("{{title}}", esc(title))
 		.replaceAll("{{summary}}", esc(summary || ""))
 		.replaceAll("{{nav}}", navHtml)
+		.replaceAll("{{mdPath}}", mdPath || "")
 		.replaceAll("{{content}}", content)
 		.replaceAll("{{buildInfo}}", buildInfo);
 }
@@ -113,14 +114,14 @@ async function main() {
 		if (p.name === "decisions") continue;
 		const out = p.name === "overview" ? DIST : path.join(DIST, "guide", p.name);
 		await mkdir(out, { recursive: true });
-		const html = await layout({ title: p.title, summary: p.summary, nav, content: p.html, path: p.name, buildInfo });
+		const html = await layout({ title: p.title, summary: p.summary, nav, content: p.html, path: p.name, buildInfo, mdPath: `/guide/md/${p.name}.md` });
 		await writeFile(path.join(out, "index.html"), html);
 	}
 	// Ledger page (decisions.md is excluded from nav ordering by name but rendered)
 	const ledger = pages.find((p) => p.name === "decisions");
 	if (ledger) {
 		await mkdir(path.join(DIST, "decisions"), { recursive: true });
-		await writeFile(path.join(DIST, "decisions", "index.html"), await layout({ ...ledger, nav, content: ledger.html, path: "decisions", buildInfo }));
+		await writeFile(path.join(DIST, "decisions", "index.html"), await layout({ ...ledger, nav, content: ledger.html, path: "decisions", buildInfo, mdPath: "/guide/md/decisions.md" }));
 	}
 	// Raw markdown for agents, side by side with the rendered page
 	await cp(path.join(ROOT, "guide"), path.join(DIST, "guide", "md"), { recursive: true });
@@ -154,6 +155,52 @@ async function main() {
 	await mkdir(path.join(DIST, "starter"), { recursive: true });
 	await writeFile(path.join(DIST, "starter", "saga-starter.html"), linked);
 	await writeFile(path.join(DIST, "starter", "saga-starter-offline.html"), offline);
+
+	// llms.txt (index for assistants) and agent-bundle.md (everything in one file)
+	const SITE = "https://style.wootdev.com";
+	const claudeMd = await readFile(path.join(ROOT, "CLAUDE.md"), "utf8");
+	const chapterSrc = [];
+	for (const p of pages) {
+		const raw = await readFile(path.join(ROOT, "guide", `${p.name}.md`), "utf8");
+		chapterSrc.push({ ...p, raw: frontmatter(raw).body.trim() });
+	}
+	const ordered = chapterSrc.filter((p) => p.name !== "decisions");
+	const llms = [
+		"# Saga product style",
+		"",
+		"> The public design guide, CSS design tokens and framework-free component layer for Saga Education's products. Build UI that looks like Saga's from these files.",
+		"",
+		`Start with [CLAUDE.md](${SITE}/CLAUDE.md) (rules and which layer to use), or take everything at once: [agent-bundle.md](${SITE}/agent-bundle.md).`,
+		"",
+		"## Guide (Markdown)",
+		...ordered.map((p) => `- [${p.title}](${SITE}/guide/md/${p.name}.md): ${p.summary}`),
+		"",
+		"## CSS",
+		`- [tokens.css](${SITE}/css/tokens.css): design tokens, two tiers (--saga-* primitives, semantic --color-*, --space-*, --text-*, --radius-*, --shadow-*, --motion-*)`,
+		`- [base.css](${SITE}/css/base.css): resets, root sizing, type rhythm, focus, scrollbars`,
+		`- [components.css](${SITE}/css/components.css): the .saga-* vanilla component classes`,
+		"",
+		"## Starters and reference",
+		`- [saga-starter.html](${SITE}/starter/saga-starter.html): single-file prototype starter that links the CSS above`,
+		`- [saga-starter-offline.html](${SITE}/starter/saga-starter-offline.html): the same with the CSS inlined`,
+		`- [Decisions ledger](${SITE}/guide/md/decisions.md): every judgement call, numbered DS-nnn`,
+		`- [Component showcase](${SITE}/showcase/): every class rendered from the real CSS (HTML)`,
+		"",
+	].join("\n");
+	await writeFile(path.join(DIST, "llms.txt"), llms);
+	const bundle = [
+		"# Saga product style: agent bundle",
+		"",
+		`Generated ${buildInfo}. Source: ${SITE}. This file is CLAUDE.md followed by every guide chapter, for tools that take one document. The CSS itself is at ${SITE}/css/tokens.css, base.css and components.css.`,
+		"",
+		"---",
+		"",
+		claudeMd.trim(),
+		...ordered.flatMap((p) => ["", "---", "", `# ${p.title}`, "", p.summary ? `_${p.summary}_` : "", "", p.raw]),
+		"",
+	].join("\n");
+	await writeFile(path.join(DIST, "agent-bundle.md"), bundle);
+	await writeFile(path.join(DIST, "llms-full.txt"), bundle);
 
 	// Soft-404 target
 	await writeFile(path.join(DIST, "404.html"), await layout({ title: "Not found", summary: "", nav, content: "<p>That page does not exist. <a href=\"/\">Back to the guide.</a></p>", path: "", buildInfo }));

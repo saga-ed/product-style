@@ -53,7 +53,7 @@ guide.
 
 - Building a prototype or a one-off page: download the [starter template](/starter/saga-starter.html). It links the system's CSS from this site; the [offline copy](/starter/saga-starter-offline.html) inlines it so the file opens with no network. Either drops into the prototypes repo as is.
 - Building inside a product repo: the three CSS files or the Svelte library come from the package, then read [Shell and navigation](/guide/shell-navigation/) and the chapter for what you are building.
-- Working with an AI assistant: point it at [`/CLAUDE.md`](/CLAUDE.md) (the same text is in `AGENTS.md`). It says which layer to use and which rules are not negotiable.
+- Working with an AI assistant: point it at [`/CLAUDE.md`](/CLAUDE.md) (the same text is in `AGENTS.md`). It says which layer to use and which rules are not negotiable. Tools that take one document get [`/agent-bundle.md`](/agent-bundle.md), and [`/llms.txt`](/llms.txt) indexes everything. Every chapter is also published as Markdown; use the "View as Markdown" link on any page.
 - Choosing a value: every color, size and duration has a token name. Search [`tokens.css`](/css/tokens.css) for the semantic name first (`--color-primary`, `--space-md`) and only then the primitive (`--saga-blue`).
 
 ## When the guide is wrong

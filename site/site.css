@@ -11,7 +11,10 @@
 .site-nav__build { margin-top: auto; font-size: var(--text-xs); color: var(--nav-text-muted); padding: var(--space-md); }
 .site-main { padding: var(--space-xl) var(--space-2xl); min-width: 0; }
 .site-article { max-width: 72ch; }
-.site-article > h1 { color: var(--color-primary); }
+.site-article__head { display: flex; align-items: baseline; justify-content: space-between; gap: var(--space-md); }
+.site-article__head > h1 { color: var(--color-primary); }
+.site-md-link { white-space: nowrap; font-size: var(--text-sm); }
+.site-md-link[data-md=""] { display: none; }
 .site-summary { color: var(--color-text-secondary); font-size: var(--text-lg); margin-bottom: var(--space-xl); }
 .site-article h2 { margin-top: var(--space-2xl); padding-bottom: var(--space-xs); border-bottom: 1px solid var(--color-border); font-weight: var(--weight-semibold); }
 .site-article h3 { margin-top: var(--space-xl); }

@@ -35,7 +35,7 @@ how Saga products look. Read this file, then the chapters you need.
 - `guide/decisions.md` lists every judgement call with an id (`DS-nnn`). If a
   rule here conflicts with code you find in a product repo, the ledger wins
   unless the entry is marked `overturned`.
-- Rendered: https://style.wootdev.com (same content, with the showcase).
+- Rendered: https://style.wootdev.com (same content, with the showcase). Each chapter is also at `https://style.wootdev.com/guide/md/<name>.md`; `/agent-bundle.md` is everything in one file; `/llms.txt` is the index.
 
 ## Editing this repo
 
