@@ -1,0 +1,185 @@
+AWSTemplateFormatVersion: "2010-09-09"
+Description: GitHub Actions OIDC deploy role for saga-ed/product-style — Amplify-scoped permissions
+
+Parameters:
+  ProjectName:
+    Type: String
+    Default: product-style
+
+  GitHubOrg:
+    Type: String
+    Default: saga-ed
+
+  GitHubRepo:
+    Type: String
+    Default: product-style
+
+  ParentHostedZoneId:
+    Type: String
+    Default: Z06686211OOAM6WWKX6KW
+    Description: Route 53 hosted zone ID for wootdev.com. Scopes the pr-* subdomain cleanup permission.
+
+  PreviewDomain:
+    Type: String
+    Default: style.wootdev.com
+    Description: Custom domain whose pr-* subdomains Amplify creates for PR branches.
+
+Resources:
+  # OIDC provider for token.actions.githubusercontent.com is an account-level singleton
+  # owned by the shared-oidc-providers stack. We reference it by ARN, never declare it
+  # here. See references/iam-roles.md#github-oidc-provider-ownership.
+  DeployRole:
+    Type: AWS::IAM::Role
+    Properties:
+      RoleName: !Sub "${ProjectName}-github-deploy"
+      PermissionsBoundary: !Sub "arn:aws:iam::${AWS::AccountId}:policy/SagaProdMax"
+      AssumeRolePolicyDocument:
+        Version: "2012-10-17"
+        Statement:
+          - Effect: Allow
+            Principal:
+              Federated: !Sub "arn:aws:iam::${AWS::AccountId}:oidc-provider/token.actions.githubusercontent.com"
+            Action: sts:AssumeRoleWithWebIdentity
+            Condition:
+              StringEquals:
+                token.actions.githubusercontent.com:aud: sts.amazonaws.com
+              StringLike:
+                # All branches — required because PR-preview deploys run from PR head refs.
+                token.actions.githubusercontent.com:sub: !Sub "repo:${GitHubOrg}/${GitHubRepo}:*"
+      Policies:
+        - PolicyName: CloudFormation
+          PolicyDocument:
+            Version: "2012-10-17"
+            Statement:
+              - Effect: Allow
+                Action:
+                  - cloudformation:CreateStack
+                  - cloudformation:UpdateStack
+                  - cloudformation:DeleteStack
+                  - cloudformation:DescribeStacks
+                  - cloudformation:DescribeStackEvents
+                  - cloudformation:DescribeStackResources
+                  - cloudformation:GetTemplate
+                  - cloudformation:GetTemplateSummary
+                  - cloudformation:ListStacks
+                  - cloudformation:CreateChangeSet
+                  - cloudformation:ExecuteChangeSet
+                  - cloudformation:DescribeChangeSet
+                  - cloudformation:DeleteChangeSet
+                Resource:
+                  - !Sub "arn:aws:cloudformation:*:${AWS::AccountId}:stack/${ProjectName}-*"
+                  - !Sub "arn:aws:cloudformation:*:${AWS::AccountId}:stack/aws-sam-cli-managed-default*"
+              - Effect: Allow
+                Action:
+                  - cloudformation:ValidateTemplate
+                Resource: "*"
+        - PolicyName: SamManagedBucket
+          PolicyDocument:
+            Version: "2012-10-17"
+            Statement:
+              - Effect: Allow
+                Action:
+                  - s3:GetObject
+                  - s3:PutObject
+                  - s3:ListBucket
+                  - s3:GetBucketLocation
+                Resource:
+                  - !Sub "arn:aws:s3:::aws-sam-cli-managed-default-samclisourcebucket-*"
+                  - !Sub "arn:aws:s3:::aws-sam-cli-managed-default-samclisourcebucket-*/*"
+        - PolicyName: AmplifyApp
+          PolicyDocument:
+            Version: "2012-10-17"
+            Statement:
+              # Stack-level (CloudFormation creates/updates the App + Branches + Domain)
+              - Effect: Allow
+                Action:
+                  - amplify:CreateApp
+                  - amplify:UpdateApp
+                  - amplify:DeleteApp
+                  - amplify:GetApp
+                  - amplify:ListApps
+                  - amplify:TagResource
+                  - amplify:UntagResource
+                  - amplify:ListTagsForResource
+                Resource: !Sub "arn:aws:amplify:*:${AWS::AccountId}:apps/*"
+              # Branch + deployment lifecycle (CI does this directly, not via CF)
+              - Effect: Allow
+                Action:
+                  - amplify:CreateBranch
+                  - amplify:UpdateBranch
+                  - amplify:DeleteBranch
+                  - amplify:GetBranch
+                  - amplify:ListBranches
+                  - amplify:CreateDeployment
+                  - amplify:StartDeployment
+                  - amplify:GetJob
+                  - amplify:ListJobs
+                  - amplify:StopJob
+                  - amplify:CreateDomainAssociation
+                  - amplify:UpdateDomainAssociation
+                  - amplify:DeleteDomainAssociation
+                  - amplify:GetDomainAssociation
+                  - amplify:ListDomainAssociations
+                Resource:
+                  - !Sub "arn:aws:amplify:*:${AWS::AccountId}:apps/*"
+                  - !Sub "arn:aws:amplify:*:${AWS::AccountId}:apps/*/branches/*"
+                  - !Sub "arn:aws:amplify:*:${AWS::AccountId}:apps/*/branches/*/jobs/*"
+                  - !Sub "arn:aws:amplify:*:${AWS::AccountId}:apps/*/domains/*"
+        - PolicyName: SsmReadWrite
+          PolicyDocument:
+            Version: "2012-10-17"
+            Statement:
+              - Effect: Allow
+                Action:
+                  - ssm:GetParameter
+                  - ssm:GetParameters
+                  - ssm:GetParametersByPath
+                  - ssm:PutParameter
+                  - ssm:DeleteParameter
+                  - ssm:AddTagsToResource
+                  - ssm:ListTagsForResource
+                Resource: !Sub "arn:aws:ssm:*:${AWS::AccountId}:parameter/${ProjectName}/*"
+        # delete-branch removes the pr-N subdomain record with the caller's credentials; DELETE of pr-* CNAMEs only.
+        - PolicyName: Route53PrSubdomainCleanup
+          PolicyDocument:
+            Version: "2012-10-17"
+            Statement:
+              - Effect: Allow
+                Action:
+                  - route53:ChangeResourceRecordSets
+                Resource: !Sub "arn:aws:route53:::hostedzone/${ParentHostedZoneId}"
+                Condition:
+                  ForAllValues:StringLike:
+                    route53:ChangeResourceRecordSetsNormalizedRecordNames:
+                      - !Sub "pr-*.${PreviewDomain}"
+                  ForAllValues:StringEquals:
+                    route53:ChangeResourceRecordSetsRecordTypes:
+                      - CNAME
+                    route53:ChangeResourceRecordSetsActions:
+                      - DELETE
+              - Effect: Allow
+                Action:
+                  - route53:ListResourceRecordSets
+                Resource: !Sub "arn:aws:route53:::hostedzone/${ParentHostedZoneId}"
+              - Effect: Allow
+                Action:
+                  - route53:ListHostedZones
+                  - route53:GetChange
+                Resource: "*"
+
+  DeployRoleArnParameter:
+    Type: AWS::SSM::Parameter
+    Properties:
+      Name: !Sub "/${ProjectName}/github-oidc/deploy-role-arn"
+      Type: String
+      Value: !GetAtt DeployRole.Arn
+      Description: GitHub Actions deploy role ARN for the product-style project.
+      Tags:
+        Project: !Ref ProjectName
+
+Outputs:
+  DeployRoleArn:
+    Description: Set this as the AWS_DEPLOY_ROLE_ARN repo variable in GitHub — gh variable set AWS_DEPLOY_ROLE_ARN --body <value>
+    Value: !GetAtt DeployRole.Arn
+    Export:
+      Name: !Sub "${AWS::StackName}-DeployRoleArn"

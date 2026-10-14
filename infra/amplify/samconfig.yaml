@@ -1,0 +1,24 @@
+version: 0.1
+
+# Local deploys (CI uses OIDC env credentials — no profile needed there).
+# Recommended local invocation:
+#   sam deploy --config-file infra/amplify/samconfig.yaml --config-env dev --profile saga-infra-dev
+
+dev:
+  deploy:
+    parameters:
+      stack_name: product-style-amplify-dev
+      region: us-west-2
+      template_file: infra/amplify/template.yaml
+      capabilities:
+        - CAPABILITY_NAMED_IAM
+      resolve_s3: true
+      no_fail_on_empty_changeset: true
+      parameter_overrides:
+        - ProjectName=product-style
+        - AppName=product-style
+        - Environment=dev
+      tags:
+        - Project=product-style
+        - Environment=dev
+        - ManagedBy=SAM

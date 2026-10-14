@@ -1,0 +1,293 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Overlays · Saga showcase</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/css/tokens.css">
+<link rel="stylesheet" href="/css/base.css">
+<link rel="stylesheet" href="/css/components.css">
+<script src="https://cdn.jsdelivr.net/npm/iconify-icon@2.1.0/dist/iconify-icon.min.js"></script>
+<style>
+	/* Showcase scaffolding only — not part of the system. */
+	.demo-page { max-width: 72rem; margin: 0 auto; padding: var(--space-xl) var(--space-lg) var(--space-3xl); }
+	.demo-page > header { margin-bottom: var(--space-xl); }
+	.demo-page > header p { color: var(--color-text-secondary); }
+	.demo-nav { display: flex; flex-wrap: wrap; gap: var(--space-sm) var(--space-md); font-size: var(--text-sm); margin-bottom: var(--space-lg); }
+	.demo-section { margin-bottom: var(--space-2xl); }
+	.demo-section > h2 { padding-bottom: var(--space-xs); border-bottom: 1px solid var(--color-border); margin-bottom: var(--space-md); }
+	.demo-section > h3 { margin-top: var(--space-lg); }
+	.demo-section > p { color: var(--color-text-secondary); font-size: var(--text-sm); }
+	.demo-row { display: flex; flex-wrap: wrap; align-items: center; gap: var(--space-md); padding: var(--space-lg); border: 1px dashed var(--color-border-hover); border-radius: var(--radius-lg) var(--radius-lg) 0 0; background: var(--color-bg); }
+	.demo-row--stack { flex-direction: column; align-items: stretch; }
+	.demo-row--tint { background: var(--color-bg-secondary); }
+	.demo-row--tall { min-height: 14rem; position: relative; }
+	.demo-snippet { margin: 0 0 var(--space-lg); padding: var(--space-md); overflow: auto; background: var(--color-bg-tertiary); border: 1px solid var(--color-border); border-top: 0; border-radius: 0 0 var(--radius-lg) var(--radius-lg); font-size: var(--text-xs); line-height: var(--leading-relaxed); color: var(--color-text-dark); }
+	.demo-snippet code { font-size: inherit; }
+	.demo-row--tall .saga-popover, .demo-row--tall .saga-tooltip { position: static; }
+	.demo-modal-inline .saga-modal { position: static; z-index: auto; box-shadow: var(--shadow-modal); }
+</style>
+</head>
+<body>
+<main class="demo-page">
+<nav class="demo-nav" aria-label="Showcase pages">
+	<a href="/showcase/">Index</a> <a href="/showcase/buttons/">Buttons</a> <a href="/showcase/forms/">Forms</a> <a href="/showcase/cards-tables/">Cards &amp; tables</a> <a href="/showcase/overlays/">Overlays</a> <a href="/showcase/feedback/">Feedback</a> <a href="/showcase/shell/">Shell</a>
+</nav>
+<header>
+	<h1>Overlays</h1>
+	<p>Modal panels on a navy scrim (DS-012), multi-step headers, toasts, popover menus, tooltips and inline notices. Layering follows the z-index ladder (DS-013).</p>
+</header>
+
+<section class="demo-section">
+	<h2>Modal</h2>
+	<p>Use a native <code>&lt;dialog&gt;</code>: <code>showModal()</code> gives the scrim via <code>::backdrop</code>, focus trapping and Escape for free. The same classes work on a <code>div</code> inside <code>.saga-scrim</code>.</p>
+	<div class="demo-row">
+		<button class="saga-btn" onclick="document.getElementById('demo-dialog').showModal()">Open Edit Session</button>
+		<button class="saga-btn saga-btn--secondary" onclick="document.getElementById('demo-steps-dialog').showModal()">Open Configure Period</button>
+		<dialog class="saga-modal" id="demo-dialog" aria-labelledby="demo-dialog-title">
+			<form method="dialog" style="display:contents">
+				<div class="saga-modal__header">
+					<h2 class="saga-modal__title" id="demo-dialog-title">Edit Session</h2>
+					<button class="saga-btn saga-btn--quiet saga-btn--icon saga-modal__close" aria-label="Close" value="cancel"><iconify-icon icon="material-symbols-light:close-rounded"></iconify-icon></button>
+				</div>
+				<div class="saga-modal__body">
+					<div class="saga-field"><label class="saga-label" for="m-title">Session Title</label><input class="saga-input" id="m-title" value="Out Of Window Test - Early"></div>
+				</div>
+				<div class="saga-modal__footer">
+					<button class="saga-btn saga-btn--danger" value="delete">Delete</button>
+					<div class="saga-modal__footer-end">
+						<button class="saga-btn saga-btn--secondary" value="cancel">Cancel</button>
+						<button class="saga-btn" value="save">Save</button>
+					</div>
+				</div>
+			</form>
+		</dialog>
+	</div>
+<pre class="demo-snippet"><code>&lt;button class=&quot;saga-btn&quot; onclick=&quot;document.getElementById(&#x27;demo-dialog&#x27;).showModal()&quot;&gt;Open Edit Session&lt;/button&gt;
+&lt;button class=&quot;saga-btn saga-btn--secondary&quot; onclick=&quot;document.getElementById(&#x27;demo-steps-dialog&#x27;).showModal()&quot;&gt;Open Configure Period&lt;/button&gt;
+&lt;dialog class=&quot;saga-modal&quot; id=&quot;demo-dialog&quot; aria-labelledby=&quot;demo-dialog-title&quot;&gt;
+	&lt;form method=&quot;dialog&quot; style=&quot;display:contents&quot;&gt;
+		&lt;div class=&quot;saga-modal__header&quot;&gt;
+			&lt;h2 class=&quot;saga-modal__title&quot; id=&quot;demo-dialog-title&quot;&gt;Edit Session&lt;/h2&gt;
+			&lt;button class=&quot;saga-btn saga-btn--quiet saga-btn--icon saga-modal__close&quot; aria-label=&quot;Close&quot; value=&quot;cancel&quot;&gt;&lt;iconify-icon icon=&quot;material-symbols-light:close-rounded&quot;&gt;&lt;/iconify-icon&gt;&lt;/button&gt;
+		&lt;/div&gt;
+		&lt;div class=&quot;saga-modal__body&quot;&gt;
+			&lt;div class=&quot;saga-field&quot;&gt;&lt;label class=&quot;saga-label&quot; for=&quot;m-title&quot;&gt;Session Title&lt;/label&gt;&lt;input class=&quot;saga-input&quot; id=&quot;m-title&quot; value=&quot;Out Of Window Test - Early&quot;&gt;&lt;/div&gt;
+		&lt;/div&gt;
+		&lt;div class=&quot;saga-modal__footer&quot;&gt;
+			&lt;button class=&quot;saga-btn saga-btn--danger&quot; value=&quot;delete&quot;&gt;Delete&lt;/button&gt;
+			&lt;div class=&quot;saga-modal__footer-end&quot;&gt;
+				&lt;button class=&quot;saga-btn saga-btn--secondary&quot; value=&quot;cancel&quot;&gt;Cancel&lt;/button&gt;
+				&lt;button class=&quot;saga-btn&quot; value=&quot;save&quot;&gt;Save&lt;/button&gt;
+			&lt;/div&gt;
+		&lt;/div&gt;
+	&lt;/form&gt;
+&lt;/dialog&gt;</code></pre>
+
+	<h3>Shown inline</h3>
+	<div class="demo-row demo-row--stack demo-modal-inline" style="background:var(--modal-scrim)">
+		<div class="saga-modal" role="dialog" aria-labelledby="inl-title" aria-modal="true" style="margin:0 auto">
+			<div class="saga-modal__header">
+				<h2 class="saga-modal__title" id="inl-title">Edit Session</h2>
+				<button class="saga-btn saga-btn--quiet saga-btn--icon saga-modal__close" aria-label="Close"><iconify-icon icon="material-symbols-light:close-rounded"></iconify-icon></button>
+			</div>
+			<div class="saga-modal__body">
+				<div class="saga-field"><label class="saga-label" for="m2-title">Session Title</label><input class="saga-input" id="m2-title" value="Out Of Window Test - Early"></div>
+			</div>
+			<div class="saga-modal__footer">
+				<div class="saga-modal__footer-end">
+					<button class="saga-btn saga-btn--secondary">Cancel</button>
+					<button class="saga-btn">Save</button>
+					<button class="saga-btn saga-btn--danger">Delete</button>
+				</div>
+			</div>
+		</div>
+	</div>
+<pre class="demo-snippet"><code>&lt;div class=&quot;saga-modal&quot; role=&quot;dialog&quot; aria-labelledby=&quot;inl-title&quot; aria-modal=&quot;true&quot; style=&quot;margin:0 auto&quot;&gt;
+	&lt;div class=&quot;saga-modal__header&quot;&gt;
+		&lt;h2 class=&quot;saga-modal__title&quot; id=&quot;inl-title&quot;&gt;Edit Session&lt;/h2&gt;
+		&lt;button class=&quot;saga-btn saga-btn--quiet saga-btn--icon saga-modal__close&quot; aria-label=&quot;Close&quot;&gt;&lt;iconify-icon icon=&quot;material-symbols-light:close-rounded&quot;&gt;&lt;/iconify-icon&gt;&lt;/button&gt;
+	&lt;/div&gt;
+	&lt;div class=&quot;saga-modal__body&quot;&gt;
+		&lt;div class=&quot;saga-field&quot;&gt;&lt;label class=&quot;saga-label&quot; for=&quot;m2-title&quot;&gt;Session Title&lt;/label&gt;&lt;input class=&quot;saga-input&quot; id=&quot;m2-title&quot; value=&quot;Out Of Window Test - Early&quot;&gt;&lt;/div&gt;
+	&lt;/div&gt;
+	&lt;div class=&quot;saga-modal__footer&quot;&gt;
+		&lt;div class=&quot;saga-modal__footer-end&quot;&gt;
+			&lt;button class=&quot;saga-btn saga-btn--secondary&quot;&gt;Cancel&lt;/button&gt;
+			&lt;button class=&quot;saga-btn&quot;&gt;Save&lt;/button&gt;
+			&lt;button class=&quot;saga-btn saga-btn--danger&quot;&gt;Delete&lt;/button&gt;
+		&lt;/div&gt;
+	&lt;/div&gt;
+&lt;/div&gt;</code></pre>
+</section>
+
+<section class="demo-section">
+	<h2>Steps header</h2>
+	<p>A multi-step modal puts <code>.saga-steps</code> directly under the header. Numbers are auto-counted when <code>.saga-step__num</code> is empty; <code>aria-current="step"</code> marks the active step, <code>data-complete</code> a finished one.</p>
+	<div class="demo-row demo-row--stack demo-modal-inline" style="background:var(--modal-scrim)">
+		<div class="saga-modal saga-modal--large" role="dialog" aria-labelledby="st-title" aria-modal="true" style="margin:0 auto">
+			<div class="saga-modal__header">
+				<h2 class="saga-modal__title" id="st-title"><em>Period 2</em> &nbsp;|&nbsp; Configure Period</h2>
+				<button class="saga-btn saga-btn--quiet saga-btn--icon saga-modal__close" aria-label="Close"><iconify-icon icon="material-symbols-light:close-rounded"></iconify-icon></button>
+			</div>
+			<ol class="saga-steps">
+				<li class="saga-step" aria-current="step"><span class="saga-step__num"></span> Configure Period</li>
+				<li class="saga-step"><span class="saga-step__num"></span> Build Pods</li>
+			</ol>
+			<div class="saga-modal__body">
+				<p class="text-secondary">Step content goes here.</p>
+			</div>
+			<div class="saga-modal__footer">
+				<div class="saga-modal__footer-end">
+					<button class="saga-btn saga-btn--secondary">Cancel</button>
+					<button class="saga-btn">Continue</button>
+				</div>
+			</div>
+		</div>
+	</div>
+<pre class="demo-snippet"><code>&lt;div class=&quot;saga-modal saga-modal--large&quot; role=&quot;dialog&quot; aria-labelledby=&quot;st-title&quot; aria-modal=&quot;true&quot; style=&quot;margin:0 auto&quot;&gt;
+	&lt;div class=&quot;saga-modal__header&quot;&gt;
+		&lt;h2 class=&quot;saga-modal__title&quot; id=&quot;st-title&quot;&gt;&lt;em&gt;Period 2&lt;/em&gt; &amp;nbsp;|&amp;nbsp; Configure Period&lt;/h2&gt;
+		&lt;button class=&quot;saga-btn saga-btn--quiet saga-btn--icon saga-modal__close&quot; aria-label=&quot;Close&quot;&gt;&lt;iconify-icon icon=&quot;material-symbols-light:close-rounded&quot;&gt;&lt;/iconify-icon&gt;&lt;/button&gt;
+	&lt;/div&gt;
+	&lt;ol class=&quot;saga-steps&quot;&gt;
+		&lt;li class=&quot;saga-step&quot; aria-current=&quot;step&quot;&gt;&lt;span class=&quot;saga-step__num&quot;&gt;&lt;/span&gt; Configure Period&lt;/li&gt;
+		&lt;li class=&quot;saga-step&quot;&gt;&lt;span class=&quot;saga-step__num&quot;&gt;&lt;/span&gt; Build Pods&lt;/li&gt;
+	&lt;/ol&gt;
+	&lt;div class=&quot;saga-modal__body&quot;&gt;
+		&lt;p class=&quot;text-secondary&quot;&gt;Step content goes here.&lt;/p&gt;
+	&lt;/div&gt;
+	&lt;div class=&quot;saga-modal__footer&quot;&gt;
+		&lt;div class=&quot;saga-modal__footer-end&quot;&gt;
+			&lt;button class=&quot;saga-btn saga-btn--secondary&quot;&gt;Cancel&lt;/button&gt;
+			&lt;button class=&quot;saga-btn&quot;&gt;Continue&lt;/button&gt;
+		&lt;/div&gt;
+	&lt;/div&gt;
+&lt;/div&gt;</code></pre>
+	<dialog class="saga-modal saga-modal--large" id="demo-steps-dialog" aria-labelledby="st2-title">
+		<form method="dialog" style="display:contents">
+			<div class="saga-modal__header">
+				<h2 class="saga-modal__title" id="st2-title"><em>Period 2</em> &nbsp;|&nbsp; Configure Period</h2>
+				<button class="saga-btn saga-btn--quiet saga-btn--icon saga-modal__close" aria-label="Close"><iconify-icon icon="material-symbols-light:close-rounded"></iconify-icon></button>
+			</div>
+			<ol class="saga-steps">
+				<li class="saga-step" data-complete><span class="saga-step__num"><iconify-icon icon="material-symbols-light:check-rounded"></iconify-icon></span> Configure Period</li>
+				<li class="saga-step" aria-current="step"><span class="saga-step__num">2</span> Build Pods</li>
+			</ol>
+			<div class="saga-modal__body"><p class="text-secondary">Step 2 content.</p></div>
+			<div class="saga-modal__footer"><div class="saga-modal__footer-end"><button class="saga-btn saga-btn--secondary">Back</button><button class="saga-btn">Finish</button></div></div>
+		</form>
+	</dialog>
+</section>
+
+<section class="demo-section">
+	<h2>Toasts</h2>
+	<p>Bottom-right stack. Dwell is 3500ms + 50ms per character, clamped to 4–15s. Enter and exit animate opacity and transform only; under reduced motion the rise collapses and the fade stays.</p>
+	<div class="demo-row">
+		<button class="saga-btn saga-btn--secondary" onclick="showToast('Roster uploaded.', 'success')">Success toast</button>
+		<button class="saga-btn saga-btn--secondary" onclick="showToast('Session saved without a period — it will not appear on the schedule.', 'warning', 'Undo')">Warning with action</button>
+		<button class="saga-btn saga-btn--secondary" onclick="showToast('Could not reach the server. Your changes were not saved.', 'danger')">Danger toast</button>
+		<button class="saga-btn saga-btn--secondary" onclick="showToast('You have 2 students online now, waiting in Period 1 (B.1).', '', 'Join')">Default</button>
+	</div>
+<pre class="demo-snippet"><code>&lt;button class=&quot;saga-btn saga-btn--secondary&quot; onclick=&quot;showToast(&#x27;Roster uploaded.&#x27;, &#x27;success&#x27;)&quot;&gt;Success toast&lt;/button&gt;
+&lt;button class=&quot;saga-btn saga-btn--secondary&quot; onclick=&quot;showToast(&#x27;Session saved without a period — it will not appear on the schedule.&#x27;, &#x27;warning&#x27;, &#x27;Undo&#x27;)&quot;&gt;Warning with action&lt;/button&gt;
+&lt;button class=&quot;saga-btn saga-btn--secondary&quot; onclick=&quot;showToast(&#x27;Could not reach the server. Your changes were not saved.&#x27;, &#x27;danger&#x27;)&quot;&gt;Danger toast&lt;/button&gt;
+&lt;button class=&quot;saga-btn saga-btn--secondary&quot; onclick=&quot;showToast(&#x27;You have 2 students online now, waiting in Period 1 (B.1).&#x27;, &#x27;&#x27;, &#x27;Join&#x27;)&quot;&gt;Default&lt;/button&gt;</code></pre>
+	<div class="demo-row demo-row--stack demo-row--tint">
+		<div class="saga-toast-stack" style="position:static;width:auto;align-items:stretch">
+			<div class="saga-toast saga-toast--success" role="status"><span class="saga-toast__icon"><iconify-icon icon="material-symbols-light:check-circle-outline-rounded"></iconify-icon></span><span class="saga-toast__msg">Roster uploaded.</span><button class="saga-toast__close" aria-label="Dismiss"><iconify-icon icon="material-symbols-light:close-rounded"></iconify-icon></button></div>
+			<div class="saga-toast saga-toast--warning" role="status"><span class="saga-toast__icon"><iconify-icon icon="material-symbols-light:warning-outline-rounded"></iconify-icon></span><span class="saga-toast__msg">Session saved without a period.</span><button class="saga-toast__action">Undo</button><button class="saga-toast__close" aria-label="Dismiss"><iconify-icon icon="material-symbols-light:close-rounded"></iconify-icon></button></div>
+			<div class="saga-toast saga-toast--danger" role="alert"><span class="saga-toast__icon"><iconify-icon icon="material-symbols-light:error-outline-rounded"></iconify-icon></span><span class="saga-toast__msg">Could not reach the server.</span><button class="saga-toast__close" aria-label="Dismiss"><iconify-icon icon="material-symbols-light:close-rounded"></iconify-icon></button></div>
+			<div class="saga-toast" role="status"><span class="saga-toast__msg">2 students are waiting in Period 1 (B.1).</span><button class="saga-toast__action">Join</button></div>
+		</div>
+	</div>
+<pre class="demo-snippet"><code>&lt;div class=&quot;saga-toast-stack&quot; style=&quot;position:static;width:auto;align-items:stretch&quot;&gt;
+	&lt;div class=&quot;saga-toast saga-toast--success&quot; role=&quot;status&quot;&gt;&lt;span class=&quot;saga-toast__icon&quot;&gt;&lt;iconify-icon icon=&quot;material-symbols-light:check-circle-outline-rounded&quot;&gt;&lt;/iconify-icon&gt;&lt;/span&gt;&lt;span class=&quot;saga-toast__msg&quot;&gt;Roster uploaded.&lt;/span&gt;&lt;button class=&quot;saga-toast__close&quot; aria-label=&quot;Dismiss&quot;&gt;&lt;iconify-icon icon=&quot;material-symbols-light:close-rounded&quot;&gt;&lt;/iconify-icon&gt;&lt;/button&gt;&lt;/div&gt;
+	&lt;div class=&quot;saga-toast saga-toast--warning&quot; role=&quot;status&quot;&gt;&lt;span class=&quot;saga-toast__icon&quot;&gt;&lt;iconify-icon icon=&quot;material-symbols-light:warning-outline-rounded&quot;&gt;&lt;/iconify-icon&gt;&lt;/span&gt;&lt;span class=&quot;saga-toast__msg&quot;&gt;Session saved without a period.&lt;/span&gt;&lt;button class=&quot;saga-toast__action&quot;&gt;Undo&lt;/button&gt;&lt;button class=&quot;saga-toast__close&quot; aria-label=&quot;Dismiss&quot;&gt;&lt;iconify-icon icon=&quot;material-symbols-light:close-rounded&quot;&gt;&lt;/iconify-icon&gt;&lt;/button&gt;&lt;/div&gt;
+	&lt;div class=&quot;saga-toast saga-toast--danger&quot; role=&quot;alert&quot;&gt;&lt;span class=&quot;saga-toast__icon&quot;&gt;&lt;iconify-icon icon=&quot;material-symbols-light:error-outline-rounded&quot;&gt;&lt;/iconify-icon&gt;&lt;/span&gt;&lt;span class=&quot;saga-toast__msg&quot;&gt;Could not reach the server.&lt;/span&gt;&lt;button class=&quot;saga-toast__close&quot; aria-label=&quot;Dismiss&quot;&gt;&lt;iconify-icon icon=&quot;material-symbols-light:close-rounded&quot;&gt;&lt;/iconify-icon&gt;&lt;/button&gt;&lt;/div&gt;
+	&lt;div class=&quot;saga-toast&quot; role=&quot;status&quot;&gt;&lt;span class=&quot;saga-toast__msg&quot;&gt;2 students are waiting in Period 1 (B.1).&lt;/span&gt;&lt;button class=&quot;saga-toast__action&quot;&gt;Join&lt;/button&gt;&lt;/div&gt;
+&lt;/div&gt;</code></pre>
+	<div class="saga-toast-stack" id="toast-stack" aria-live="polite"></div>
+</section>
+
+<section class="demo-section">
+	<h2>Popover menu</h2>
+	<div class="demo-row demo-row--tall">
+		<ul class="saga-popover" role="menu" aria-label="Session actions">
+			<li class="saga-popover__heading">Session</li>
+			<li><button class="saga-popover__item" role="menuitem"><iconify-icon icon="material-symbols-light:edit-outline-rounded"></iconify-icon> Edit session</button></li>
+			<li><button class="saga-popover__item" role="menuitem"><iconify-icon icon="material-symbols-light:content-copy-outline-rounded"></iconify-icon> Duplicate</button></li>
+			<li><button class="saga-popover__item is-active" role="menuitemradio" aria-checked="true"><iconify-icon icon="material-symbols-light:calendar-view-month-outline-rounded"></iconify-icon> Month view</button></li>
+			<li><button class="saga-popover__item" role="menuitem" disabled><iconify-icon icon="material-symbols-light:lock-outline"></iconify-icon> Lock (no permission)</button></li>
+			<li class="saga-popover__divider" role="separator"></li>
+			<li><button class="saga-popover__item" role="menuitem" data-danger><iconify-icon icon="material-symbols-light:delete-outline-rounded"></iconify-icon> Delete session</button></li>
+		</ul>
+	</div>
+<pre class="demo-snippet"><code>&lt;ul class=&quot;saga-popover&quot; role=&quot;menu&quot; aria-label=&quot;Session actions&quot;&gt;
+	&lt;li class=&quot;saga-popover__heading&quot;&gt;Session&lt;/li&gt;
+	&lt;li&gt;&lt;button class=&quot;saga-popover__item&quot; role=&quot;menuitem&quot;&gt;&lt;iconify-icon icon=&quot;material-symbols-light:edit-outline-rounded&quot;&gt;&lt;/iconify-icon&gt; Edit session&lt;/button&gt;&lt;/li&gt;
+	&lt;li&gt;&lt;button class=&quot;saga-popover__item&quot; role=&quot;menuitem&quot;&gt;&lt;iconify-icon icon=&quot;material-symbols-light:content-copy-outline-rounded&quot;&gt;&lt;/iconify-icon&gt; Duplicate&lt;/button&gt;&lt;/li&gt;
+	&lt;li&gt;&lt;button class=&quot;saga-popover__item is-active&quot; role=&quot;menuitemradio&quot; aria-checked=&quot;true&quot;&gt;&lt;iconify-icon icon=&quot;material-symbols-light:calendar-view-month-outline-rounded&quot;&gt;&lt;/iconify-icon&gt; Month view&lt;/button&gt;&lt;/li&gt;
+	&lt;li&gt;&lt;button class=&quot;saga-popover__item&quot; role=&quot;menuitem&quot; disabled&gt;&lt;iconify-icon icon=&quot;material-symbols-light:lock-outline&quot;&gt;&lt;/iconify-icon&gt; Lock (no permission)&lt;/button&gt;&lt;/li&gt;
+	&lt;li class=&quot;saga-popover__divider&quot; role=&quot;separator&quot;&gt;&lt;/li&gt;
+	&lt;li&gt;&lt;button class=&quot;saga-popover__item&quot; role=&quot;menuitem&quot; data-danger&gt;&lt;iconify-icon icon=&quot;material-symbols-light:delete-outline-rounded&quot;&gt;&lt;/iconify-icon&gt; Delete session&lt;/button&gt;&lt;/li&gt;
+&lt;/ul&gt;</code></pre>
+</section>
+
+<section class="demo-section">
+	<h2>Tooltip</h2>
+	<div class="demo-row demo-row--tall" style="min-height:auto">
+		<span class="saga-tooltip" role="tooltip">Configure program</span>
+		<span class="saga-tooltip" role="tooltip">Students and tutors always meet in the same pods. Tooltips wrap at 16rem.</span>
+	</div>
+<pre class="demo-snippet"><code>&lt;span class=&quot;saga-tooltip&quot; role=&quot;tooltip&quot;&gt;Configure program&lt;/span&gt;
+&lt;span class=&quot;saga-tooltip&quot; role=&quot;tooltip&quot;&gt;Students and tutors always meet in the same pods. Tooltips wrap at 16rem.&lt;/span&gt;</code></pre>
+</section>
+
+<section class="demo-section">
+	<h2>Notices</h2>
+	<div class="demo-row demo-row--stack">
+		<div class="saga-notice" role="status"><span class="saga-notice__icon"><iconify-icon icon="material-symbols-light:info-outline-rounded"></iconify-icon></span><div class="saga-notice__body"><span class="saga-notice__title">Preview deploy skipped</span> Switch the PR to ready for review to trigger it.</div><button class="saga-btn saga-btn--quiet saga-btn--icon saga-btn--sm saga-notice__dismiss" aria-label="Dismiss"><iconify-icon icon="material-symbols-light:close-rounded"></iconify-icon></button></div>
+		<div class="saga-notice saga-notice--warning" role="status"><span class="saga-notice__icon"><iconify-icon icon="material-symbols-light:warning-outline-rounded"></iconify-icon></span><div class="saga-notice__body">This session has no period and will not appear on the schedule. <button class="saga-notice__action">Assign a period</button></div></div>
+		<div class="saga-notice saga-notice--danger" role="alert"><span class="saga-notice__icon"><iconify-icon icon="material-symbols-light:error-outline-rounded"></iconify-icon></span><div class="saga-notice__body"><span class="saga-notice__title">Upload failed</span> 3 rows had an unknown school code.</div></div>
+		<div class="saga-notice saga-notice--success" role="status"><span class="saga-notice__icon"><iconify-icon icon="material-symbols-light:check-circle-outline-rounded"></iconify-icon></span><div class="saga-notice__body">Program configuration saved.</div></div>
+		<div class="saga-notice saga-notice--attention" role="status"><span class="saga-notice__icon"><iconify-icon icon="material-symbols-light:flag-outline-rounded"></iconify-icon></span><div class="saga-notice__body"><span class="saga-notice__title">Needs attention</span> 2 pods have no tutor assigned.</div></div>
+	</div>
+<pre class="demo-snippet"><code>&lt;div class=&quot;saga-notice&quot; role=&quot;status&quot;&gt;&lt;span class=&quot;saga-notice__icon&quot;&gt;&lt;iconify-icon icon=&quot;material-symbols-light:info-outline-rounded&quot;&gt;&lt;/iconify-icon&gt;&lt;/span&gt;&lt;div class=&quot;saga-notice__body&quot;&gt;&lt;span class=&quot;saga-notice__title&quot;&gt;Preview deploy skipped&lt;/span&gt; Switch the PR to ready for review to trigger it.&lt;/div&gt;&lt;button class=&quot;saga-btn saga-btn--quiet saga-btn--icon saga-btn--sm saga-notice__dismiss&quot; aria-label=&quot;Dismiss&quot;&gt;&lt;iconify-icon icon=&quot;material-symbols-light:close-rounded&quot;&gt;&lt;/iconify-icon&gt;&lt;/button&gt;&lt;/div&gt;
+&lt;div class=&quot;saga-notice saga-notice--warning&quot; role=&quot;status&quot;&gt;&lt;span class=&quot;saga-notice__icon&quot;&gt;&lt;iconify-icon icon=&quot;material-symbols-light:warning-outline-rounded&quot;&gt;&lt;/iconify-icon&gt;&lt;/span&gt;&lt;div class=&quot;saga-notice__body&quot;&gt;This session has no period and will not appear on the schedule. &lt;button class=&quot;saga-notice__action&quot;&gt;Assign a period&lt;/button&gt;&lt;/div&gt;&lt;/div&gt;
+&lt;div class=&quot;saga-notice saga-notice--danger&quot; role=&quot;alert&quot;&gt;&lt;span class=&quot;saga-notice__icon&quot;&gt;&lt;iconify-icon icon=&quot;material-symbols-light:error-outline-rounded&quot;&gt;&lt;/iconify-icon&gt;&lt;/span&gt;&lt;div class=&quot;saga-notice__body&quot;&gt;&lt;span class=&quot;saga-notice__title&quot;&gt;Upload failed&lt;/span&gt; 3 rows had an unknown school code.&lt;/div&gt;&lt;/div&gt;
+&lt;div class=&quot;saga-notice saga-notice--success&quot; role=&quot;status&quot;&gt;&lt;span class=&quot;saga-notice__icon&quot;&gt;&lt;iconify-icon icon=&quot;material-symbols-light:check-circle-outline-rounded&quot;&gt;&lt;/iconify-icon&gt;&lt;/span&gt;&lt;div class=&quot;saga-notice__body&quot;&gt;Program configuration saved.&lt;/div&gt;&lt;/div&gt;
+&lt;div class=&quot;saga-notice saga-notice--attention&quot; role=&quot;status&quot;&gt;&lt;span class=&quot;saga-notice__icon&quot;&gt;&lt;iconify-icon icon=&quot;material-symbols-light:flag-outline-rounded&quot;&gt;&lt;/iconify-icon&gt;&lt;/span&gt;&lt;div class=&quot;saga-notice__body&quot;&gt;&lt;span class=&quot;saga-notice__title&quot;&gt;Needs attention&lt;/span&gt; 2 pods have no tutor assigned.&lt;/div&gt;&lt;/div&gt;</code></pre>
+</section>
+
+<script>
+	// Toast demo: append, dwell = 3500ms + 50ms/char clamped to [4000, 15000], then fade out.
+	const ICONS = { success: 'material-symbols-light:check-circle-outline-rounded', warning: 'material-symbols-light:warning-outline-rounded', danger: 'material-symbols-light:error-outline-rounded' };
+	function showToast(message, tone, action) {
+		const stack = document.getElementById('toast-stack');
+		const el = document.createElement('div');
+		el.className = 'saga-toast' + (tone ? ' saga-toast--' + tone : '');
+		el.setAttribute('role', tone === 'danger' ? 'alert' : 'status');
+		if (ICONS[tone]) el.insertAdjacentHTML('beforeend', '<span class="saga-toast__icon"><iconify-icon icon="' + ICONS[tone] + '"></iconify-icon></span>');
+		const msg = document.createElement('span'); msg.className = 'saga-toast__msg'; msg.textContent = message; el.appendChild(msg);
+		if (action) { const a = document.createElement('button'); a.className = 'saga-toast__action'; a.textContent = action; a.onclick = () => dismiss(el); el.appendChild(a); }
+		el.insertAdjacentHTML('beforeend', '<button class="saga-toast__close" aria-label="Dismiss"><iconify-icon icon="material-symbols-light:close-rounded"></iconify-icon></button>');
+		el.querySelector('.saga-toast__close').onclick = () => dismiss(el);
+		stack.appendChild(el);
+		const dwell = Math.min(15000, Math.max(4000, 3500 + 50 * message.length));
+		el._timer = setTimeout(() => dismiss(el), dwell);
+	}
+	function dismiss(el) {
+		clearTimeout(el._timer);
+		if (el.classList.contains('is-leaving')) return;
+		el.classList.add('is-leaving');
+		const fade = parseFloat(getComputedStyle(document.documentElement).getPropertyValue('--motion-fade')) || 120;
+		setTimeout(() => el.remove(), fade + 20);
+	}
+</script>
+</main>
+</body>
+</html>

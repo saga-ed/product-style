@@ -1,0 +1,68 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Component showcase · Saga showcase</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/css/tokens.css">
+<link rel="stylesheet" href="/css/base.css">
+<link rel="stylesheet" href="/css/components.css">
+<script src="https://cdn.jsdelivr.net/npm/iconify-icon@2.1.0/dist/iconify-icon.min.js"></script>
+<style>
+	/* Showcase scaffolding only — not part of the system. */
+	.demo-page { max-width: 72rem; margin: 0 auto; padding: var(--space-xl) var(--space-lg) var(--space-3xl); }
+	.demo-page > header { margin-bottom: var(--space-xl); }
+	.demo-page > header p { color: var(--color-text-secondary); }
+	.demo-nav { display: flex; flex-wrap: wrap; gap: var(--space-sm) var(--space-md); font-size: var(--text-sm); margin-bottom: var(--space-lg); }
+	.demo-section { margin-bottom: var(--space-2xl); }
+	.demo-section > h2 { padding-bottom: var(--space-xs); border-bottom: 1px solid var(--color-border); margin-bottom: var(--space-md); }
+	.demo-section > h3 { margin-top: var(--space-lg); }
+	.demo-section > p { color: var(--color-text-secondary); font-size: var(--text-sm); }
+	.demo-row { display: flex; flex-wrap: wrap; align-items: center; gap: var(--space-md); padding: var(--space-lg); border: 1px dashed var(--color-border-hover); border-radius: var(--radius-lg) var(--radius-lg) 0 0; background: var(--color-bg); }
+	.demo-row--stack { flex-direction: column; align-items: stretch; }
+	.demo-row--tint { background: var(--color-bg-secondary); }
+	.demo-row--tall { min-height: 14rem; position: relative; }
+	.demo-snippet { margin: 0 0 var(--space-lg); padding: var(--space-md); overflow: auto; background: var(--color-bg-tertiary); border: 1px solid var(--color-border); border-top: 0; border-radius: 0 0 var(--radius-lg) var(--radius-lg); font-size: var(--text-xs); line-height: var(--leading-relaxed); color: var(--color-text-dark); }
+	.demo-snippet code { font-size: inherit; }
+</style>
+</head>
+<body>
+<main class="demo-page">
+<nav class="demo-nav" aria-label="Showcase pages">
+	<a href="/showcase/">Index</a> <a href="/showcase/buttons/">Buttons</a> <a href="/showcase/forms/">Forms</a> <a href="/showcase/cards-tables/">Cards &amp; tables</a> <a href="/showcase/overlays/">Overlays</a> <a href="/showcase/feedback/">Feedback</a> <a href="/showcase/shell/">Shell</a>
+</nav>
+<header>
+	<h1>Saga component showcase</h1>
+	<p>Live demos of <code>css/components.css</code> — framework-free classes that any page can use after <code>tokens.css</code> and <code>base.css</code>. Each demo shows the markup beneath it.</p>
+</header>
+<section class="demo-section">
+	<h2>Pages</h2>
+	<div class="demo-row demo-row--stack">
+		<a class="saga-card saga-card--interactive" href="/showcase/buttons/" style="text-decoration:none;color:inherit"><strong>Buttons</strong><br><span class="text-secondary">Primary, secondary, quiet, danger, affirmative, sizes, icon, add, dashed, loading, segmented control.</span></a>
+		<a class="saga-card saga-card--interactive" href="/showcase/forms/" style="text-decoration:none;color:inherit"><strong>Forms</strong><br><span class="text-secondary">Fields, labels, inputs, textarea, select and listbox, checkbox, radio, toggle, search.</span></a>
+		<a class="saga-card saga-card--interactive" href="/showcase/cards-tables/" style="text-decoration:none;color:inherit"><strong>Cards &amp; tables</strong><br><span class="text-secondary">Cards, stat cards, tables, key-value lists, chips, badges, month calendar.</span></a>
+		<a class="saga-card saga-card--interactive" href="/showcase/overlays/" style="text-decoration:none;color:inherit"><strong>Overlays</strong><br><span class="text-secondary">Modal, multi-step header, toasts, popover menu, tooltip, notices.</span></a>
+		<a class="saga-card saga-card--interactive" href="/showcase/feedback/" style="text-decoration:none;color:inherit"><strong>Feedback</strong><br><span class="text-secondary">Skeletons, progress, notices, avatars.</span></a>
+		<a class="saga-card saga-card--interactive" href="/showcase/shell/" style="text-decoration:none;color:inherit"><strong>Shell</strong><br><span class="text-secondary">Full-viewport mock of left nav, top bar, tabs and a roster table.</span></a>
+	</div>
+<pre class="demo-snippet"><code>&lt;a class=&quot;saga-card saga-card--interactive&quot; href=&quot;/showcase/buttons/&quot; style=&quot;text-decoration:none;color:inherit&quot;&gt;&lt;strong&gt;Buttons&lt;/strong&gt;&lt;br&gt;&lt;span class=&quot;text-secondary&quot;&gt;Primary, secondary, quiet, danger, affirmative, sizes, icon, add, dashed, loading, segmented control.&lt;/span&gt;&lt;/a&gt;
+&lt;a class=&quot;saga-card saga-card--interactive&quot; href=&quot;/showcase/forms/&quot; style=&quot;text-decoration:none;color:inherit&quot;&gt;&lt;strong&gt;Forms&lt;/strong&gt;&lt;br&gt;&lt;span class=&quot;text-secondary&quot;&gt;Fields, labels, inputs, textarea, select and listbox, checkbox, radio, toggle, search.&lt;/span&gt;&lt;/a&gt;
+&lt;a class=&quot;saga-card saga-card--interactive&quot; href=&quot;/showcase/cards-tables/&quot; style=&quot;text-decoration:none;color:inherit&quot;&gt;&lt;strong&gt;Cards &amp;amp; tables&lt;/strong&gt;&lt;br&gt;&lt;span class=&quot;text-secondary&quot;&gt;Cards, stat cards, tables, key-value lists, chips, badges, month calendar.&lt;/span&gt;&lt;/a&gt;
+&lt;a class=&quot;saga-card saga-card--interactive&quot; href=&quot;/showcase/overlays/&quot; style=&quot;text-decoration:none;color:inherit&quot;&gt;&lt;strong&gt;Overlays&lt;/strong&gt;&lt;br&gt;&lt;span class=&quot;text-secondary&quot;&gt;Modal, multi-step header, toasts, popover menu, tooltip, notices.&lt;/span&gt;&lt;/a&gt;
+&lt;a class=&quot;saga-card saga-card--interactive&quot; href=&quot;/showcase/feedback/&quot; style=&quot;text-decoration:none;color:inherit&quot;&gt;&lt;strong&gt;Feedback&lt;/strong&gt;&lt;br&gt;&lt;span class=&quot;text-secondary&quot;&gt;Skeletons, progress, notices, avatars.&lt;/span&gt;&lt;/a&gt;
+&lt;a class=&quot;saga-card saga-card--interactive&quot; href=&quot;/showcase/shell/&quot; style=&quot;text-decoration:none;color:inherit&quot;&gt;&lt;strong&gt;Shell&lt;/strong&gt;&lt;br&gt;&lt;span class=&quot;text-secondary&quot;&gt;Full-viewport mock of left nav, top bar, tabs and a roster table.&lt;/span&gt;&lt;/a&gt;</code></pre>
+</section>
+<section class="demo-section">
+	<h2>Loading the layer</h2>
+	<p>Absolute paths, in this order. Montserrat comes from Google Fonts (DS-009); icons in the demos use <code>iconify-icon</code>, which the system does not require.</p>
+	<pre class="demo-snippet" style="border-top:1px solid var(--color-border);border-radius:var(--radius-lg)"><code>&lt;link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&amp;display=swap" rel="stylesheet"&gt;
+&lt;link rel="stylesheet" href="/css/tokens.css"&gt;
+&lt;link rel="stylesheet" href="/css/base.css"&gt;
+&lt;link rel="stylesheet" href="/css/components.css"&gt;</code></pre>
+</section>
+</main>
+</body>
+</html>

@@ -1,0 +1,21 @@
+name: PR Cleanup
+
+on:
+  pull_request:
+    branches: [main]
+    types: [closed]
+
+permissions:
+  id-token: write
+  contents: read
+
+jobs:
+  cleanup:
+    runs-on: ubuntu-latest
+    environment: dev
+    steps:
+      - uses: actions/checkout@v6
+      - uses: ./.github/actions/cleanup-amplify
+        with:
+          branch-name: pr-${{ github.event.pull_request.number }}
+          aws-role-arn: ${{ vars.AWS_DEPLOY_ROLE_ARN }}

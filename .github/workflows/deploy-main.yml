@@ -1,0 +1,30 @@
+name: Deploy main
+
+on:
+  push:
+    branches: [main]
+    paths-ignore:
+      - "README.md"
+      - "infra/**/*.md"
+
+permissions:
+  id-token: write
+  contents: read
+
+concurrency:
+  group: deploy-main
+  cancel-in-progress: false
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    environment: dev
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          fetch-depth: 0
+
+      - uses: ./.github/actions/deploy-amplify
+        with:
+          branch-name: main
+          aws-role-arn: ${{ vars.AWS_DEPLOY_ROLE_ARN }}

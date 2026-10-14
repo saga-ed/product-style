@@ -1,0 +1,128 @@
+name: Deploy to Amplify
+description: Build the style site dist, zip it, upload via Amplify pre-built artifact deployment.
+
+inputs:
+  branch-name:
+    description: Amplify branch to deploy to (e.g. "main" or "pr-42")
+    required: true
+  aws-region:
+    description: AWS region
+    required: false
+    default: us-west-2
+  aws-role-arn:
+    description: IAM role ARN to assume via OIDC
+    required: true
+  app-id-ssm-name:
+    description: SSM parameter name holding the Amplify App ID
+    required: false
+    default: /product-style/amplify/app-id
+
+outputs:
+  preview-url:
+    description: The branch's Amplify preview URL
+    value: ${{ steps.urls.outputs.preview-url }}
+  job-id:
+    description: Amplify deployment job ID
+    value: ${{ steps.deploy.outputs.job-id }}
+
+runs:
+  using: composite
+  steps:
+    - name: Setup Node.js
+      uses: actions/setup-node@v6
+      with:
+        node-version-file: .nvmrc
+
+    - name: Install build deps
+      shell: bash
+      run: npm ci || npm install
+
+    - name: Build site
+      shell: bash
+      run: npm run zip
+
+    - name: Configure AWS credentials
+      uses: aws-actions/configure-aws-credentials@v6
+      with:
+        role-to-assume: ${{ inputs.aws-role-arn }}
+        aws-region: ${{ inputs.aws-region }}
+
+    - name: Resolve Amplify App ID
+      id: app
+      shell: bash
+      env:
+        SSM_NAME: ${{ inputs.app-id-ssm-name }}
+      run: |
+        APP_ID=$(aws ssm get-parameter --name "$SSM_NAME" --query 'Parameter.Value' --output text)
+        echo "app-id=${APP_ID}" >> "$GITHUB_OUTPUT"
+        echo "Resolved Amplify App ID: ${APP_ID}"
+
+    - name: Ensure Amplify branch exists
+      shell: bash
+      env:
+        APP_ID: ${{ steps.app.outputs.app-id }}
+        BRANCH: ${{ inputs.branch-name }}
+      run: |
+        if aws amplify get-branch --app-id "$APP_ID" --branch-name "$BRANCH" >/dev/null 2>&1; then
+          echo "Branch $BRANCH already exists."
+        else
+          case "$BRANCH" in
+            main) STAGE=PRODUCTION ;;
+            pr-*) STAGE=PULL_REQUEST ;;
+            *)    STAGE=DEVELOPMENT ;;
+          esac
+          echo "Creating branch $BRANCH (stage: $STAGE)"
+          aws amplify create-branch \
+            --app-id "$APP_ID" \
+            --branch-name "$BRANCH" \
+            --stage "$STAGE" \
+            --no-enable-auto-build
+        fi
+
+    - name: Create and start Amplify deployment
+      id: deploy
+      shell: bash
+      env:
+        APP_ID: ${{ steps.app.outputs.app-id }}
+        BRANCH: ${{ inputs.branch-name }}
+      run: |
+        set -euo pipefail
+        CREATE=$(aws amplify create-deployment --app-id "$APP_ID" --branch-name "$BRANCH")
+        UPLOAD_URL=$(echo "$CREATE" | jq -r .zipUploadUrl)
+        JOB_ID=$(echo "$CREATE" | jq -r .jobId)
+        echo "Uploading dist.zip to deployment $JOB_ID"
+        curl -sS --fail -H "Content-Type: application/zip" --upload-file dist.zip "$UPLOAD_URL"
+        aws amplify start-deployment --app-id "$APP_ID" --branch-name "$BRANCH" --job-id "$JOB_ID" >/dev/null
+        echo "job-id=${JOB_ID}" >> "$GITHUB_OUTPUT"
+
+    - name: Wait for deployment to finish
+      shell: bash
+      env:
+        APP_ID: ${{ steps.app.outputs.app-id }}
+        BRANCH: ${{ inputs.branch-name }}
+        JOB_ID: ${{ steps.deploy.outputs.job-id }}
+      run: |
+        set -euo pipefail
+        for i in $(seq 1 60); do
+          STATUS=$(aws amplify get-job --app-id "$APP_ID" --branch-name "$BRANCH" --job-id "$JOB_ID" --query 'job.summary.status' --output text)
+          echo "[$i] status=$STATUS"
+          case "$STATUS" in
+            SUCCEED) exit 0 ;;
+            FAILED|CANCELLED) echo "Deployment $STATUS"; exit 1 ;;
+            *) sleep 5 ;;
+          esac
+        done
+        echo "Timed out waiting for Amplify deployment"
+        exit 1
+
+    - name: Compute URLs
+      id: urls
+      shell: bash
+      env:
+        APP_ID: ${{ steps.app.outputs.app-id }}
+        BRANCH: ${{ inputs.branch-name }}
+      run: |
+        DEFAULT_DOMAIN=$(aws amplify get-app --app-id "$APP_ID" --query 'app.defaultDomain' --output text)
+        PREVIEW_URL="https://${BRANCH}.${DEFAULT_DOMAIN}"
+        echo "preview-url=${PREVIEW_URL}" >> "$GITHUB_OUTPUT"
+        echo "Branch live at: ${PREVIEW_URL}"

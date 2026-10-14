@@ -1,0 +1,166 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Buttons · Saga showcase</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/css/tokens.css">
+<link rel="stylesheet" href="/css/base.css">
+<link rel="stylesheet" href="/css/components.css">
+<script src="https://cdn.jsdelivr.net/npm/iconify-icon@2.1.0/dist/iconify-icon.min.js"></script>
+<style>
+	/* Showcase scaffolding only — not part of the system. */
+	.demo-page { max-width: 72rem; margin: 0 auto; padding: var(--space-xl) var(--space-lg) var(--space-3xl); }
+	.demo-page > header { margin-bottom: var(--space-xl); }
+	.demo-page > header p { color: var(--color-text-secondary); }
+	.demo-nav { display: flex; flex-wrap: wrap; gap: var(--space-sm) var(--space-md); font-size: var(--text-sm); margin-bottom: var(--space-lg); }
+	.demo-section { margin-bottom: var(--space-2xl); }
+	.demo-section > h2 { padding-bottom: var(--space-xs); border-bottom: 1px solid var(--color-border); margin-bottom: var(--space-md); }
+	.demo-section > h3 { margin-top: var(--space-lg); }
+	.demo-section > p { color: var(--color-text-secondary); font-size: var(--text-sm); }
+	.demo-row { display: flex; flex-wrap: wrap; align-items: center; gap: var(--space-md); padding: var(--space-lg); border: 1px dashed var(--color-border-hover); border-radius: var(--radius-lg) var(--radius-lg) 0 0; background: var(--color-bg); }
+	.demo-row--stack { flex-direction: column; align-items: stretch; }
+	.demo-row--tint { background: var(--color-bg-secondary); }
+	.demo-row--tall { min-height: 14rem; position: relative; }
+	.demo-snippet { margin: 0 0 var(--space-lg); padding: var(--space-md); overflow: auto; background: var(--color-bg-tertiary); border: 1px solid var(--color-border); border-top: 0; border-radius: 0 0 var(--radius-lg) var(--radius-lg); font-size: var(--text-xs); line-height: var(--leading-relaxed); color: var(--color-text-dark); }
+	.demo-snippet code { font-size: inherit; }
+</style>
+</head>
+<body>
+<main class="demo-page">
+<nav class="demo-nav" aria-label="Showcase pages">
+	<a href="/showcase/">Index</a> <a href="/showcase/buttons/">Buttons</a> <a href="/showcase/forms/">Forms</a> <a href="/showcase/cards-tables/">Cards &amp; tables</a> <a href="/showcase/overlays/">Overlays</a> <a href="/showcase/feedback/">Feedback</a> <a href="/showcase/shell/">Shell</a>
+</nav>
+<header>
+	<h1>Buttons</h1>
+	<p>Flat, 6px radius, semibold (DS-017). Blue is the only action colour; teal is never a button fill (DS-003). Disabled is a fill, not opacity.</p>
+</header>
+
+<section class="demo-section">
+	<h2>Variants</h2>
+	<div class="demo-row">
+		<button class="saga-btn">Save</button>
+		<button class="saga-btn saga-btn--secondary">Cancel</button>
+		<button class="saga-btn saga-btn--quiet">Quiet</button>
+		<button class="saga-btn saga-btn--danger">Delete</button>
+		<button class="saga-btn saga-btn--affirmative">Approve</button>
+	</div>
+<pre class="demo-snippet"><code>&lt;button class=&quot;saga-btn&quot;&gt;Save&lt;/button&gt;
+&lt;button class=&quot;saga-btn saga-btn--secondary&quot;&gt;Cancel&lt;/button&gt;
+&lt;button class=&quot;saga-btn saga-btn--quiet&quot;&gt;Quiet&lt;/button&gt;
+&lt;button class=&quot;saga-btn saga-btn--danger&quot;&gt;Delete&lt;/button&gt;
+&lt;button class=&quot;saga-btn saga-btn--affirmative&quot;&gt;Approve&lt;/button&gt;</code></pre>
+
+	<h3>With icons</h3>
+	<div class="demo-row">
+		<button class="saga-btn"><iconify-icon icon="material-symbols-light:save-outline-rounded"></iconify-icon> Save changes</button>
+		<button class="saga-btn saga-btn--secondary"><iconify-icon icon="material-symbols-light:upload-rounded"></iconify-icon> Upload Roster</button>
+		<button class="saga-btn saga-btn--secondary"><iconify-icon icon="material-symbols-light:download-rounded"></iconify-icon> Download Roster</button>
+		<a class="saga-btn saga-btn--quiet" href="#">Open report <iconify-icon icon="material-symbols-light:arrow-forward-rounded"></iconify-icon></a>
+	</div>
+<pre class="demo-snippet"><code>&lt;button class=&quot;saga-btn&quot;&gt;&lt;iconify-icon icon=&quot;material-symbols-light:save-outline-rounded&quot;&gt;&lt;/iconify-icon&gt; Save changes&lt;/button&gt;
+&lt;button class=&quot;saga-btn saga-btn--secondary&quot;&gt;&lt;iconify-icon icon=&quot;material-symbols-light:upload-rounded&quot;&gt;&lt;/iconify-icon&gt; Upload Roster&lt;/button&gt;
+&lt;button class=&quot;saga-btn saga-btn--secondary&quot;&gt;&lt;iconify-icon icon=&quot;material-symbols-light:download-rounded&quot;&gt;&lt;/iconify-icon&gt; Download Roster&lt;/button&gt;
+&lt;a class=&quot;saga-btn saga-btn--quiet&quot; href=&quot;#&quot;&gt;Open report &lt;iconify-icon icon=&quot;material-symbols-light:arrow-forward-rounded&quot;&gt;&lt;/iconify-icon&gt;&lt;/a&gt;</code></pre>
+</section>
+
+<section class="demo-section">
+	<h2>Sizes and layout</h2>
+	<div class="demo-row">
+		<button class="saga-btn saga-btn--sm">Show Bulk Actions</button>
+		<button class="saga-btn saga-btn--secondary saga-btn--sm">Edit</button>
+		<button class="saga-btn">Default</button>
+	</div>
+<pre class="demo-snippet"><code>&lt;button class=&quot;saga-btn saga-btn--sm&quot;&gt;Show Bulk Actions&lt;/button&gt;
+&lt;button class=&quot;saga-btn saga-btn--secondary saga-btn--sm&quot;&gt;Edit&lt;/button&gt;
+&lt;button class=&quot;saga-btn&quot;&gt;Default&lt;/button&gt;</code></pre>
+	<div class="demo-row demo-row--stack">
+		<button class="saga-btn saga-btn--block">Continue</button>
+		<button class="saga-btn saga-btn--secondary saga-btn--block">Back</button>
+	</div>
+<pre class="demo-snippet"><code>&lt;button class=&quot;saga-btn saga-btn--block&quot;&gt;Continue&lt;/button&gt;
+&lt;button class=&quot;saga-btn saga-btn--secondary saga-btn--block&quot;&gt;Back&lt;/button&gt;</code></pre>
+
+	<h3>Icon-only</h3>
+	<p>Always give an icon button an accessible name via <code>aria-label</code>.</p>
+	<div class="demo-row">
+		<button class="saga-btn saga-btn--icon" aria-label="Add"><iconify-icon icon="material-symbols-light:add-rounded"></iconify-icon></button>
+		<button class="saga-btn saga-btn--secondary saga-btn--icon" aria-label="Filter"><iconify-icon icon="material-symbols-light:filter-list-rounded"></iconify-icon></button>
+		<button class="saga-btn saga-btn--quiet saga-btn--icon" aria-label="Edit"><iconify-icon icon="material-symbols-light:edit-outline-rounded"></iconify-icon></button>
+		<button class="saga-btn saga-btn--quiet saga-btn--icon" aria-label="Lock"><iconify-icon icon="material-symbols-light:lock-outline"></iconify-icon></button>
+		<button class="saga-btn saga-btn--quiet saga-btn--icon" aria-label="Notifications"><span class="saga-badge-anchor"><iconify-icon icon="material-symbols-light:notifications-outline-rounded"></iconify-icon><span class="saga-badge">2</span></span></button>
+	</div>
+<pre class="demo-snippet"><code>&lt;button class=&quot;saga-btn saga-btn--icon&quot; aria-label=&quot;Add&quot;&gt;&lt;iconify-icon icon=&quot;material-symbols-light:add-rounded&quot;&gt;&lt;/iconify-icon&gt;&lt;/button&gt;
+&lt;button class=&quot;saga-btn saga-btn--secondary saga-btn--icon&quot; aria-label=&quot;Filter&quot;&gt;&lt;iconify-icon icon=&quot;material-symbols-light:filter-list-rounded&quot;&gt;&lt;/iconify-icon&gt;&lt;/button&gt;
+&lt;button class=&quot;saga-btn saga-btn--quiet saga-btn--icon&quot; aria-label=&quot;Edit&quot;&gt;&lt;iconify-icon icon=&quot;material-symbols-light:edit-outline-rounded&quot;&gt;&lt;/iconify-icon&gt;&lt;/button&gt;
+&lt;button class=&quot;saga-btn saga-btn--quiet saga-btn--icon&quot; aria-label=&quot;Lock&quot;&gt;&lt;iconify-icon icon=&quot;material-symbols-light:lock-outline&quot;&gt;&lt;/iconify-icon&gt;&lt;/button&gt;
+&lt;button class=&quot;saga-btn saga-btn--quiet saga-btn--icon&quot; aria-label=&quot;Notifications&quot;&gt;&lt;span class=&quot;saga-badge-anchor&quot;&gt;&lt;iconify-icon icon=&quot;material-symbols-light:notifications-outline-rounded&quot;&gt;&lt;/iconify-icon&gt;&lt;span class=&quot;saga-badge&quot;&gt;2&lt;/span&gt;&lt;/span&gt;&lt;/button&gt;</code></pre>
+</section>
+
+<section class="demo-section">
+	<h2>Add and dashed</h2>
+	<p>"Add X" is a quiet button with a filled blue circle as its leading mark. The dashed tertiary is for low-emphasis additions inside a form.</p>
+	<div class="demo-row">
+		<button class="saga-btn saga-btn--add"><span class="saga-btn__plus"><iconify-icon icon="material-symbols-light:add-rounded"></iconify-icon></span> Add Student</button>
+		<button class="saga-btn saga-btn--add"><span class="saga-btn__plus"><iconify-icon icon="material-symbols-light:add-rounded"></iconify-icon></span> Add period</button>
+		<button class="saga-btn saga-btn--secondary"><span class="saga-btn__plus"><iconify-icon icon="material-symbols-light:add-rounded"></iconify-icon></span> Add New Session</button>
+		<button class="saga-btn saga-btn--dashed">Add drop-in student</button>
+	</div>
+<pre class="demo-snippet"><code>&lt;button class=&quot;saga-btn saga-btn--add&quot;&gt;&lt;span class=&quot;saga-btn__plus&quot;&gt;&lt;iconify-icon icon=&quot;material-symbols-light:add-rounded&quot;&gt;&lt;/iconify-icon&gt;&lt;/span&gt; Add Student&lt;/button&gt;
+&lt;button class=&quot;saga-btn saga-btn--add&quot;&gt;&lt;span class=&quot;saga-btn__plus&quot;&gt;&lt;iconify-icon icon=&quot;material-symbols-light:add-rounded&quot;&gt;&lt;/iconify-icon&gt;&lt;/span&gt; Add period&lt;/button&gt;
+&lt;button class=&quot;saga-btn saga-btn--secondary&quot;&gt;&lt;span class=&quot;saga-btn__plus&quot;&gt;&lt;iconify-icon icon=&quot;material-symbols-light:add-rounded&quot;&gt;&lt;/iconify-icon&gt;&lt;/span&gt; Add New Session&lt;/button&gt;
+&lt;button class=&quot;saga-btn saga-btn--dashed&quot;&gt;Add drop-in student&lt;/button&gt;</code></pre>
+</section>
+
+<section class="demo-section">
+	<h2>States</h2>
+	<div class="demo-row">
+		<button class="saga-btn" disabled>Disabled</button>
+		<button class="saga-btn saga-btn--secondary" disabled>Disabled</button>
+		<button class="saga-btn saga-btn--quiet" aria-disabled="true">Disabled</button>
+		<button class="saga-btn saga-btn--danger" disabled>Disabled</button>
+		<button class="saga-btn saga-btn--dashed" disabled>Disabled</button>
+	</div>
+<pre class="demo-snippet"><code>&lt;button class=&quot;saga-btn&quot; disabled&gt;Disabled&lt;/button&gt;
+&lt;button class=&quot;saga-btn saga-btn--secondary&quot; disabled&gt;Disabled&lt;/button&gt;
+&lt;button class=&quot;saga-btn saga-btn--quiet&quot; aria-disabled=&quot;true&quot;&gt;Disabled&lt;/button&gt;
+&lt;button class=&quot;saga-btn saga-btn--danger&quot; disabled&gt;Disabled&lt;/button&gt;
+&lt;button class=&quot;saga-btn saga-btn--dashed&quot; disabled&gt;Disabled&lt;/button&gt;</code></pre>
+	<div class="demo-row">
+		<button class="saga-btn" data-loading>Saving</button>
+		<button class="saga-btn saga-btn--secondary" data-loading>Loading</button>
+		<button class="saga-btn saga-btn--affirmative" data-loading aria-busy="true">Approving</button>
+	</div>
+<pre class="demo-snippet"><code>&lt;button class=&quot;saga-btn&quot; data-loading&gt;Saving&lt;/button&gt;
+&lt;button class=&quot;saga-btn saga-btn--secondary&quot; data-loading&gt;Loading&lt;/button&gt;
+&lt;button class=&quot;saga-btn saga-btn--affirmative&quot; data-loading aria-busy=&quot;true&quot;&gt;Approving&lt;/button&gt;</code></pre>
+</section>
+
+<section class="demo-section">
+	<h2>Segmented control</h2>
+	<p>A pressed-button group; the pressed segment is a filled blue pill (Reports → Surveys).</p>
+	<div class="demo-row">
+		<div class="saga-segmented" role="group" aria-label="Report view">
+			<button type="button" aria-pressed="true">Overall Summary</button>
+			<button type="button" aria-pressed="false">Individual Report</button>
+		</div>
+		<div class="saga-segmented" role="group" aria-label="Calendar view">
+			<button type="button" aria-pressed="false" aria-label="List"><iconify-icon icon="material-symbols-light:format-list-bulleted-rounded"></iconify-icon></button>
+			<button type="button" aria-pressed="true" aria-label="Grid"><iconify-icon icon="material-symbols-light:calendar-view-month-outline-rounded"></iconify-icon></button>
+		</div>
+	</div>
+<pre class="demo-snippet"><code>&lt;div class=&quot;saga-segmented&quot; role=&quot;group&quot; aria-label=&quot;Report view&quot;&gt;
+	&lt;button type=&quot;button&quot; aria-pressed=&quot;true&quot;&gt;Overall Summary&lt;/button&gt;
+	&lt;button type=&quot;button&quot; aria-pressed=&quot;false&quot;&gt;Individual Report&lt;/button&gt;
+&lt;/div&gt;
+&lt;div class=&quot;saga-segmented&quot; role=&quot;group&quot; aria-label=&quot;Calendar view&quot;&gt;
+	&lt;button type=&quot;button&quot; aria-pressed=&quot;false&quot; aria-label=&quot;List&quot;&gt;&lt;iconify-icon icon=&quot;material-symbols-light:format-list-bulleted-rounded&quot;&gt;&lt;/iconify-icon&gt;&lt;/button&gt;
+	&lt;button type=&quot;button&quot; aria-pressed=&quot;true&quot; aria-label=&quot;Grid&quot;&gt;&lt;iconify-icon icon=&quot;material-symbols-light:calendar-view-month-outline-rounded&quot;&gt;&lt;/iconify-icon&gt;&lt;/button&gt;
+&lt;/div&gt;</code></pre>
+</section>
+</main>
+</body>
+</html>

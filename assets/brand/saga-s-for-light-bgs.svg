@@ -1,0 +1,8 @@
+<svg viewBox="0 0 92 140" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:svg="http://www.w3.org/2000/svg">
+  <g>
+    <path d="M 0,46 A 46,46 0 0 0 46,92 V 46 Z" style="fill:#002b49" />
+    <path d="M 46,46 V 92 H 92 A 46,46 0 0 0 46,46 Z" style="fill:#10cfc9" />
+    <path d="M 46,0 A 46,46 0 0 0 0,46 H 92 A 46,46 0 0 0 46,0 Z" style="fill:#70d44b" />
+    <path d="M 46,138.06 A 46,46 0 0 0 92,92 H 0 a 46,46 0 0 0 46,46.06 z" style="fill:#ff595a" />
+  </g>
+</svg>

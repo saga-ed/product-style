@@ -1,0 +1,339 @@
+/* =============================================================================
+   Saga product style — design tokens
+   Source of truth: https://github.com/saga-ed/product-style (css/tokens.css)
+   Guide: https://style.wootdev.com  ·  Ledger: guide/decisions.md
+   -----------------------------------------------------------------------------
+   Two tiers:
+     Tier 1  --saga-*      brand primitives (named by what they are; never used
+                           directly in component CSS except by the semantic tier)
+     Tier 2  --color-* --space-* --text-* --radius-* --shadow-* --motion-* …
+                           semantic tokens — the only tier components reference.
+   Apps may add a Tier 3 alias layer (qboard's --cv3-*, dash's --timeline-*).
+   Do not edit values here to fix one screen: change the semantic token, or add
+   a Tier 3 alias in the app, and log the reason in guide/decisions.md.
+   ============================================================================= */
+
+:root {
+	/* ── Tier 1 · brand primitives (DS-001) ─────────────────────────────── */
+	--saga-blue: #006298;        /* primary action, links, focus. Figma "medium-blue" */
+	--saga-blue-dark: #004f7a;   /* hover / pressed */
+	--saga-blue-tint: #e0f0fa;   /* selected row, quiet hover, info surfaces */
+	--saga-navy: #0b2a4a;        /* chrome: left nav, headers, scrims. Figma "dark-blue" */
+	--saga-teal: #1ececa;        /* accent only — fails contrast on white. Figma "light-blue" */
+	--saga-teal-ink: #0d7377;    /* legible teal for text and pills (dash) */
+	--saga-teal-tint: #d4f5f4;
+	--saga-clay: #991a21;        /* danger / destructive */
+	--saga-pink: #ff595a;        /* brand mark + data accents only. Figma "saga-red" */
+	--saga-green: #20912d;       /* success. Figma "dark-green" */
+	--saga-lime: #6ed34b;        /* brand mark only. Figma "saga-green" */
+	--saga-light-green: #a7e163;
+	--saga-orange: #ffad00;
+	--saga-dark-orange: #d14600; /* "changed / overridden" marker, bell badge */
+	--saga-yellow: #f9e547;
+	--saga-magenta: #bb16a3;     /* QTF rubric, secondary buttons. Figma "saga-purple" */
+	--saga-coral: #ffa38b;
+	--saga-beige: #d6d1ca;
+	--saga-beige-dark: #a59c94;  /* placeholder text */
+	--saga-warm-gray: #6e6259;   /* Figma "dark-gray" */
+	--saga-light-gray: #f3f4f4;
+
+	/* Cool neutral ramp (DS-002) — Tailwind-gray-derived, what dash and most
+	   prototypes already use for text, borders and surfaces. */
+	--gray-50: #f9fafb;
+	--gray-100: #f3f4f6;
+	--gray-200: #e5e7eb;
+	--gray-300: #d1d5db;
+	--gray-400: #9ca3af;
+	--gray-500: #6b7280;
+	--gray-700: #374151;
+	--gray-900: #111827;
+	/* Legacy flat grays (saga_style / Figma gray-extensions) kept for the
+	   existing --color-gray-* aliases and the input/button contracts. */
+	--gray-legacy-darker: #444444;
+	--gray-legacy-dark: #707070;
+	--gray-legacy: #9f9f9f;
+	--gray-legacy-light: #d9d9d9;
+	--gray-legacy-lighter: #f9f9f9;
+
+	--white: #ffffff;
+	--black: #000000;
+
+	/* ── Tier 2 · semantic colour ───────────────────────────────────────── */
+	/* Brand roles (DS-003) */
+	--color-primary: var(--saga-blue);
+	--color-primary-hover: var(--saga-blue-dark);
+	--color-primary-light: var(--saga-blue-tint);
+	--color-primary-contrast: var(--white);
+	--color-accent: var(--saga-teal);            /* decorative only: nav accent bar, day-type chips, data */
+	--color-teal: var(--saga-teal-ink);           /* legible teal */
+	--color-teal-light: var(--saga-teal-tint);
+	--color-secondary: var(--gray-500);           /* secondary text + quiet controls */
+
+	/* Status (DS-004) — amber for warning/attention, never the brand pink */
+	--color-success: var(--saga-green);
+	--color-success-strong: #1a7a25;             /* 5.5:1 on white: success text and button fills (DS-036) */
+	--color-success-bg: #eaf5ec;
+	--color-success-border: #b7dcbb;
+	--color-warning: #d97706;
+	--color-warning-text: #8a6d00;               /* caution text/buttons on light surfaces */
+	--color-warning-bg: #fff8e1;
+	--color-warning-border: #f0c14b;
+	--color-danger: var(--saga-clay);
+	--color-danger-bg: #fdecea;
+	--color-danger-border: #f0b4b0;
+	--color-notice: var(--color-primary);         /* allowed-but-avoided; informational */
+	--color-notice-bg: #eef4fb;
+	--color-notice-border: #b6d4f0;
+	--color-attention: #b45309;                   /* needs-attention accent in content */
+	--color-attention-bg: #fdf1de;
+	--color-attention-strong: var(--saga-dark-orange);
+	--color-positive-bg: #eef4ec;
+	--color-positive-border: #bcd9c6;
+	--color-positive-fg: #2c6e49;
+
+	/* Neutrals (DS-005) */
+	--color-bg: var(--white);
+	--color-bg-secondary: var(--gray-50);
+	--color-bg-tertiary: var(--gray-100);
+	--color-border: var(--gray-200);
+	--color-border-hover: var(--gray-300);
+	--color-border-strong: var(--gray-legacy-light);
+	--color-text: var(--gray-900);
+	--color-text-secondary: var(--gray-500);
+	--color-text-muted: var(--gray-400);
+	--color-text-disabled: var(--gray-legacy-dark);
+	--color-text-inverse: var(--white);
+	--color-text-dark: var(--gray-legacy-darker);  /* tab labels, dense tables */
+	--color-surface-inverse: var(--saga-navy);      /* toasts, tooltips, immersive headers */
+	/* Legacy gray aliases (dash compatibility) */
+	--color-gray-darker: var(--gray-legacy-darker);
+	--color-gray-dark: var(--gray-legacy-dark);
+	--color-gray: var(--gray-legacy);
+	--color-gray-light: var(--gray-legacy-light);
+	--color-gray-lighter: var(--gray-legacy-lighter);
+
+	/* Focus + selection (DS-006) */
+	--focus-ring-color: var(--color-primary);
+	--focus-ring-width: 2px;
+	--focus-ring-offset: 2px;
+	--selection-bg: var(--color-primary);
+	--selection-color: var(--white);
+
+	/* ── Shell (DS-007) ─────────────────────────────────────────────────── */
+	--nav-width: 240px;
+	--nav-bg: var(--saga-navy);
+	--nav-text: rgba(255, 255, 255, 0.7);
+	--nav-text-active: var(--white);
+	--nav-text-muted: rgba(255, 255, 255, 0.45);
+	--nav-item-hover: rgba(255, 255, 255, 0.06);
+	--nav-item-active: var(--color-primary);
+	--nav-accent: var(--color-accent);
+	--nav-border: rgba(255, 255, 255, 0.38);
+	--nav-attention-bg: #f2a33c;
+	--nav-exit-bg: rgba(122, 193, 230, 0.14);      /* configure-mode "Exit configuration" box */
+	--nav-exit-border: rgba(122, 193, 230, 0.42);
+	--nav-status-complete: #9fe0b8;               /* green check on navy */
+	--topbar-height: 64px;
+	--topbar-bg: var(--color-bg);
+	--topbar-border: var(--color-gray);
+	--tab-font-size: 15px;
+	--tab-text: var(--color-text-dark);
+	--tab-text-active: var(--color-primary);
+	--tab-count-bg: var(--color-bg-tertiary);
+	--tab-count-text: var(--color-text-secondary);
+	--tab-count-bg-active: var(--color-primary-light);
+	--tab-count-text-active: var(--color-primary);
+
+	/* ── Spacing (DS-008) ───────────────────────────────────────────────── */
+	--space-2xs: 2px;
+	--space-xs: 4px;
+	--space-sm: 8px;
+	--space-md: 16px;
+	--space-lg: 24px;
+	--space-xl: 32px;
+	--space-2xl: 48px;
+	--space-3xl: 64px;
+
+	/* ── Typography (DS-009) ────────────────────────────────────────────── */
+	--font-sans: 'Montserrat Variable', 'Montserrat', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+	--font-mono: 'JetBrains Mono', ui-monospace, 'SFMono-Regular', Menlo, Consolas, monospace;
+	--text-xs: 0.75rem;
+	--text-sm: 0.875rem;
+	--text-base: 1rem;
+	--text-lg: 1.125rem;
+	--text-xl: 1.25rem;
+	--text-2xl: 1.5rem;
+	--text-3xl: 2rem;
+	--leading-tight: 1.25;
+	--leading-normal: 1.375;
+	--leading-relaxed: 1.625;
+	--weight-regular: 400;
+	--weight-medium: 500;
+	--weight-semibold: 600;
+	--weight-bold: 700;
+	/* Root size: 15px, stepping up on wide screens (DS-010). --text-scale is
+	   the user text-size preference (1 / 1.3 / 1.7); base.css applies both. */
+	--base-font-size: 15px;
+	--text-scale: 1;
+
+	/* ── Radius (DS-011) ────────────────────────────────────────────────── */
+	--radius-xs: 2px;
+	--radius-sm: 4px;
+	--radius-md: 6px;
+	--radius-lg: 8px;
+	--radius-xl: 12px;
+	--radius-full: 9999px;
+	--border-width-emphasis: 2px;                   /* stat-card edge, checkbox tick, rings */
+
+	/* ── Elevation (DS-012) ─────────────────────────────────────────────── */
+	--shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.05);
+	--shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+	--shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+	--shadow-popover: 0 8px 24px rgba(0, 0, 0, 0.14);
+	--shadow-modal: 0 24px 48px rgba(0, 0, 0, 0.22);
+	--shadow-toast: 0 6px 18px rgba(0, 0, 0, 0.16);
+	--modal-scrim: rgba(11, 42, 74, 0.4);
+	--modal-scrim-strong: rgba(11, 42, 74, 0.45);
+
+	/* ── Layering (DS-013) ──────────────────────────────────────────────── */
+	--z-raised: 1;
+	--z-sticky: 100;
+	--z-dropdown: 200;
+	--z-overlay: 1000;
+	--z-modal: 1100;
+	--z-toast: 1200;
+	--z-tooltip: 1300;
+
+	/* ── Motion (DS-014) — movement durations collapse to 0 under
+	   prefers-reduced-motion; --motion-fade is the floor and never zeroes. */
+	--motion-instant: 90ms;
+	--motion-fast: 150ms;
+	--motion-base: 210ms;
+	--motion-slow: 300ms;
+	--motion-fade: 120ms;
+	--motion-stagger: 32ms;
+	--ease-out: cubic-bezier(0.22, 1, 0.36, 1);
+	--ease-in: cubic-bezier(0.4, 0, 1, 1);
+	--ease-emphasized: cubic-bezier(0.2, 0, 0, 1);
+
+	/* ── Component contracts ────────────────────────────────────────────── */
+	/* Card (DS-015) */
+	--card-bg: var(--color-bg);
+	--card-radius: var(--radius-lg);
+	--card-border: 1px solid var(--color-border);
+	--card-shadow: var(--shadow-sm);
+	--card-padding: var(--space-lg);
+
+	/* Input (DS-016) */
+	--input-bg: var(--color-bg);
+	--input-border-color: var(--color-border-strong);
+	--input-border-color-hover: var(--color-gray);
+	--input-border-color-focus: var(--color-primary);
+	--input-border-color-invalid: var(--color-danger);
+	--input-border-color-readonly: var(--color-gray-lighter);
+	--input-radius: var(--radius-md);
+	--input-bg-disabled: var(--color-gray-lighter);
+	--input-color-disabled: var(--color-text-dark);
+	--input-color-placeholder: var(--saga-beige-dark);
+	--input-padding: 0.3rem 0.75rem;
+	--input-height: 2.4rem;
+	--input-focus-halo: 0 0 0 3px rgba(0, 98, 152, 0.18);  /* the one inside-the-control focus (time field) */
+
+	/* Button (DS-017) — flat by default; elevation is for cards, not buttons */
+	--btn-radius: var(--radius-md);
+	--btn-padding-y: 0.5rem;
+	--btn-padding-x: 1.25rem;
+	--btn-font-weight: var(--weight-semibold);
+	--btn-surface-primary: var(--color-primary);
+	--btn-surface-primary-hover: var(--color-primary-hover);
+	--btn-text-primary: var(--color-primary-contrast);
+	--btn-surface-secondary: var(--color-bg);
+	--btn-border-secondary: var(--color-border-strong);
+	--btn-text-secondary: var(--color-text);
+	--btn-surface-quiet-hover: var(--color-primary-light);
+	--btn-surface-danger: var(--color-danger);
+	--btn-surface-affirmative: var(--color-success);
+	--btn-surface-disabled: var(--color-gray-light);
+	--btn-text-disabled: var(--color-gray-dark);
+	--btn-surface-magenta: var(--saga-magenta);
+	--btn-surface-orange: var(--saga-orange);
+	--btn-surface-gray: var(--color-gray-dark);
+
+	/* Scrollbar (DS-018) */
+	--scrollbar-width: 0.5em;
+	--scrollbar-track-shadow: inset 0 0 var(--radius-md) rgba(0, 0, 0, 0.3);
+	--scrollbar-thumb-bg: var(--saga-navy);
+	--scrollbar-thumb-outline: 1px solid var(--color-gray);
+
+	/* Charts (DS-024): series order for categorical data; averages are neutral */
+	--chart-1: var(--saga-blue);
+	--chart-2: var(--saga-magenta);
+	--chart-3: var(--saga-teal-ink);
+	--chart-4: var(--saga-orange);
+	--chart-5: var(--saga-pink);
+	--chart-6: var(--saga-navy);
+	--chart-7: var(--saga-lime);
+	--chart-8: var(--saga-coral);
+	--chart-average: var(--gray-400);
+	--chart-band: var(--gray-100);
+	--chart-grid: var(--gray-200);
+
+	/* Chips and day-type colours (DS-019) */
+	--chip-regular: var(--saga-clay);
+	--chip-advisory: var(--saga-teal);
+	--chip-neutral-bg: var(--gray-100);
+	--chip-neutral-text: var(--color-text-dark);
+
+	/* ── Deprecated aliases — keep dash/staff-admin/prototype CSS working.
+	   New code never writes these; remove once no consumer references them. */
+	--color-brand-teal: var(--color-primary);          /* was blue, not teal */
+	--color-brand-teal-light: var(--saga-teal);
+	--color-brand-dark-blue: var(--saga-navy);
+	--color-brand-dark-green: var(--saga-green);
+	--color-brand-green: #30883a;
+	--color-brand-purple: var(--saga-magenta);
+	--color-brand-clay: var(--saga-clay);
+	--color-brand-dark-orange: var(--saga-dark-orange);
+	--color-brand-orange: var(--saga-orange);
+	--color-brand-dark-gray: var(--saga-warm-gray);
+	--color-btn-danger: var(--btn-surface-danger);
+	--color-btn-success: var(--btn-surface-affirmative);
+	--input-border-radius: var(--input-radius);
+	--transition-fast: var(--motion-fast) ease;
+	--transition-normal: var(--motion-base) ease;
+}
+
+/* Responsive root size (DS-010): the same steps dash, legacy saga_style and
+   design-tokens all agreed on. */
+@media screen and (min-width: 1400px) { :root { --base-font-size: 17px; } }
+@media screen and (min-width: 1800px) { :root { --base-font-size: 19px; } }
+
+/* User text-size preference (DS-020): set data-text-size on <html>. */
+:root[data-text-size="large"]  { --text-scale: 1.3; }
+:root[data-text-size="larger"] { --text-scale: 1.7; }
+
+/* High contrast (DS-021): remap Tier 2 only, exactly as Connect does. Anything
+   that hardcodes a hex silently opts out — which is why components never do. */
+:root[data-contrast="high"] {
+	--color-text: var(--black);
+	--color-text-secondary: var(--gray-700);
+	--color-text-muted: var(--gray-500);
+	--color-border: var(--gray-700);
+	--color-border-strong: var(--black);
+	--color-primary: var(--saga-blue-dark);
+	--focus-ring-width: 3px;
+	--input-border-color: var(--black);
+	--btn-border-secondary: var(--black);
+	--nav-text: rgba(255, 255, 255, 0.92);
+}
+
+/* Reduced motion (DS-014): movement collapses, the fade floor survives. */
+@media (prefers-reduced-motion: reduce) {
+	:root {
+		--motion-instant: 0ms;
+		--motion-fast: 0ms;
+		--motion-base: 0ms;
+		--motion-slow: 0ms;
+		--motion-stagger: 0ms;
+	}
+}

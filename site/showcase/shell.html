@@ -1,0 +1,106 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Shell · Saga showcase</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/css/tokens.css">
+<link rel="stylesheet" href="/css/base.css">
+<link rel="stylesheet" href="/css/components.css">
+<script src="https://cdn.jsdelivr.net/npm/iconify-icon@2.1.0/dist/iconify-icon.min.js"></script>
+<style>
+	/* Showcase scaffolding only — not part of the system. */
+	.demo-page { max-width: 72rem; margin: 0 auto; padding: var(--space-xl) var(--space-lg) var(--space-3xl); }
+	.demo-page > header { margin-bottom: var(--space-xl); }
+	.demo-page > header p { color: var(--color-text-secondary); }
+	.demo-nav { display: flex; flex-wrap: wrap; gap: var(--space-sm) var(--space-md); font-size: var(--text-sm); margin-bottom: var(--space-lg); }
+	.demo-section { margin-bottom: var(--space-2xl); }
+	.demo-section > h2 { padding-bottom: var(--space-xs); border-bottom: 1px solid var(--color-border); margin-bottom: var(--space-md); }
+	.demo-section > h3 { margin-top: var(--space-lg); }
+	.demo-section > p { color: var(--color-text-secondary); font-size: var(--text-sm); }
+	.demo-row { display: flex; flex-wrap: wrap; align-items: center; gap: var(--space-md); padding: var(--space-lg); border: 1px dashed var(--color-border-hover); border-radius: var(--radius-lg) var(--radius-lg) 0 0; background: var(--color-bg); }
+	.demo-row--stack { flex-direction: column; align-items: stretch; }
+	.demo-row--tint { background: var(--color-bg-secondary); }
+	.demo-row--tall { min-height: 14rem; position: relative; }
+	.demo-snippet { margin: 0 0 var(--space-lg); padding: var(--space-md); overflow: auto; background: var(--color-bg-tertiary); border: 1px solid var(--color-border); border-top: 0; border-radius: 0 0 var(--radius-lg) var(--radius-lg); font-size: var(--text-xs); line-height: var(--leading-relaxed); color: var(--color-text-dark); }
+	.demo-snippet code { font-size: inherit; }
+	body { overflow: hidden; }
+	.demo-back { position: fixed; right: var(--space-md); bottom: var(--space-md); z-index: var(--z-toast); }
+</style>
+</head>
+<body>
+<div class="saga-shell">
+	<nav class="saga-nav" aria-label="Main">
+		<div class="saga-nav__logo"><a href="/showcase/" aria-label="Saga home"><img src="/assets/brand/saga-logo-white.png" alt="Saga Education"></a></div>
+		<div class="saga-nav__group">
+			<span class="saga-nav__label" id="prog-label">Current Program</span>
+			<div class="saga-select">
+				<button type="button" class="saga-select__trigger" aria-haspopup="listbox" aria-expanded="false" aria-labelledby="prog-label"><span>Demo Program 08/17</span></button>
+			</div>
+			<a class="saga-nav__link" href="#"><iconify-icon icon="material-symbols-light:settings-outline-rounded"></iconify-icon> Configure program</a>
+		</div>
+		<ul class="saga-nav__items">
+			<li><a class="saga-nav__item" href="#"><iconify-icon icon="material-symbols-light:dashboard-outline-rounded"></iconify-icon> Dashboard</a></li>
+			<li><a class="saga-nav__item" href="#"><iconify-icon icon="material-symbols-light:calendar-month-outline-rounded"></iconify-icon> Sessions</a></li>
+			<li><a class="saga-nav__item" href="#" aria-current="page"><iconify-icon icon="material-symbols-light:group-outline-rounded"></iconify-icon> Rosters</a></li>
+			<li><a class="saga-nav__item" href="#"><iconify-icon icon="material-symbols-light:checklist-rounded"></iconify-icon> Surveys</a></li>
+			<li><a class="saga-nav__item" href="#"><iconify-icon icon="material-symbols-light:bar-chart-rounded"></iconify-icon> Reports</a></li>
+		</ul>
+		<div class="saga-nav__footer">
+			<span class="saga-nav__label">District</span>
+			<span>Saga SC Sandbox 28</span>
+		</div>
+	</nav>
+	<div class="saga-shell__main">
+		<header class="saga-topbar">
+			<h1 class="saga-topbar__title">Demo Program 08/17</h1>
+			<div class="saga-topbar__actions">
+				<span class="saga-topbar__meta">8:34 PM</span>
+				<button class="saga-btn saga-btn--quiet saga-btn--icon" aria-label="Search this page"><iconify-icon icon="material-symbols-light:document-search-outline-rounded" class="saga-icon saga-icon--lg"></iconify-icon></button>
+				<button class="saga-btn saga-btn--quiet saga-btn--icon" aria-label="Notifications, 2 unread"><span class="saga-badge-anchor"><iconify-icon icon="material-symbols-light:notifications-outline-rounded" class="saga-icon saga-icon--lg"></iconify-icon><span class="saga-badge">2</span></span></button>
+				<button class="saga-btn saga-btn--quiet saga-btn--icon" aria-label="Menu"><iconify-icon icon="material-symbols-light:menu-rounded" class="saga-icon saga-icon--lg"></iconify-icon></button>
+			</div>
+		</header>
+		<main class="saga-page saga-scrollbar">
+			<div class="saga-tabs" role="tablist" aria-label="Roster">
+				<button class="saga-tab" role="tab" aria-selected="true">Students <span class="saga-tab__count">55</span></button>
+				<button class="saga-tab" role="tab" aria-selected="false">Tutors <span class="saga-tab__count">8</span></button>
+				<button class="saga-tab" role="tab" aria-selected="false">Admins <span class="saga-tab__count">1</span></button>
+				<div class="saga-tabs__end"><label class="saga-check"><input type="checkbox" class="saga-toggle" role="switch"> Show Entire District</label></div>
+			</div>
+			<div class="saga-page__toolbar" style="margin-top:var(--space-md)">
+				<button class="saga-btn saga-btn--secondary"><span class="saga-btn__plus"><iconify-icon icon="material-symbols-light:add-rounded"></iconify-icon></span> Add Student</button>
+				<button class="saga-btn saga-btn--secondary"><iconify-icon icon="material-symbols-light:upload-rounded"></iconify-icon> Upload Roster</button>
+				<button class="saga-btn saga-btn--secondary"><iconify-icon icon="material-symbols-light:download-rounded"></iconify-icon> Download Roster</button>
+				<div class="saga-page__toolbar-end">
+					<div class="saga-search" style="width:20rem"><input class="saga-input" type="search" placeholder="Search whole name, Student ID, school…" aria-label="Search students"><span class="saga-search__icon"><iconify-icon icon="material-symbols-light:search-rounded"></iconify-icon></span></div>
+				</div>
+			</div>
+			<div class="saga-page__toolbar"><button class="saga-btn saga-btn--sm">Show Bulk Actions</button></div>
+			<div class="saga-table-wrap saga-scrollbar" style="max-height:calc(100vh - 20rem)">
+				<table class="saga-table saga-table--sticky saga-table--grid" id="roster"><thead><tr>
+					<th class="saga-table__actions"><span class="sr-only">Actions</span></th><th aria-sort="ascending">Display Name</th><th aria-sort="none">Student ID</th><th>First Name</th><th>Last Name</th><th>Email</th><th>School</th>
+				</tr></thead><tbody></tbody></table>
+			</div>
+		</main>
+	</div>
+</div>
+<a class="saga-btn saga-btn--secondary saga-btn--sm demo-back" href="/showcase/">Back to showcase</a>
+<script>
+	const rows = [['Aaliyah','L','sbx28-s21'],['Abigail','J','sbx28-s19'],['Aiden','L','sbx28-s12'],['Amelia','G','sbx28-s13'],['Anaya','C','sbx28-s27'],['Andre','S','sbx28-s36'],['Anwar','Balogun','571716'],['Ava','J','sbx28-s05'],['Benjamin','M','sbx28-s18'],['Bodhi','Achebe','574694'],['Cami','N','sbx28-s43'],['Camila','Diallo','294398'],['Daniel','R','sbx28-s07'],['Elena','T','sbx28-s09']];
+	const tb = document.querySelector('#roster tbody');
+	for (const [f, l, id] of rows) {
+		const tr = document.createElement('tr');
+		tr.innerHTML = '<td class="saga-table__actions"><button class="saga-btn saga-btn--quiet saga-btn--icon" aria-label="Edit"><iconify-icon icon="material-symbols-light:edit-outline-rounded"></iconify-icon></button><button class="saga-btn saga-btn--quiet saga-btn--icon" aria-label="Lock"><iconify-icon icon="material-symbols-light:lock-outline"></iconify-icon></button></td>'
+			+ '<td></td><td></td><td></td><td></td><td></td><td>Sandbox High</td>';
+		const c = tr.querySelectorAll('td');
+		c[1].textContent = f + ' ' + l.slice(0, 1); c[2].textContent = id; c[3].textContent = f; c[4].textContent = l;
+		c[5].textContent = (id.startsWith('sbx') ? 'training-' + id : f.toLowerCase() + id.slice(-3)) + '@saga.org';
+		tb.appendChild(tr);
+	}
+</script>
+</body>
+</html>

@@ -1,0 +1,1031 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Saga prototype — [name]</title>
+<!--
+  Saga prototype starter · generated from https://github.com/saga-ed/product-style (local · built 2026-10-14 15:47 UTC)
+  Guide: https://style.wootdev.com  ·  Agents: read https://style.wootdev.com/CLAUDE.md
+  Rules: this file may be published on a public site, so every name, score and
+  date is invented. Anything violet (.ptag / .standin) is prototype chrome, not
+  proposed UI. Prefer the .saga-* classes and var(--token) over new CSS; when you
+  need something the system lacks, add it in the "prototype-only" style block
+  at the bottom and leave a .ptag note so the gap is visible.
+  To use live styles instead of the inlined copy, delete the three inlined
+  blocks below and link:
+    <link rel="stylesheet" href="https://style.wootdev.com/css/tokens.css">
+    <link rel="stylesheet" href="https://style.wootdev.com/css/base.css">
+    <link rel="stylesheet" href="https://style.wootdev.com/css/components.css">
+-->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/iconify-icon@2.1.0/dist/iconify-icon.min.js"></script>
+<style id="saga-tokens">
+/* =============================================================================
+   Saga product style — design tokens
+   Source of truth: https://github.com/saga-ed/product-style (css/tokens.css)
+   Guide: https://style.wootdev.com  ·  Ledger: guide/decisions.md
+   -----------------------------------------------------------------------------
+   Two tiers:
+     Tier 1  --saga-*      brand primitives (named by what they are; never used
+                           directly in component CSS except by the semantic tier)
+     Tier 2  --color-* --space-* --text-* --radius-* --shadow-* --motion-* …
+                           semantic tokens — the only tier components reference.
+   Apps may add a Tier 3 alias layer (qboard's --cv3-*, dash's --timeline-*).
+   Do not edit values here to fix one screen: change the semantic token, or add
+   a Tier 3 alias in the app, and log the reason in guide/decisions.md.
+   ============================================================================= */
+
+:root {
+	/* ── Tier 1 · brand primitives (DS-001) ─────────────────────────────── */
+	--saga-blue: #006298;        /* primary action, links, focus. Figma "medium-blue" */
+	--saga-blue-dark: #004f7a;   /* hover / pressed */
+	--saga-blue-tint: #e0f0fa;   /* selected row, quiet hover, info surfaces */
+	--saga-navy: #0b2a4a;        /* chrome: left nav, headers, scrims. Figma "dark-blue" */
+	--saga-teal: #1ececa;        /* accent only — fails contrast on white. Figma "light-blue" */
+	--saga-teal-ink: #0d7377;    /* legible teal for text and pills (dash) */
+	--saga-teal-tint: #d4f5f4;
+	--saga-clay: #991a21;        /* danger / destructive */
+	--saga-pink: #ff595a;        /* brand mark + data accents only. Figma "saga-red" */
+	--saga-green: #20912d;       /* success. Figma "dark-green" */
+	--saga-lime: #6ed34b;        /* brand mark only. Figma "saga-green" */
+	--saga-light-green: #a7e163;
+	--saga-orange: #ffad00;
+	--saga-dark-orange: #d14600; /* "changed / overridden" marker, bell badge */
+	--saga-yellow: #f9e547;
+	--saga-magenta: #bb16a3;     /* QTF rubric, secondary buttons. Figma "saga-purple" */
+	--saga-coral: #ffa38b;
+	--saga-beige: #d6d1ca;
+	--saga-beige-dark: #a59c94;  /* placeholder text */
+	--saga-warm-gray: #6e6259;   /* Figma "dark-gray" */
+	--saga-light-gray: #f3f4f4;
+
+	/* Cool neutral ramp (DS-002) — Tailwind-gray-derived, what dash and most
+	   prototypes already use for text, borders and surfaces. */
+	--gray-50: #f9fafb;
+	--gray-100: #f3f4f6;
+	--gray-200: #e5e7eb;
+	--gray-300: #d1d5db;
+	--gray-400: #9ca3af;
+	--gray-500: #6b7280;
+	--gray-700: #374151;
+	--gray-900: #111827;
+	/* Legacy flat grays (saga_style / Figma gray-extensions) kept for the
+	   existing --color-gray-* aliases and the input/button contracts. */
+	--gray-legacy-darker: #444444;
+	--gray-legacy-dark: #707070;
+	--gray-legacy: #9f9f9f;
+	--gray-legacy-light: #d9d9d9;
+	--gray-legacy-lighter: #f9f9f9;
+
+	--white: #ffffff;
+	--black: #000000;
+
+	/* ── Tier 2 · semantic colour ───────────────────────────────────────── */
+	/* Brand roles (DS-003) */
+	--color-primary: var(--saga-blue);
+	--color-primary-hover: var(--saga-blue-dark);
+	--color-primary-light: var(--saga-blue-tint);
+	--color-primary-contrast: var(--white);
+	--color-accent: var(--saga-teal);            /* decorative only: nav accent bar, day-type chips, data */
+	--color-teal: var(--saga-teal-ink);           /* legible teal */
+	--color-teal-light: var(--saga-teal-tint);
+	--color-secondary: var(--gray-500);           /* secondary text + quiet controls */
+
+	/* Status (DS-004) — amber for warning/attention, never the brand pink */
+	--color-success: var(--saga-green);
+	--color-success-strong: #1a7a25;             /* 5.5:1 on white: success text and button fills (DS-036) */
+	--color-success-bg: #eaf5ec;
+	--color-success-border: #b7dcbb;
+	--color-warning: #d97706;
+	--color-warning-text: #8a6d00;               /* caution text/buttons on light surfaces */
+	--color-warning-bg: #fff8e1;
+	--color-warning-border: #f0c14b;
+	--color-danger: var(--saga-clay);
+	--color-danger-bg: #fdecea;
+	--color-danger-border: #f0b4b0;
+	--color-notice: var(--color-primary);         /* allowed-but-avoided; informational */
+	--color-notice-bg: #eef4fb;
+	--color-notice-border: #b6d4f0;
+	--color-attention: #b45309;                   /* needs-attention accent in content */
+	--color-attention-bg: #fdf1de;
+	--color-attention-strong: var(--saga-dark-orange);
+	--color-positive-bg: #eef4ec;
+	--color-positive-border: #bcd9c6;
+	--color-positive-fg: #2c6e49;
+
+	/* Neutrals (DS-005) */
+	--color-bg: var(--white);
+	--color-bg-secondary: var(--gray-50);
+	--color-bg-tertiary: var(--gray-100);
+	--color-border: var(--gray-200);
+	--color-border-hover: var(--gray-300);
+	--color-border-strong: var(--gray-legacy-light);
+	--color-text: var(--gray-900);
+	--color-text-secondary: var(--gray-500);
+	--color-text-muted: var(--gray-400);
+	--color-text-disabled: var(--gray-legacy-dark);
+	--color-text-inverse: var(--white);
+	--color-text-dark: var(--gray-legacy-darker);  /* tab labels, dense tables */
+	--color-surface-inverse: var(--saga-navy);      /* toasts, tooltips, immersive headers */
+	/* Legacy gray aliases (dash compatibility) */
+	--color-gray-darker: var(--gray-legacy-darker);
+	--color-gray-dark: var(--gray-legacy-dark);
+	--color-gray: var(--gray-legacy);
+	--color-gray-light: var(--gray-legacy-light);
+	--color-gray-lighter: var(--gray-legacy-lighter);
+
+	/* Focus + selection (DS-006) */
+	--focus-ring-color: var(--color-primary);
+	--focus-ring-width: 2px;
+	--focus-ring-offset: 2px;
+	--selection-bg: var(--color-primary);
+	--selection-color: var(--white);
+
+	/* ── Shell (DS-007) ─────────────────────────────────────────────────── */
+	--nav-width: 240px;
+	--nav-bg: var(--saga-navy);
+	--nav-text: rgba(255, 255, 255, 0.7);
+	--nav-text-active: var(--white);
+	--nav-text-muted: rgba(255, 255, 255, 0.45);
+	--nav-item-hover: rgba(255, 255, 255, 0.06);
+	--nav-item-active: var(--color-primary);
+	--nav-accent: var(--color-accent);
+	--nav-border: rgba(255, 255, 255, 0.38);
+	--nav-attention-bg: #f2a33c;
+	--nav-exit-bg: rgba(122, 193, 230, 0.14);      /* configure-mode "Exit configuration" box */
+	--nav-exit-border: rgba(122, 193, 230, 0.42);
+	--nav-status-complete: #9fe0b8;               /* green check on navy */
+	--topbar-height: 64px;
+	--topbar-bg: var(--color-bg);
+	--topbar-border: var(--color-gray);
+	--tab-font-size: 15px;
+	--tab-text: var(--color-text-dark);
+	--tab-text-active: var(--color-primary);
+	--tab-count-bg: var(--color-bg-tertiary);
+	--tab-count-text: var(--color-text-secondary);
+	--tab-count-bg-active: var(--color-primary-light);
+	--tab-count-text-active: var(--color-primary);
+
+	/* ── Spacing (DS-008) ───────────────────────────────────────────────── */
+	--space-2xs: 2px;
+	--space-xs: 4px;
+	--space-sm: 8px;
+	--space-md: 16px;
+	--space-lg: 24px;
+	--space-xl: 32px;
+	--space-2xl: 48px;
+	--space-3xl: 64px;
+
+	/* ── Typography (DS-009) ────────────────────────────────────────────── */
+	--font-sans: 'Montserrat Variable', 'Montserrat', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+	--font-mono: 'JetBrains Mono', ui-monospace, 'SFMono-Regular', Menlo, Consolas, monospace;
+	--text-xs: 0.75rem;
+	--text-sm: 0.875rem;
+	--text-base: 1rem;
+	--text-lg: 1.125rem;
+	--text-xl: 1.25rem;
+	--text-2xl: 1.5rem;
+	--text-3xl: 2rem;
+	--leading-tight: 1.25;
+	--leading-normal: 1.375;
+	--leading-relaxed: 1.625;
+	--weight-regular: 400;
+	--weight-medium: 500;
+	--weight-semibold: 600;
+	--weight-bold: 700;
+	/* Root size: 15px, stepping up on wide screens (DS-010). --text-scale is
+	   the user text-size preference (1 / 1.3 / 1.7); base.css applies both. */
+	--base-font-size: 15px;
+	--text-scale: 1;
+
+	/* ── Radius (DS-011) ────────────────────────────────────────────────── */
+	--radius-xs: 2px;
+	--radius-sm: 4px;
+	--radius-md: 6px;
+	--radius-lg: 8px;
+	--radius-xl: 12px;
+	--radius-full: 9999px;
+	--border-width-emphasis: 2px;                   /* stat-card edge, checkbox tick, rings */
+
+	/* ── Elevation (DS-012) ─────────────────────────────────────────────── */
+	--shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.05);
+	--shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+	--shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+	--shadow-popover: 0 8px 24px rgba(0, 0, 0, 0.14);
+	--shadow-modal: 0 24px 48px rgba(0, 0, 0, 0.22);
+	--shadow-toast: 0 6px 18px rgba(0, 0, 0, 0.16);
+	--modal-scrim: rgba(11, 42, 74, 0.4);
+	--modal-scrim-strong: rgba(11, 42, 74, 0.45);
+
+	/* ── Layering (DS-013) ──────────────────────────────────────────────── */
+	--z-raised: 1;
+	--z-sticky: 100;
+	--z-dropdown: 200;
+	--z-overlay: 1000;
+	--z-modal: 1100;
+	--z-toast: 1200;
+	--z-tooltip: 1300;
+
+	/* ── Motion (DS-014) — movement durations collapse to 0 under
+	   prefers-reduced-motion; --motion-fade is the floor and never zeroes. */
+	--motion-instant: 90ms;
+	--motion-fast: 150ms;
+	--motion-base: 210ms;
+	--motion-slow: 300ms;
+	--motion-fade: 120ms;
+	--motion-stagger: 32ms;
+	--ease-out: cubic-bezier(0.22, 1, 0.36, 1);
+	--ease-in: cubic-bezier(0.4, 0, 1, 1);
+	--ease-emphasized: cubic-bezier(0.2, 0, 0, 1);
+
+	/* ── Component contracts ────────────────────────────────────────────── */
+	/* Card (DS-015) */
+	--card-bg: var(--color-bg);
+	--card-radius: var(--radius-lg);
+	--card-border: 1px solid var(--color-border);
+	--card-shadow: var(--shadow-sm);
+	--card-padding: var(--space-lg);
+
+	/* Input (DS-016) */
+	--input-bg: var(--color-bg);
+	--input-border-color: var(--color-border-strong);
+	--input-border-color-hover: var(--color-gray);
+	--input-border-color-focus: var(--color-primary);
+	--input-border-color-invalid: var(--color-danger);
+	--input-border-color-readonly: var(--color-gray-lighter);
+	--input-radius: var(--radius-md);
+	--input-bg-disabled: var(--color-gray-lighter);
+	--input-color-disabled: var(--color-text-dark);
+	--input-color-placeholder: var(--saga-beige-dark);
+	--input-padding: 0.3rem 0.75rem;
+	--input-height: 2.4rem;
+	--input-focus-halo: 0 0 0 3px rgba(0, 98, 152, 0.18);  /* the one inside-the-control focus (time field) */
+
+	/* Button (DS-017) — flat by default; elevation is for cards, not buttons */
+	--btn-radius: var(--radius-md);
+	--btn-padding-y: 0.5rem;
+	--btn-padding-x: 1.25rem;
+	--btn-font-weight: var(--weight-semibold);
+	--btn-surface-primary: var(--color-primary);
+	--btn-surface-primary-hover: var(--color-primary-hover);
+	--btn-text-primary: var(--color-primary-contrast);
+	--btn-surface-secondary: var(--color-bg);
+	--btn-border-secondary: var(--color-border-strong);
+	--btn-text-secondary: var(--color-text);
+	--btn-surface-quiet-hover: var(--color-primary-light);
+	--btn-surface-danger: var(--color-danger);
+	--btn-surface-affirmative: var(--color-success);
+	--btn-surface-disabled: var(--color-gray-light);
+	--btn-text-disabled: var(--color-gray-dark);
+	--btn-surface-magenta: var(--saga-magenta);
+	--btn-surface-orange: var(--saga-orange);
+	--btn-surface-gray: var(--color-gray-dark);
+
+	/* Scrollbar (DS-018) */
+	--scrollbar-width: 0.5em;
+	--scrollbar-track-shadow: inset 0 0 var(--radius-md) rgba(0, 0, 0, 0.3);
+	--scrollbar-thumb-bg: var(--saga-navy);
+	--scrollbar-thumb-outline: 1px solid var(--color-gray);
+
+	/* Charts (DS-024): series order for categorical data; averages are neutral */
+	--chart-1: var(--saga-blue);
+	--chart-2: var(--saga-magenta);
+	--chart-3: var(--saga-teal-ink);
+	--chart-4: var(--saga-orange);
+	--chart-5: var(--saga-pink);
+	--chart-6: var(--saga-navy);
+	--chart-7: var(--saga-lime);
+	--chart-8: var(--saga-coral);
+	--chart-average: var(--gray-400);
+	--chart-band: var(--gray-100);
+	--chart-grid: var(--gray-200);
+
+	/* Chips and day-type colours (DS-019) */
+	--chip-regular: var(--saga-clay);
+	--chip-advisory: var(--saga-teal);
+	--chip-neutral-bg: var(--gray-100);
+	--chip-neutral-text: var(--color-text-dark);
+
+	/* ── Deprecated aliases — keep dash/staff-admin/prototype CSS working.
+	   New code never writes these; remove once no consumer references them. */
+	--color-brand-teal: var(--color-primary);          /* was blue, not teal */
+	--color-brand-teal-light: var(--saga-teal);
+	--color-brand-dark-blue: var(--saga-navy);
+	--color-brand-dark-green: var(--saga-green);
+	--color-brand-green: #30883a;
+	--color-brand-purple: var(--saga-magenta);
+	--color-brand-clay: var(--saga-clay);
+	--color-brand-dark-orange: var(--saga-dark-orange);
+	--color-brand-orange: var(--saga-orange);
+	--color-brand-dark-gray: var(--saga-warm-gray);
+	--color-btn-danger: var(--btn-surface-danger);
+	--color-btn-success: var(--btn-surface-affirmative);
+	--input-border-radius: var(--input-radius);
+	--transition-fast: var(--motion-fast) ease;
+	--transition-normal: var(--motion-base) ease;
+}
+
+/* Responsive root size (DS-010): the same steps dash, legacy saga_style and
+   design-tokens all agreed on. */
+@media screen and (min-width: 1400px) { :root { --base-font-size: 17px; } }
+@media screen and (min-width: 1800px) { :root { --base-font-size: 19px; } }
+
+/* User text-size preference (DS-020): set data-text-size on <html>. */
+:root[data-text-size="large"]  { --text-scale: 1.3; }
+:root[data-text-size="larger"] { --text-scale: 1.7; }
+
+/* High contrast (DS-021): remap Tier 2 only, exactly as Connect does. Anything
+   that hardcodes a hex silently opts out — which is why components never do. */
+:root[data-contrast="high"] {
+	--color-text: var(--black);
+	--color-text-secondary: var(--gray-700);
+	--color-text-muted: var(--gray-500);
+	--color-border: var(--gray-700);
+	--color-border-strong: var(--black);
+	--color-primary: var(--saga-blue-dark);
+	--focus-ring-width: 3px;
+	--input-border-color: var(--black);
+	--btn-border-secondary: var(--black);
+	--nav-text: rgba(255, 255, 255, 0.92);
+}
+
+/* Reduced motion (DS-014): movement collapses, the fade floor survives. */
+@media (prefers-reduced-motion: reduce) {
+	:root {
+		--motion-instant: 0ms;
+		--motion-fast: 0ms;
+		--motion-base: 0ms;
+		--motion-slow: 0ms;
+		--motion-stagger: 0ms;
+	}
+}
+</style>
+<style id="saga-base">
+/* =============================================================================
+   Saga product style — base styles
+   Requires tokens.css first. Resets, root sizing, type rhythm, focus, scrollbars.
+   Load Montserrat yourself (see guide/typography.md): either
+     <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
+   or @fontsource-variable/montserrat in a bundled app.
+   ============================================================================= */
+
+*, *::before, *::after { box-sizing: border-box; }
+
+html {
+	font-size: calc(var(--base-font-size) * var(--text-scale));
+	-webkit-text-size-adjust: 100%;
+	color-scheme: light;
+}
+
+body {
+	margin: 0;
+	font-family: var(--font-sans);
+	font-size: var(--text-base);
+	font-weight: var(--weight-regular);
+	line-height: var(--leading-normal);
+	color: var(--color-text);
+	background: var(--color-bg);
+	-webkit-font-smoothing: antialiased;
+	-moz-osx-font-smoothing: grayscale;
+}
+
+/* Vertical rhythm (DS-022): headings and paragraphs share one 16px step */
+h1, h2, h3, h4, p, ul, ol, pre, table, figure { margin: 0 0 var(--space-md); }
+h1 { font-size: var(--text-2xl); font-weight: var(--weight-semibold); line-height: var(--leading-tight); }
+h2 { font-size: var(--text-xl);  font-weight: var(--weight-regular);  line-height: var(--leading-tight); }
+h3 { font-size: var(--text-base); font-weight: var(--weight-semibold); line-height: var(--leading-normal); }
+h4 { font-size: var(--text-sm);  font-weight: var(--weight-semibold); line-height: var(--leading-normal); text-transform: uppercase; letter-spacing: 0.04em; color: var(--color-text-secondary); }
+:is(h1, h2, h3, h4, p, ul, ol, pre, table, figure):last-child { margin-bottom: 0; }
+small { font-size: var(--text-sm); }
+code, kbd, pre { font-family: var(--font-mono); font-size: 0.9em; }
+
+a { color: var(--color-primary); text-decoration: underline; text-underline-offset: 0.15em; }
+a:hover { color: var(--color-primary-hover); }
+
+button, input, select, textarea { font: inherit; color: inherit; }
+button { cursor: pointer; }
+img, svg, video { max-width: 100%; height: auto; display: block; }
+img, svg { vertical-align: middle; }
+[hidden] { display: none !important; }
+
+/* Focus (DS-006): one ring everywhere, never overridden per component */
+:focus-visible {
+	outline: var(--focus-ring-width) solid var(--focus-ring-color);
+	outline-offset: var(--focus-ring-offset);
+}
+:focus:not(:focus-visible) { outline: none; }
+
+::placeholder { color: var(--input-color-placeholder); font-style: italic; }
+::selection { background: var(--selection-bg); color: var(--selection-color); }
+
+/* Scrollbars (DS-018): rounded thumb, no arrow end-caps, opt-in thin style */
+*::-webkit-scrollbar-button { display: none; width: 0; height: 0; }
+.saga-scrollbar { scrollbar-width: thin; scrollbar-color: var(--scrollbar-thumb-bg) transparent; }
+.saga-scrollbar::-webkit-scrollbar { width: var(--scrollbar-width); height: var(--scrollbar-width); }
+.saga-scrollbar::-webkit-scrollbar-track { box-shadow: var(--scrollbar-track-shadow); border-radius: var(--radius-md); }
+.saga-scrollbar::-webkit-scrollbar-thumb { background: var(--scrollbar-thumb-bg); border-radius: var(--radius-md); outline: var(--scrollbar-thumb-outline); }
+
+/* Utilities */
+.sr-only { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; border: 0; }
+.text-secondary { color: var(--color-text-secondary); }
+.text-muted { color: var(--color-text-muted); }
+.mono { font-family: var(--font-mono); }
+
+/* Prototype-only chrome (DS-023, Nathan's convention): anything violet is a
+   note to the reader, never proposed UI. */
+:root { --proto: #6c4fc7; --proto-wash: #f3effb; --proto-ink: #4a3d7a; --proto-line: #e6def7; }
+.ptag, .standin { color: var(--proto-ink); background: var(--proto-wash); border: 1px dashed var(--proto); border-radius: var(--radius-sm); padding: 0 var(--space-xs); font-size: var(--text-xs); }
+
+/* Reduced motion is handled by the tokens (movement durations → 0, fade floor
+   survives). No blanket animation kill here: a component that reads
+   --motion-fade must still be able to fade. */
+</style>
+<style id="saga-components">
+/* =============================================================================
+   Saga product style — vanilla component layer
+   Requires tokens.css then base.css. Framework-free: <link> this after both and
+   use the classes below from any HTML. Every colour, size and duration is a
+   semantic token (Tier 2); the only literal lengths are 1px hairlines and 0.
+   Focus rings come from base.css (DS-006) and are never overridden here.
+   Ledger: guide/decisions.md DS-100+ (guide/_ledger-components.md).
+   Sections: icons · buttons · segmented · cards · forms · tabs · tables · chips
+   & badges · notices · modal & steps · toasts · popover & tooltip · skeleton &
+   progress · shell (nav, topbar, page) · calendar · avatar.
+   ============================================================================= */
+
+/* ── Icons ─────────────────────────────────────────────────────────────────── */
+.saga-icon { display: inline-block; font-size: 1.2em; width: 1em; height: 1em; flex-shrink: 0; vertical-align: -0.2em; }
+.saga-icon--lg { font-size: 2em; }
+.saga-icon--xl { font-size: 3em; }
+iconify-icon { display: inline-block; vertical-align: -0.125em; }
+
+/* ── Buttons (DS-017) ──────────────────────────────────────────────────────── */
+.saga-btn {
+	--_bg: var(--btn-surface-primary);
+	--_bg-hover: var(--btn-surface-primary-hover);
+	--_fg: var(--btn-text-primary);
+	--_border: transparent;
+	--_hover-filter: none;
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	gap: var(--space-sm);
+	padding: var(--btn-padding-y) var(--btn-padding-x);
+	border: 1px solid var(--_border);
+	border-radius: var(--btn-radius);
+	background: var(--_bg);
+	color: var(--_fg);
+	font-weight: var(--btn-font-weight);
+	line-height: var(--leading-tight);
+	white-space: nowrap;
+	text-decoration: none;
+	user-select: none;
+	cursor: pointer;
+	position: relative;
+	transition: background var(--motion-fast) var(--ease-out), color var(--motion-fast) var(--ease-out), border-color var(--motion-fast) var(--ease-out), filter var(--motion-fast) var(--ease-out);
+}
+.saga-btn > iconify-icon, .saga-btn > svg { font-size: 1.2em; width: 1em; height: 1em; flex-shrink: 0; }
+.saga-btn:not(:disabled, [aria-disabled="true"]):hover { background: var(--_bg-hover); filter: var(--_hover-filter); }
+.saga-btn:not(:disabled, [aria-disabled="true"]):active { filter: brightness(0.86); }
+
+.saga-btn--secondary { --_bg: var(--btn-surface-secondary); --_bg-hover: var(--color-bg-secondary); --_fg: var(--btn-text-secondary); --_border: var(--btn-border-secondary); }
+.saga-btn--quiet { --_bg: transparent; --_bg-hover: var(--btn-surface-quiet-hover); --_fg: var(--color-primary); }
+.saga-btn--danger { --_bg: var(--btn-surface-danger); --_bg-hover: var(--btn-surface-danger); --_hover-filter: brightness(0.92); }
+.saga-btn--affirmative { --_bg: var(--btn-surface-affirmative); --_bg-hover: var(--btn-surface-affirmative); --_hover-filter: brightness(0.92); }
+
+.saga-btn--sm { padding: calc(var(--btn-padding-y) * 0.6) calc(var(--btn-padding-x) * 0.6); font-size: var(--text-sm); }
+.saga-btn--block { display: flex; width: 100%; }
+.saga-btn--icon { padding: var(--btn-padding-y); aspect-ratio: 1; }
+.saga-btn--icon.saga-btn--quiet { --_fg: var(--color-text-secondary); --_bg-hover: var(--color-bg-tertiary); }
+.saga-btn--icon.saga-btn--quiet:not(:disabled):hover { color: var(--color-text); }
+
+/* "Add X": quiet button whose leading mark is a filled blue circle. */
+.saga-btn--add { --_bg: transparent; --_bg-hover: var(--btn-surface-quiet-hover); --_fg: var(--color-primary); }
+.saga-btn__plus {
+	display: inline-flex; align-items: center; justify-content: center;
+	width: 1.2em; height: 1.2em; flex-shrink: 0;
+	border-radius: var(--radius-full);
+	background: var(--color-primary); color: var(--color-primary-contrast);
+	font-size: 1.2em; line-height: 1;
+}
+.saga-btn__plus > iconify-icon, .saga-btn__plus > svg { font-size: 0.9em; width: 1em; height: 1em; }
+
+/* Dotted-outline tertiary ("Add drop-in student"). */
+.saga-btn--dashed {
+	--_bg: transparent; --_bg-hover: var(--btn-surface-quiet-hover); --_fg: var(--color-primary); --_border: var(--color-primary);
+	border-style: dashed; border-radius: var(--radius-sm);
+	padding: calc(var(--btn-padding-y) * 0.5) calc(var(--btn-padding-x) * 0.6);
+	font-size: var(--text-sm);
+}
+
+/* Disabled is a fill, never opacity (DS-016/017). */
+.saga-btn:disabled, .saga-btn[aria-disabled="true"] {
+	--_bg: var(--btn-surface-disabled); --_fg: var(--btn-text-disabled); --_border: transparent;
+	cursor: not-allowed; filter: none;
+}
+.saga-btn--dashed:disabled, .saga-btn--dashed[aria-disabled="true"], .saga-btn--secondary:disabled, .saga-btn--secondary[aria-disabled="true"] { --_border: var(--btn-surface-disabled); --_bg: var(--color-bg); }
+
+/* Loading: label goes transparent, a ring spins in its place. */
+.saga-btn[data-loading] { color: transparent; pointer-events: none; }
+.saga-btn[data-loading]::after {
+	content: ""; position: absolute; inset: 0; margin: auto;
+	width: 1em; height: 1em; border-radius: var(--radius-full);
+	border: 2px solid var(--_fg); border-right-color: transparent;
+	animation: saga-spin calc(var(--motion-slow) * 3) linear infinite;
+}
+@keyframes saga-spin { to { transform: rotate(1turn); } }
+
+/* ── Segmented control ─────────────────────────────────────────────────────── */
+.saga-segmented {
+	display: inline-flex; padding: var(--space-2xs);
+	background: var(--color-bg-tertiary); border-radius: var(--btn-radius);
+}
+.saga-segmented > button {
+	border: 0; background: transparent; color: var(--color-text);
+	padding: calc(var(--btn-padding-y) * 0.75) var(--space-md);
+	border-radius: calc(var(--btn-radius) - var(--space-2xs));
+	font-weight: var(--btn-font-weight); font-size: var(--text-sm); line-height: var(--leading-tight); white-space: nowrap;
+	transition: background var(--motion-fast) var(--ease-out), color var(--motion-fast) var(--ease-out);
+}
+.saga-segmented > button:hover { background: var(--color-bg); }
+.saga-segmented > button[aria-pressed="true"] { background: var(--color-primary); color: var(--color-primary-contrast); }
+
+/* ── Cards (DS-015) ────────────────────────────────────────────────────────── */
+.saga-card {
+	background: var(--card-bg); border: var(--card-border); border-radius: var(--card-radius);
+	box-shadow: var(--card-shadow); padding: var(--card-padding);
+	transition: box-shadow var(--motion-fast) var(--ease-out), border-color var(--motion-fast) var(--ease-out);
+}
+.saga-card:has(> .saga-card__header, > .saga-card__body, > .saga-card__footer) { padding: 0; display: flex; flex-direction: column; }
+.saga-card__header { display: flex; align-items: center; gap: var(--space-sm); padding: var(--space-md) var(--card-padding); border-bottom: 1px solid var(--color-border); }
+.saga-card__title { margin: 0; font-size: var(--text-lg); font-weight: var(--weight-semibold); flex: 1; }
+.saga-card__body { padding: var(--card-padding); flex: 1; }
+.saga-card__footer { display: flex; align-items: center; gap: var(--space-sm); padding: var(--space-md) var(--card-padding); border-top: 1px solid var(--color-border); background: var(--color-bg-secondary); border-radius: 0 0 var(--card-radius) var(--card-radius); }
+.saga-card--interactive { cursor: pointer; }
+.saga-card--interactive:hover { box-shadow: var(--shadow-md); border-color: var(--color-border-hover); }
+.saga-card--selected { border-color: var(--color-primary); background: var(--color-notice-bg); }
+.saga-card--stat { border-top: 2px solid var(--color-primary); padding: var(--space-md); display: grid; gap: var(--space-2xs); }
+.saga-card__value { font-size: var(--text-2xl); font-weight: var(--weight-semibold); color: var(--color-primary); line-height: var(--leading-tight); }
+.saga-card__label { font-weight: var(--weight-semibold); }
+.saga-card__caption { font-size: var(--text-sm); color: var(--color-text-secondary); }
+
+/* ── Forms (DS-016) ────────────────────────────────────────────────────────── */
+.saga-field { display: grid; gap: var(--space-xs); align-content: start; }
+.saga-field--inline { grid-template-columns: max-content 1fr; column-gap: var(--space-md); align-items: center; }
+.saga-field--inline > .saga-help, .saga-field--inline > .saga-error { grid-column: 2; }
+.saga-label { font-size: var(--text-sm); font-weight: var(--weight-semibold); color: var(--color-text); }
+/* DS-064: required is unmarked by default; .is-required exists for apps that must mark it */
+.saga-label.is-required::after { content: " *"; color: var(--color-danger); }
+.saga-help { font-size: var(--text-sm); color: var(--color-text-secondary); }
+.saga-error { font-size: var(--text-sm); color: var(--color-danger); }
+.saga-field[data-invalid] .saga-help { display: none; }
+
+.saga-input, .saga-textarea, .saga-select > select, .saga-select__trigger {
+	display: block; width: 100%; min-height: var(--input-height);
+	padding: var(--input-padding); background: var(--input-bg); color: var(--color-text);
+	border: 1px solid var(--input-border-color); border-radius: var(--input-radius);
+	font: inherit; line-height: var(--leading-normal);
+	transition: border-color var(--motion-fast) var(--ease-out), background var(--motion-fast) var(--ease-out);
+}
+.saga-textarea { min-height: calc(var(--input-height) * 2.5); resize: vertical; }
+:is(.saga-input, .saga-textarea, .saga-select > select, .saga-select__trigger):hover { border-color: var(--input-border-color-hover); }
+:is(.saga-input, .saga-textarea, .saga-select > select, .saga-select__trigger):focus { border-color: var(--input-border-color-focus); }
+:is(.saga-input, .saga-textarea):read-only:not(:disabled) { border-color: var(--input-border-color-readonly); background: var(--color-bg-secondary); }
+:is(.saga-input, .saga-textarea, .saga-select > select, .saga-select__trigger)[aria-invalid="true"],
+.saga-field[data-invalid] :is(.saga-input, .saga-textarea, .saga-select > select, .saga-select__trigger) { border-color: var(--input-border-color-invalid); }
+:is(.saga-input, .saga-textarea, .saga-select > select, .saga-select__trigger):disabled {
+	background: var(--input-bg-disabled); color: var(--input-color-disabled); border-color: var(--input-border-color-readonly); cursor: not-allowed;
+}
+.saga-input--sm { min-height: calc(var(--input-height) * 0.8); font-size: var(--text-sm); }
+
+/* Select: a native <select> or a button trigger, both with the blue chevron.
+   The custom listbox (.saga-select__menu) is styled now, wired by JS later. */
+.saga-select { position: relative; display: block; }
+.saga-select > select, .saga-select__trigger { appearance: none; padding-right: calc(var(--space-lg) + var(--space-sm)); text-align: left; cursor: pointer; }
+.saga-select__trigger { display: flex; align-items: center; gap: var(--space-sm); }
+.saga-select__trigger > span { flex: 1; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.saga-select::after {
+	content: ""; position: absolute; right: var(--space-md); top: 50%; transform: translateY(-50%);
+	border: 0.35em solid transparent; border-top-color: var(--color-primary); border-bottom: 0; pointer-events: none;
+}
+.saga-select:has(> :disabled)::after { border-top-color: var(--color-text-disabled); }
+.saga-select__menu {
+	position: absolute; left: 0; top: calc(100% + var(--space-xs)); min-width: 100%; max-height: 18rem; overflow: auto;
+	margin: 0; padding: var(--space-xs) 0; list-style: none;
+	background: var(--color-bg); border: 1px solid var(--color-border); border-radius: var(--radius-md);
+	box-shadow: var(--shadow-popover); z-index: var(--z-dropdown);
+}
+.saga-select__menu[hidden] { display: none; }
+.saga-select__search { padding: var(--space-xs) var(--space-sm); border-bottom: 1px solid var(--color-border); margin-bottom: var(--space-xs); }
+.saga-select__option { display: flex; align-items: center; gap: var(--space-sm); padding: var(--space-sm) var(--space-md); cursor: pointer; white-space: nowrap; }
+.saga-select__option:hover { background: var(--color-bg-tertiary); }
+.saga-select__option[aria-selected="true"] { background: var(--color-primary-light); color: var(--color-primary); font-weight: var(--weight-semibold); }
+.saga-select__option[aria-disabled="true"] { color: var(--color-text-disabled); cursor: not-allowed; }
+.saga-select__footer { border-top: 1px solid var(--color-border); margin-top: var(--space-xs); padding: var(--space-xs) var(--space-sm) 0; }
+
+/* Choice controls — drawn with appearance:none so they take tokens. Sized by
+   --space-md (16px) so they scale with the text-size preference. */
+.saga-check { display: inline-flex; align-items: center; gap: var(--space-sm); cursor: pointer; user-select: none; }
+.saga-check:has(> :disabled) { color: var(--color-text-disabled); cursor: not-allowed; }
+.saga-checkbox, .saga-radio {
+	appearance: none; margin: 0; flex-shrink: 0; width: var(--space-md); height: var(--space-md);
+	border: 1px solid var(--input-border-color-hover); background: var(--input-bg); cursor: pointer; position: relative;
+	transition: background var(--motion-fast) var(--ease-out), border-color var(--motion-fast) var(--ease-out);
+}
+.saga-checkbox { border-radius: var(--radius-xs); }
+.saga-radio { border-radius: var(--radius-full); }
+:is(.saga-checkbox, .saga-radio):hover { border-color: var(--color-primary); }
+:is(.saga-checkbox, .saga-radio):checked { background: var(--color-primary); border-color: var(--color-primary); }
+.saga-checkbox:checked::after {
+	content: ""; position: absolute; left: 30%; top: 8%; width: 30%; height: 60%;
+	border: solid var(--color-primary-contrast); border-width: 0 2px 2px 0; transform: rotate(45deg);
+}
+.saga-checkbox:indeterminate { background: var(--color-primary); border-color: var(--color-primary); }
+.saga-checkbox:indeterminate::after { content: ""; position: absolute; inset: 45% 20%; background: var(--color-primary-contrast); }
+.saga-radio:checked::after { content: ""; position: absolute; inset: var(--space-xs); border-radius: var(--radius-full); background: var(--color-primary-contrast); }
+:is(.saga-checkbox, .saga-radio):disabled { background: var(--input-bg-disabled); border-color: var(--color-gray-light); cursor: not-allowed; }
+:is(.saga-checkbox, .saga-radio):disabled:checked { background: var(--color-gray); border-color: var(--color-gray); }
+
+.saga-toggle {
+	appearance: none; margin: 0; flex-shrink: 0; cursor: pointer; position: relative;
+	width: calc(var(--space-xl) + var(--space-xs)); height: calc(var(--space-md) + var(--space-xs));
+	border-radius: var(--radius-full); background: var(--color-gray-light); border: 0;
+	transition: background var(--motion-fast) var(--ease-out);
+}
+.saga-toggle::after {
+	content: ""; position: absolute; top: var(--space-2xs); left: var(--space-2xs);
+	width: var(--space-md); height: var(--space-md); border-radius: var(--radius-full);
+	background: var(--color-bg); box-shadow: var(--shadow-sm);
+	transition: transform var(--motion-fast) var(--ease-out);
+}
+.saga-toggle:checked { background: var(--color-primary); }
+.saga-toggle:checked::after { transform: translateX(var(--space-md)); }
+.saga-toggle:disabled { background: var(--color-bg-tertiary); cursor: not-allowed; }
+.saga-toggle:disabled::after { background: var(--color-gray-lighter); }
+
+/* Search: pill input with a leading icon slot; italic placeholder from base. */
+.saga-search { position: relative; display: block; }
+.saga-search > .saga-input { border-radius: var(--radius-full); padding-left: calc(var(--space-xl) + var(--space-xs)); }
+.saga-search__icon { position: absolute; left: var(--space-sm); top: 50%; transform: translateY(-50%); display: inline-flex; font-size: 1.2em; color: var(--color-text-muted); pointer-events: none; }
+.saga-search > .saga-input:focus ~ .saga-search__icon { color: var(--color-primary); }
+
+/* ── Tabs (DS-007) ─────────────────────────────────────────────────────────── */
+.saga-tabs { display: flex; align-items: flex-end; gap: 0; border-bottom: 1px solid var(--color-border); overflow-x: auto; }
+.saga-tab {
+	appearance: none; border: 0; background: none; cursor: pointer; white-space: nowrap; text-decoration: none;
+	display: inline-flex; align-items: center; gap: var(--space-sm);
+	padding: var(--space-sm) var(--space-md) calc(var(--space-sm) + 1px);
+	margin-bottom: -1px; border-bottom: 2px solid transparent;
+	font-size: var(--tab-font-size); color: var(--tab-text); line-height: var(--leading-tight);
+	transition: color var(--motion-fast) var(--ease-out), background var(--motion-instant) var(--ease-out);
+}
+.saga-tab:hover { color: var(--color-text); background: var(--color-bg-secondary); }
+.saga-tab[aria-selected="true"], .saga-tab.is-active { color: var(--tab-text-active); font-weight: var(--weight-semibold); border-bottom-color: var(--color-primary); background: none; }
+.saga-tab:disabled { color: var(--color-text-disabled); cursor: not-allowed; background: none; }
+.saga-tab__count {
+	display: inline-flex; align-items: center; min-height: 1.4em; padding: 0 var(--space-sm);
+	border-radius: var(--radius-full); background: var(--color-bg-tertiary); color: var(--color-text-secondary);
+	font-size: var(--text-xs); font-weight: var(--weight-semibold); line-height: 1;
+}
+.saga-tab[aria-selected="true"] .saga-tab__count, .saga-tab.is-active .saga-tab__count { background: var(--color-primary-light); color: var(--color-primary); }
+.saga-tabs__end { margin-left: auto; display: flex; align-items: center; gap: var(--space-sm); padding-bottom: var(--space-xs); font-size: var(--text-sm); color: var(--color-text-secondary); }
+
+/* ── Tables ────────────────────────────────────────────────────────────────── */
+.saga-table-wrap { overflow: auto; border: 1px solid var(--color-border); border-radius: var(--radius-md); background: var(--color-bg); }
+.saga-table-wrap > .saga-table { margin: 0; }
+.saga-table { width: 100%; border-collapse: collapse; font-size: var(--text-sm); }
+.saga-table th, .saga-table td { padding: var(--space-sm) var(--space-md); text-align: left; vertical-align: middle; border-bottom: 1px solid var(--color-border); }
+.saga-table thead th { background: var(--color-bg-secondary); font-weight: var(--weight-semibold); color: var(--color-text); white-space: nowrap; }
+.saga-table tbody tr:last-child > td { border-bottom: 0; }
+.saga-table tbody tr:hover { background: var(--color-bg-secondary); }
+.saga-table tbody tr[aria-selected="true"] { background: var(--color-primary-light); }
+.saga-table--grid th + th, .saga-table--grid td + td { border-left: 1px solid var(--color-border); }
+.saga-table--dense th, .saga-table--dense td { padding: var(--space-xs) var(--space-sm); }
+.saga-table--sticky thead th { position: sticky; top: 0; z-index: var(--z-raised); }
+.saga-table .num, .saga-table [data-align="end"] { text-align: right; font-variant-numeric: tabular-nums; }
+.saga-table__actions { width: 1%; white-space: nowrap; }
+.saga-table__actions .saga-btn { padding: var(--space-xs); margin: calc(var(--space-xs) * -1) 0; }
+.saga-table__actions .saga-btn + .saga-btn { margin-left: var(--space-2xs); }
+.saga-table th[aria-sort] { cursor: pointer; user-select: none; }
+.saga-table th[aria-sort]::after { content: ""; display: inline-block; margin-left: var(--space-xs); vertical-align: middle; border: var(--space-xs) solid transparent; }
+.saga-table th[aria-sort="ascending"]::after { border-top: 0; border-bottom-color: var(--color-text); }
+.saga-table th[aria-sort="descending"]::after { border-bottom: 0; border-top-color: var(--color-text); }
+.saga-table th[aria-sort="none"]::after { border-top: 0; border-bottom-color: var(--color-text-muted); }
+.saga-table__empty { text-align: center; color: var(--color-text-secondary); padding: var(--space-xl) var(--space-md); }
+
+.saga-kv { display: grid; grid-template-columns: max-content 1fr; gap: var(--space-xs) var(--space-lg); margin: 0; }
+.saga-kv > dt { font-size: var(--text-sm); font-weight: var(--weight-semibold); color: var(--color-text-secondary); }
+.saga-kv > dd { margin: 0; min-width: 0; }
+.saga-kv--stacked { grid-template-columns: 1fr; gap: var(--space-2xs); }
+.saga-kv--stacked > dd + dt { margin-top: var(--space-sm); }
+
+/* ── Chips & badges (DS-019) ───────────────────────────────────────────────── */
+.saga-chip {
+	display: inline-flex; align-items: center; gap: var(--space-xs);
+	padding: var(--space-2xs) var(--space-sm); border-radius: var(--radius-full);
+	background: var(--chip-neutral-bg); color: var(--chip-neutral-text);
+	font-size: var(--text-xs); font-weight: var(--weight-semibold); line-height: var(--leading-tight); white-space: nowrap;
+	border: 1px solid transparent;
+}
+.saga-chip--regular { background: var(--chip-regular); color: var(--color-text-inverse); }
+.saga-chip--advisory { background: var(--chip-advisory); color: var(--color-text); }
+.saga-chip--primary { background: var(--color-primary); color: var(--color-primary-contrast); }
+.saga-chip--neutral { background: var(--chip-neutral-bg); color: var(--chip-neutral-text); }
+.saga-chip--outline { background: var(--color-bg); color: inherit; border-color: currentColor; font-weight: var(--weight-medium); }
+.saga-chip--outline.is-active { background: var(--color-surface-inverse); color: var(--color-text-inverse); border-color: var(--color-surface-inverse); font-style: italic; }
+.saga-chip--square { border-radius: var(--radius-xs); }
+.saga-chip__dot { width: var(--space-sm); height: var(--space-sm); border-radius: var(--radius-full); background: currentColor; }
+.saga-badge {
+	display: inline-flex; align-items: center; justify-content: center;
+	min-width: 1.25rem; height: 1.25rem; padding: 0 var(--space-xs);
+	border-radius: var(--radius-full); background: var(--color-danger); color: var(--color-text-inverse);
+	font-size: var(--text-xs); font-weight: var(--weight-semibold); line-height: 1;
+}
+.saga-badge--neutral { background: var(--color-bg-tertiary); color: var(--color-text-secondary); }
+.saga-badge--primary { background: var(--color-primary); color: var(--color-primary-contrast); }
+.saga-badge--attention { background: var(--color-attention-strong); }
+.saga-badge-anchor { position: relative; display: inline-flex; }
+.saga-badge-anchor > .saga-badge { position: absolute; top: calc(var(--space-xs) * -1); right: calc(var(--space-xs) * -1); }
+
+/* ── Notices ───────────────────────────────────────────────────────────────── */
+.saga-notice {
+	--_accent: var(--color-notice); --_bg: var(--color-notice-bg); --_border: var(--color-notice-border);
+	display: flex; align-items: flex-start; gap: var(--space-sm);
+	padding: var(--space-sm) var(--space-md); border: 1px solid var(--_border); border-radius: var(--radius-md);
+	background: var(--_bg); color: var(--color-text); font-size: var(--text-sm); line-height: var(--leading-normal);
+}
+.saga-notice--warning { --_accent: var(--color-warning); --_bg: var(--color-warning-bg); --_border: var(--color-warning-border); }
+.saga-notice--danger { --_accent: var(--color-danger); --_bg: var(--color-danger-bg); --_border: var(--color-danger-border); }
+.saga-notice--success { --_accent: var(--color-success); --_bg: var(--color-success-bg); --_border: var(--color-success-border); }
+.saga-notice--attention { --_accent: var(--color-attention); --_bg: var(--color-attention-bg); --_border: var(--color-warning-border); }
+.saga-notice__icon { display: inline-flex; flex-shrink: 0; font-size: 1.3em; color: var(--_accent); margin-top: 0.05em; }
+.saga-notice__body { flex: 1; min-width: 0; }
+.saga-notice__title { display: block; font-weight: var(--weight-semibold); }
+.saga-notice__action { font-weight: var(--weight-semibold); color: var(--color-primary); text-decoration: underline; background: none; border: 0; padding: 0; cursor: pointer; font-size: inherit; }
+.saga-notice__dismiss { margin: calc(var(--space-xs) * -1) calc(var(--space-sm) * -1) calc(var(--space-xs) * -1) 0; }
+
+/* ── Scrim, modal, steps (DS-011/012) ──────────────────────────────────────── */
+.saga-scrim {
+	position: fixed; inset: 0; z-index: var(--z-overlay); background: var(--modal-scrim);
+	display: flex; align-items: center; justify-content: center; padding: var(--space-lg); overflow-y: auto;
+}
+.saga-modal {
+	display: flex; flex-direction: column; margin: auto; padding: 0; border: 0;
+	width: min(640px, 100%); max-height: 92vh; max-width: 100%;
+	background: var(--card-bg); color: var(--color-text);
+	border-radius: var(--radius-lg); box-shadow: var(--shadow-modal); z-index: var(--z-modal);
+}
+.saga-modal--large { width: min(960px, 100%); }
+.saga-modal--fullscreen { width: 100vw; height: 100vh; max-height: 100vh; border-radius: 0; }
+.saga-modal--fullscreen .saga-modal__footer { border-radius: 0; }
+dialog.saga-modal:not([open]) { display: none; }
+dialog.saga-modal::backdrop { background: var(--modal-scrim); }
+.saga-modal__header { display: flex; align-items: center; gap: var(--space-sm); padding: var(--space-md) var(--space-lg); border-bottom: 1px solid var(--color-border); }
+.saga-modal__title { margin: 0; flex: 1; font-size: var(--text-lg); font-weight: var(--weight-semibold); line-height: var(--leading-tight); }
+.saga-modal__title > em { font-style: normal; color: var(--color-primary); }
+.saga-modal__close { margin: calc(var(--space-xs) * -1) calc(var(--space-sm) * -1) calc(var(--space-xs) * -1) 0; }
+.saga-modal__body { flex: 1; min-height: 0; overflow-y: auto; padding: var(--space-lg); }
+.saga-modal--fullscreen .saga-modal__body { padding: 0; overflow: hidden; }
+.saga-modal__footer {
+	display: flex; align-items: center; gap: var(--space-sm); padding: var(--space-md) var(--space-lg);
+	border-top: 1px solid var(--color-border); background: var(--color-bg-secondary);
+	border-radius: 0 0 var(--radius-lg) var(--radius-lg);
+}
+.saga-modal__footer-end { margin-left: auto; display: flex; align-items: center; gap: var(--space-sm); }
+
+.saga-steps { display: flex; margin: 0; padding: 0; list-style: none; border-bottom: 1px solid var(--color-border); counter-reset: saga-step; }
+.saga-step {
+	flex: 1; display: flex; align-items: center; gap: var(--space-sm);
+	padding: var(--space-sm) var(--space-lg); margin-bottom: -1px;
+	background: var(--color-bg-secondary); color: var(--color-text-muted);
+	font-weight: var(--weight-semibold); border-bottom: 2px solid var(--color-border); border-right: 1px solid var(--color-border);
+}
+.saga-step:last-child { border-right: 0; }
+.saga-step__num {
+	display: inline-flex; align-items: center; justify-content: center; flex-shrink: 0;
+	width: var(--space-lg); height: var(--space-lg); border-radius: var(--radius-full);
+	background: var(--color-gray-light); color: var(--color-text-inverse); font-size: var(--text-xs);
+}
+.saga-step__num:empty::before { counter-increment: saga-step; content: counter(saga-step); }
+.saga-step[aria-current="step"] { background: var(--color-bg); color: var(--color-text); border-bottom-color: var(--color-primary); }
+.saga-step[aria-current="step"] .saga-step__num { background: var(--color-primary); }
+.saga-step[data-complete] { color: var(--color-text-secondary); }
+.saga-step[data-complete] .saga-step__num { background: var(--color-success); }
+
+/* ── Toasts ────────────────────────────────────────────────────────────────── */
+.saga-toast-stack {
+	position: fixed; right: var(--space-lg); bottom: var(--space-lg); z-index: var(--z-toast);
+	display: flex; flex-direction: column; gap: var(--space-sm); align-items: flex-end;
+	width: min(26rem, calc(100vw - var(--space-lg) * 2)); pointer-events: none;
+}
+.saga-toast {
+	--_edge: var(--color-accent);
+	pointer-events: auto; display: flex; align-items: center; gap: var(--space-sm); width: 100%;
+	padding: var(--space-sm) var(--space-sm) var(--space-sm) var(--space-md);
+	background: var(--color-surface-inverse); color: var(--color-text-inverse);
+	border-left: var(--space-xs) solid var(--_edge); border-radius: var(--radius-md); box-shadow: var(--shadow-toast);
+	font-size: var(--text-sm); font-weight: var(--weight-medium); line-height: var(--leading-normal);
+	animation: saga-fade-in var(--motion-fade) var(--ease-out) both, saga-rise-in var(--motion-base) var(--ease-out) both;
+}
+.saga-toast--success { --_edge: var(--color-success); }
+.saga-toast--warning { --_edge: var(--color-warning); }
+.saga-toast--danger { --_edge: var(--color-danger); }
+.saga-toast.is-leaving { animation: saga-fade-out var(--motion-fade) var(--ease-in) forwards; }
+.saga-toast__icon { display: inline-flex; flex-shrink: 0; font-size: 1.3em; color: var(--_edge); }
+.saga-toast__msg { flex: 1; min-width: 0; overflow-wrap: anywhere; }
+.saga-toast__action {
+	flex-shrink: 0; appearance: none; cursor: pointer; font: inherit; font-weight: var(--weight-semibold);
+	padding: var(--space-2xs) var(--space-sm); border-radius: var(--radius-full);
+	border: 1px solid var(--nav-border); background: transparent; color: inherit;
+	transition: background var(--motion-fast) var(--ease-out);
+}
+.saga-toast__action:hover { background: var(--nav-item-hover); }
+.saga-toast__close { flex-shrink: 0; appearance: none; border: 0; background: transparent; color: inherit; cursor: pointer; display: inline-flex; padding: var(--space-xs); border-radius: var(--radius-full); opacity: 0.75; }
+.saga-toast__close:hover { opacity: 1; background: var(--nav-item-hover); }
+@keyframes saga-fade-in { from { opacity: 0; } to { opacity: 1; } }
+@keyframes saga-rise-in { from { transform: translateY(var(--space-sm)); } to { transform: translateY(0); } }
+@keyframes saga-fade-out { to { opacity: 0; } }
+
+/* ── Popover & tooltip ─────────────────────────────────────────────────────── */
+.saga-popover {
+	position: absolute; z-index: var(--z-dropdown); min-width: 12rem; max-width: 20rem;
+	margin: 0; padding: var(--space-xs) 0; list-style: none;
+	background: var(--color-bg); color: var(--color-text); border: 1px solid var(--color-border);
+	border-radius: var(--radius-md); box-shadow: var(--shadow-popover); font-size: var(--text-sm);
+}
+.saga-popover--static { position: static; display: inline-block; }
+.saga-popover__item {
+	display: flex; align-items: center; gap: var(--space-sm); width: 100%; min-height: 2.25rem;
+	padding: var(--space-sm) var(--space-md); border: 0; background: transparent; color: inherit;
+	font: inherit; text-align: left; cursor: pointer; text-decoration: none; white-space: nowrap;
+}
+.saga-popover__item:hover, .saga-popover__item:focus-visible { background: var(--color-bg-tertiary); }
+.saga-popover__item[aria-checked="true"], .saga-popover__item.is-active { background: var(--color-primary-light); color: var(--color-primary); font-weight: var(--weight-semibold); }
+.saga-popover__item:disabled, .saga-popover__item[aria-disabled="true"] { color: var(--color-text-disabled); cursor: not-allowed; background: transparent; }
+.saga-popover__item[data-danger] { color: var(--color-danger); }
+.saga-popover__item[data-danger]:hover { background: var(--color-danger-bg); }
+.saga-popover__item > iconify-icon { font-size: 1.2em; color: var(--color-text-secondary); }
+.saga-popover__item[data-danger] > iconify-icon { color: inherit; }
+.saga-popover__divider { height: 1px; margin: var(--space-xs) 0; background: var(--color-border); border: 0; }
+.saga-popover__heading { padding: var(--space-xs) var(--space-md); font-size: var(--text-xs); font-weight: var(--weight-semibold); text-transform: uppercase; letter-spacing: 0.04em; color: var(--color-text-muted); }
+.saga-tooltip {
+	position: absolute; z-index: var(--z-tooltip); max-width: 16rem; padding: var(--space-xs) var(--space-sm);
+	background: var(--color-surface-inverse); color: var(--color-text-inverse); border-radius: var(--radius-sm); box-shadow: var(--shadow-md);
+	font-size: var(--text-xs); font-weight: var(--weight-medium); line-height: var(--leading-normal); pointer-events: none;
+}
+.saga-tooltip--static { position: static; display: inline-block; }
+
+/* ── Skeleton & progress ───────────────────────────────────────────────────── */
+.saga-skeleton {
+	display: block; height: 1em; border-radius: var(--radius-sm);
+	background: linear-gradient(90deg, var(--color-bg-tertiary) 25%, var(--color-border) 50%, var(--color-bg-tertiary) 75%);
+	background-size: 200% 100%;
+	animation: saga-shimmer calc(var(--motion-slow) * 5) linear infinite;
+}
+.saga-skeleton--text { height: 0.85em; margin: 0.3em 0; border-radius: var(--radius-xs); }
+.saga-skeleton--text:nth-child(2n) { width: 85%; }
+.saga-skeleton--text:last-child { width: 60%; }
+.saga-skeleton--circle { width: 2.5rem; height: 2.5rem; border-radius: var(--radius-full); }
+.saga-skeleton--block { height: 6rem; }
+@keyframes saga-shimmer { from { background-position: 200% 0; } to { background-position: -200% 0; } }
+@media (prefers-reduced-motion: reduce) { .saga-skeleton { animation: none; background: var(--color-bg-tertiary); } }
+.saga-progress { height: var(--space-xs); border-radius: var(--radius-full); background: var(--color-bg-tertiary); overflow: hidden; }
+.saga-progress__bar { height: 100%; width: var(--value, 0%); background: var(--color-primary); border-radius: inherit; transition: width var(--motion-base) var(--ease-out); }
+.saga-progress--lg { height: var(--space-sm); }
+.saga-progress--indeterminate .saga-progress__bar { width: 40%; animation: saga-indeterminate calc(var(--motion-slow) * 4) var(--ease-emphasized) infinite; }
+@keyframes saga-indeterminate { from { transform: translateX(-100%); } to { transform: translateX(250%); } }
+
+/* ── Shell: nav, top bar, page (DS-007) ────────────────────────────────────── */
+.saga-shell { display: grid; grid-template-columns: var(--nav-width) minmax(0, 1fr); height: 100vh; }
+.saga-shell__main { display: flex; flex-direction: column; min-width: 0; min-height: 0; background: var(--color-bg); }
+.saga-page { flex: 1; min-height: 0; overflow: auto; padding: var(--space-lg); }
+.saga-page__toolbar { display: flex; align-items: center; gap: var(--space-sm); flex-wrap: wrap; margin-bottom: var(--space-md); }
+.saga-page__toolbar-end { margin-left: auto; display: flex; align-items: center; gap: var(--space-sm); }
+
+.saga-nav { width: var(--nav-width); height: 100%; min-height: 0; flex-shrink: 0; display: flex; flex-direction: column; background: var(--nav-bg); color: var(--nav-text); }
+.saga-nav__logo { display: flex; align-items: center; height: var(--topbar-height); flex-shrink: 0; padding: 0 var(--space-md); border-bottom: 1px solid var(--nav-border); }
+.saga-nav__logo img, .saga-nav__logo svg { height: calc(var(--space-xl) + var(--space-2xs)); width: auto; }
+.saga-nav__group { padding: var(--space-md); border-bottom: 1px solid var(--nav-border); }
+.saga-nav__label { display: block; margin-bottom: var(--space-xs); font-size: var(--text-sm); font-weight: var(--weight-medium); letter-spacing: 0.025em; color: var(--nav-text-active); }
+.saga-nav__link { display: inline-flex; align-items: center; gap: var(--space-xs); margin-top: var(--space-sm); font-size: var(--text-sm); color: var(--nav-text); }
+.saga-nav__link:hover { color: var(--nav-text-active); }
+.saga-nav__section { padding: var(--space-md) var(--space-md) var(--space-xs); font-size: var(--text-xs); font-weight: var(--weight-semibold); letter-spacing: 0.08em; text-transform: uppercase; color: var(--nav-text-muted); }
+.saga-nav__items { list-style: none; margin: 0; padding: var(--space-sm) 0; flex: 1; overflow-y: auto; }
+.saga-nav__item {
+	display: flex; align-items: center; gap: var(--space-sm);
+	margin: var(--space-xs) var(--space-sm); padding: var(--space-sm) var(--space-md);
+	border-radius: var(--radius-full); color: var(--nav-text); text-decoration: none; font-size: var(--text-base);
+	border: 0; background: transparent; width: calc(100% - var(--space-md)); text-align: left; cursor: pointer;
+	transition: background var(--motion-fast) var(--ease-out), color var(--motion-fast) var(--ease-out);
+}
+.saga-nav__item:hover { background: var(--nav-item-hover); color: var(--nav-text-active); }
+.saga-nav__item[aria-current="page"] { background: var(--nav-item-active); color: var(--nav-text-active); font-weight: var(--weight-semibold); }
+.saga-nav__item > iconify-icon, .saga-nav__item > svg, .saga-nav__item > .saga-icon { font-size: var(--text-xl); width: 1em; height: 1em; flex-shrink: 0; opacity: 0.7; }
+.saga-nav__item:hover > :is(iconify-icon, svg, .saga-icon), .saga-nav__item[aria-current="page"] > :is(iconify-icon, svg, .saga-icon) { opacity: 1; }
+.saga-nav__footer { margin-top: auto; padding: var(--space-md); border-top: 1px solid var(--nav-border); flex-shrink: 0; }
+.saga-nav__footer .saga-nav__label { margin-bottom: var(--space-2xs); }
+/* Configure-mode variant: exit card, hollow step dots, status marks at the end. */
+.saga-nav__exit {
+	display: flex; align-items: center; gap: var(--space-sm); margin: var(--space-md) var(--space-sm) var(--space-sm);
+	padding: var(--space-sm) var(--space-md); border: 1px solid var(--nav-border); border-radius: var(--radius-md);
+	background: var(--nav-item-hover); color: var(--nav-text-active); text-decoration: none;
+}
+.saga-nav__exit:hover { background: var(--nav-border); }
+.saga-nav__exit small { display: block; font-size: var(--text-xs); color: var(--nav-text); }
+.saga-nav--configure .saga-nav__item { border-radius: var(--radius-sm); }
+.saga-nav--configure .saga-nav__item::before { content: ""; width: var(--space-xs); height: var(--space-xs); border: 1px solid currentColor; border-radius: var(--radius-full); opacity: 0.6; flex-shrink: 0; }
+.saga-nav__check { margin-left: auto; display: inline-flex; font-size: var(--text-base); color: var(--nav-status-complete); }
+.saga-nav__check--warning { color: var(--nav-attention-bg); }
+.saga-nav__check--pending { color: var(--nav-text-muted); }
+
+.saga-topbar {
+	display: flex; align-items: center; gap: var(--space-sm); flex-shrink: 0;
+	height: var(--topbar-height); padding: 0 var(--space-lg);
+	background: var(--topbar-bg); border-bottom: 1px solid var(--topbar-border); box-shadow: var(--shadow-sm);
+	position: relative; z-index: var(--z-raised);
+}
+.saga-topbar__title { margin: 0; min-width: 0; font-size: var(--text-2xl); font-weight: var(--weight-semibold); color: var(--color-primary); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.saga-topbar__context { color: var(--color-text-secondary); font-weight: var(--weight-medium); white-space: nowrap; }
+.saga-topbar__actions { margin-left: auto; display: flex; align-items: center; gap: var(--space-xs); flex-shrink: 0; }
+.saga-topbar__meta { font-size: var(--text-sm); color: var(--color-text-secondary); margin-right: var(--space-sm); }
+
+/* ── Calendar (month grid) ─────────────────────────────────────────────────── */
+.saga-calendar { display: grid; grid-template-columns: repeat(7, minmax(0, 1fr)); border-top: 1px solid var(--color-border); border-left: 1px solid var(--color-border); background: var(--color-bg); }
+.saga-calendar__weekday { padding: var(--space-xs) var(--space-sm); font-size: var(--text-sm); color: var(--color-text-secondary); border-right: 1px solid var(--color-border); border-bottom: 1px solid var(--color-border); }
+.saga-calendar__cell { display: flex; flex-direction: column; gap: var(--space-xs); min-height: 5rem; padding: var(--space-xs); font-size: var(--text-sm); border-right: 1px solid var(--color-border); border-bottom: 1px solid var(--color-border); }
+.saga-calendar__cell--outside { color: var(--color-text-muted); background: var(--color-bg-secondary); }
+.saga-calendar__day { display: flex; align-items: center; gap: var(--space-xs); }
+.saga-calendar__cell--today .saga-calendar__day > span:first-child { display: inline-flex; align-items: center; justify-content: center; min-width: 1.5em; height: 1.5em; border-radius: var(--radius-full); background: var(--color-primary); color: var(--color-primary-contrast); font-weight: var(--weight-semibold); }
+.saga-calendar__event { display: block; padding: var(--space-xs) var(--space-sm); border-radius: var(--radius-sm); background: var(--color-bg-tertiary); color: var(--color-text-secondary); font-weight: var(--weight-semibold); text-decoration: none; line-height: var(--leading-tight); }
+.saga-calendar__cell--has-sessions .saga-calendar__event { background: var(--color-primary); color: var(--color-primary-contrast); }
+.saga-calendar__cell--has-sessions.saga-calendar__cell--outside .saga-calendar__event { background: var(--color-primary-light); color: var(--color-primary); }
+.saga-calendar__event:hover { filter: brightness(0.95); }
+.saga-calendar__nav { display: flex; align-items: center; justify-content: center; gap: var(--space-sm); margin-bottom: var(--space-md); }
+.saga-calendar__month { padding: var(--space-xs) var(--space-md); border-radius: var(--radius-sm); background: var(--color-bg-tertiary); color: var(--color-primary); font-weight: var(--weight-semibold); }
+
+/* ── Avatar ────────────────────────────────────────────────────────────────── */
+.saga-avatar {
+	display: inline-flex; align-items: center; justify-content: center; flex-shrink: 0;
+	width: 2.5rem; height: 2.5rem; border-radius: var(--radius-full);
+	background: var(--color-primary-light); color: var(--color-primary);
+	font-size: var(--text-sm); font-weight: var(--weight-semibold); text-transform: uppercase; letter-spacing: 0.02em; overflow: hidden;
+}
+.saga-avatar > img { width: 100%; height: 100%; object-fit: cover; }
+.saga-avatar--sm { width: 1.75rem; height: 1.75rem; font-size: var(--text-xs); }
+.saga-avatar--lg { width: 3.5rem; height: 3.5rem; font-size: var(--text-lg); }
+.saga-avatar--inverse { background: var(--color-primary); color: var(--color-primary-contrast); }
+.saga-avatar-group { display: inline-flex; }
+.saga-avatar-group > .saga-avatar { border: 2px solid var(--color-bg); }
+.saga-avatar-group > .saga-avatar + .saga-avatar { margin-left: calc(var(--space-sm) * -1); }
+
+/* ── Motion patterns (DS-030): class equivalents of the core-ui transitions ── */
+.pop-in { transform-origin: top right; animation: pop-in var(--motion-fast) var(--ease-out) both; }
+@keyframes pop-in { from { opacity: 0; transform: scale(.96) translateY(-4px); } to { opacity: 1; transform: none; } }
+
+/* Overlay panel: put .overlay-in on the dialog and the scrim; the scrim only sees the opacity */
+.overlay-in { animation: overlay-in var(--motion-base) var(--ease-out) both; }
+@keyframes overlay-in { from { opacity: 0; transform: scale(.98) translateY(8px); } to { opacity: 1; transform: none; } }
+
+/* List entrance: set --i per item, capped at 6 by the author */
+.list-in { animation: list-in var(--motion-base) var(--ease-out) both; animation-delay: calc(min(var(--i, 0), 6) * var(--motion-stagger)); }
+@keyframes list-in { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: none; } }
+
+/* Reduced motion: the swap. Travel goes, a fade on the floor token stays. */
+@media (prefers-reduced-motion: reduce) {
+  .pop-in, .overlay-in, .list-in { animation-name: fade-in; animation-duration: var(--motion-fade); }
+  @keyframes fade-in { from { opacity: 0; } to { opacity: 1; } }
+}
+</style>
+<style id="prototype-only">
+/* Prototype-only styles go here. Keep them few; use tokens. */
+</style>
+</head>
+<body>
+<div class="saga-shell">
+	<nav class="saga-nav" aria-label="Main">
+		<div class="saga-nav__logo"><img src="https://style.wootdev.com/assets/brand/saga-logo-white.png" alt="Saga" width="96"></div>
+		<div class="saga-nav__section">Current program</div>
+		<div style="padding: 0 var(--space-md)"><button class="saga-select" type="button" aria-haspopup="listbox">Demo Program 08/17</button></div>
+		<a class="saga-nav__item" href="#"><iconify-icon icon="material-symbols-light:grid-view-outline-rounded"></iconify-icon> Dashboard</a>
+		<a class="saga-nav__item" href="#" aria-current="page"><iconify-icon icon="material-symbols-light:calendar-month-outline-rounded"></iconify-icon> Sessions</a>
+		<a class="saga-nav__item" href="#"><iconify-icon icon="material-symbols-light:group-outline-rounded"></iconify-icon> Rosters</a>
+		<div class="saga-nav__footer"><div class="saga-nav__section">District</div>Saga Sandbox District</div>
+	</nav>
+	<div class="saga-main">
+		<header class="saga-topbar">
+			<h1 class="saga-topbar__title">Demo Program 08/17</h1>
+			<div class="saga-topbar__actions"><span class="ptag">prototype</span></div>
+		</header>
+		<main class="saga-page">
+			<div class="saga-card">
+				<h2>Start here</h2>
+				<p>Replace this card with the prototype. Buttons: <button class="saga-btn saga-btn--primary">Save</button> <button class="saga-btn saga-btn--secondary">Cancel</button></p>
+			</div>
+		</main>
+	</div>
+</div>
+</body>
+</html>

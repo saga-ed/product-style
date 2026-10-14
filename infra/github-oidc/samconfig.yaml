@@ -1,0 +1,22 @@
+version: 0.1
+
+# Local: sam deploy --config-file infra/github-oidc/samconfig.yaml --config-env dev --profile saga-infra-dev
+
+dev:
+  deploy:
+    parameters:
+      stack_name: product-style-github-oidc-dev
+      region: us-west-2
+      template_file: infra/github-oidc/template.yaml
+      capabilities:
+        - CAPABILITY_NAMED_IAM
+      resolve_s3: true
+      no_fail_on_empty_changeset: true
+      parameter_overrides:
+        - ProjectName=product-style
+        - GitHubOrg=saga-ed
+        - GitHubRepo=product-style
+      tags:
+        - Project=product-style
+        - Environment=dev
+        - ManagedBy=SAM

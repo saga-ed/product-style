@@ -1,0 +1,176 @@
+AWSTemplateFormatVersion: "2010-09-09"
+Transform: AWS::Serverless-2016-10-31
+Description: Amplify hosting for the Saga product style guide (style.wootdev.com)
+
+Parameters:
+  ProjectName:
+    Type: String
+    Default: product-style
+    Description: Project identifier — used in resource naming and tags.
+
+  AppName:
+    Type: String
+    Default: product-style
+    Description: Amplify application name.
+
+  Environment:
+    Type: String
+    Default: dev
+    AllowedValues: [dev]
+    Description: Infrastructure tier. The style site only deploys to dev.
+
+  DeployRoleArn:
+    Type: AWS::SSM::Parameter::Value<String>
+    Default: /product-style/github-oidc/deploy-role-arn
+    Description: IAM role ARN that GitHub Actions assumes to deploy. Created by infra/github-oidc.
+
+  ParentHostedZoneId:
+    Type: String
+    Default: Z06686211OOAM6WWKX6KW
+    Description: Route 53 hosted zone ID for the parent domain (wootdev.com). The AutoSubDomain role is scoped to this zone so Amplify can write apex + pr-* CNAMEs without touching anything else.
+
+Resources:
+  # Amplify application — no GitHub repo wired up; deployments are pre-built zips
+  # uploaded via amplify create-deployment + start-deployment from CI.
+  AmplifyApp:
+    Type: AWS::Amplify::App
+    Properties:
+      Name: !Ref AppName
+      Description: Saga product style guide, tokens and component showcase.
+      Platform: WEB
+      # No-build build spec: the dist/ tree is already built when the zip arrives.
+      BuildSpec: |
+        version: 1
+        frontend:
+          phases:
+            build:
+              commands:
+                - echo "Pre-built artifact upload — no Amplify-side build."
+          artifacts:
+            baseDirectory: /
+            files:
+              - '**/*'
+          cache:
+            paths: []
+      CustomHeaders: |
+        customHeaders:
+          - pattern: '**'
+            headers:
+              - key: Strict-Transport-Security
+                value: 'max-age=31536000; includeSubDomains'
+              - key: X-Content-Type-Options
+                value: 'nosniff'
+              - key: X-Frame-Options
+                value: 'DENY'
+      CustomRules:
+        # Soft 404: unknown paths fall back to the root index page.
+        - Source: "</^[^.]+$|\\.(?!(css|gif|ico|jpg|jpeg|js|png|txt|svg|woff|woff2|ttf|map|json|webmanifest|html)$)([^.]+$)/>"
+          Target: /index.html
+          Status: "404-200"
+      EnableBranchAutoDeletion: true
+      Tags:
+        - Key: Project
+          Value: !Ref ProjectName
+        - Key: Environment
+          Value: !Ref Environment
+        - Key: ManagedBy
+          Value: CloudFormation
+
+  MainBranch:
+    Type: AWS::Amplify::Branch
+    Properties:
+      AppId: !GetAtt AmplifyApp.AppId
+      BranchName: main
+      Description: Production branch — style.wootdev.com.
+      EnableAutoBuild: false
+      Stage: PRODUCTION
+      Tags:
+        - Key: Project
+          Value: !Ref ProjectName
+        - Key: Environment
+          Value: !Ref Environment
+
+  # IAM role assumed by Amplify to write Route 53 records for:
+  #   - the apex CNAME (style.wootdev.com → <appid>.amplifyapp.com)
+  #   - PR-preview CNAMEs (pr-N.style.wootdev.com → <appid>.amplifyapp.com)
+  # Scoped to the wootdev.com hosted zone only.
+  AutoSubDomainRole:
+    Type: AWS::IAM::Role
+    Properties:
+      RoleName: !Sub "${ProjectName}-amplify-role-${Environment}"
+      PermissionsBoundary: !Sub "arn:aws:iam::${AWS::AccountId}:policy/SagaProdMax"
+      AssumeRolePolicyDocument:
+        Version: "2012-10-17"
+        Statement:
+          - Effect: Allow
+            Principal:
+              Service: amplify.amazonaws.com
+            Action: sts:AssumeRole
+      Policies:
+        - PolicyName: Route53WriteForWootdevZone
+          PolicyDocument:
+            Version: "2012-10-17"
+            Statement:
+              - Effect: Allow
+                Action:
+                  - route53:ChangeResourceRecordSets
+                  - route53:ListResourceRecordSets
+                Resource: !Sub "arn:aws:route53:::hostedzone/${ParentHostedZoneId}"
+              # ListHostedZones has no resource-level scoping; Amplify needs it to create pr-* subdomains.
+              - Effect: Allow
+                Action:
+                  - route53:GetChange
+                  - route53:ListHostedZones
+                Resource: "*"
+
+  # NOTE: The custom-domain association (AWS::Amplify::Domain) is NOT managed by
+  # this stack. It's created post-deploy via `aws amplify create-domain-association`
+  # — see infra/OPS.md step 3. Reason: CloudFormation waits for the domain to
+  # "stabilize", but the domain sits in PENDING_VERIFICATION until ACM finishes
+  # cert issuance and DNS propagates — minutes to hours. CFN times out and rolls
+  # the whole stack back. Decoupling via CLI keeps the app-stack lifecycle clean.
+
+  AutoSubDomainRoleArnParameter:
+    Type: AWS::SSM::Parameter
+    Properties:
+      Name: !Sub "/${ProjectName}/amplify/autosubdomain-role-arn"
+      Type: String
+      Value: !GetAtt AutoSubDomainRole.Arn
+      Description: IAM role ARN passed to amplify create-domain-association --auto-sub-domain-iam-role.
+      Tags:
+        Project: !Ref ProjectName
+
+  AppIdParameter:
+    Type: AWS::SSM::Parameter
+    Properties:
+      Name: !Sub "/${ProjectName}/amplify/app-id"
+      Type: String
+      Value: !GetAtt AmplifyApp.AppId
+      Description: Amplify App ID for the product-style app.
+      Tags:
+        Project: !Ref ProjectName
+
+  DefaultDomainParameter:
+    Type: AWS::SSM::Parameter
+    Properties:
+      Name: !Sub "/${ProjectName}/amplify/default-domain"
+      Type: String
+      Value: !GetAtt AmplifyApp.DefaultDomain
+      Description: Amplify-assigned default domain (xxx.amplifyapp.com). Used for PR preview URLs.
+      Tags:
+        Project: !Ref ProjectName
+
+Outputs:
+  AmplifyAppId:
+    Description: Amplify App ID
+    Value: !GetAtt AmplifyApp.AppId
+    Export:
+      Name: !Sub "${AWS::StackName}-AppId"
+
+  AmplifyDefaultDomain:
+    Description: Amplify default domain — PR previews live at pr-N.<this-value>
+    Value: !GetAtt AmplifyApp.DefaultDomain
+
+  MainBranchDefaultUrl:
+    Description: Main branch URL on the Amplify default domain (always works, pre-DNS)
+    Value: !Sub "https://main.${AmplifyApp.DefaultDomain}"

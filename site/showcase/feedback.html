@@ -1,0 +1,142 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Feedback · Saga showcase</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/css/tokens.css">
+<link rel="stylesheet" href="/css/base.css">
+<link rel="stylesheet" href="/css/components.css">
+<script src="https://cdn.jsdelivr.net/npm/iconify-icon@2.1.0/dist/iconify-icon.min.js"></script>
+<style>
+	/* Showcase scaffolding only — not part of the system. */
+	.demo-page { max-width: 72rem; margin: 0 auto; padding: var(--space-xl) var(--space-lg) var(--space-3xl); }
+	.demo-page > header { margin-bottom: var(--space-xl); }
+	.demo-page > header p { color: var(--color-text-secondary); }
+	.demo-nav { display: flex; flex-wrap: wrap; gap: var(--space-sm) var(--space-md); font-size: var(--text-sm); margin-bottom: var(--space-lg); }
+	.demo-section { margin-bottom: var(--space-2xl); }
+	.demo-section > h2 { padding-bottom: var(--space-xs); border-bottom: 1px solid var(--color-border); margin-bottom: var(--space-md); }
+	.demo-section > h3 { margin-top: var(--space-lg); }
+	.demo-section > p { color: var(--color-text-secondary); font-size: var(--text-sm); }
+	.demo-row { display: flex; flex-wrap: wrap; align-items: center; gap: var(--space-md); padding: var(--space-lg); border: 1px dashed var(--color-border-hover); border-radius: var(--radius-lg) var(--radius-lg) 0 0; background: var(--color-bg); }
+	.demo-row--stack { flex-direction: column; align-items: stretch; }
+	.demo-row--tint { background: var(--color-bg-secondary); }
+	.demo-row--tall { min-height: 14rem; position: relative; }
+	.demo-snippet { margin: 0 0 var(--space-lg); padding: var(--space-md); overflow: auto; background: var(--color-bg-tertiary); border: 1px solid var(--color-border); border-top: 0; border-radius: 0 0 var(--radius-lg) var(--radius-lg); font-size: var(--text-xs); line-height: var(--leading-relaxed); color: var(--color-text-dark); }
+	.demo-snippet code { font-size: inherit; }
+</style>
+</head>
+<body>
+<main class="demo-page">
+<nav class="demo-nav" aria-label="Showcase pages">
+	<a href="/showcase/">Index</a> <a href="/showcase/buttons/">Buttons</a> <a href="/showcase/forms/">Forms</a> <a href="/showcase/cards-tables/">Cards &amp; tables</a> <a href="/showcase/overlays/">Overlays</a> <a href="/showcase/feedback/">Feedback</a> <a href="/showcase/shell/">Shell</a>
+</nav>
+<header>
+	<h1>Feedback</h1>
+	<p>Loading and status affordances: skeletons shimmer with the motion tokens and fall back to a static fill under reduced motion; progress is a thin blue bar; notices are inline; avatars carry initials.</p>
+</header>
+
+<section class="demo-section">
+	<h2>Skeleton</h2>
+	<div class="demo-row">
+		<div style="display:flex;gap:var(--space-md);align-items:center;flex:1">
+			<span class="saga-skeleton saga-skeleton--circle"></span>
+			<div style="flex:1">
+				<span class="saga-skeleton saga-skeleton--text"></span>
+				<span class="saga-skeleton saga-skeleton--text"></span>
+				<span class="saga-skeleton saga-skeleton--text"></span>
+			</div>
+		</div>
+	</div>
+<pre class="demo-snippet"><code>&lt;div style=&quot;display:flex;gap:var(--space-md);align-items:center;flex:1&quot;&gt;
+	&lt;span class=&quot;saga-skeleton saga-skeleton--circle&quot;&gt;&lt;/span&gt;
+	&lt;div style=&quot;flex:1&quot;&gt;
+		&lt;span class=&quot;saga-skeleton saga-skeleton--text&quot;&gt;&lt;/span&gt;
+		&lt;span class=&quot;saga-skeleton saga-skeleton--text&quot;&gt;&lt;/span&gt;
+		&lt;span class=&quot;saga-skeleton saga-skeleton--text&quot;&gt;&lt;/span&gt;
+	&lt;/div&gt;
+&lt;/div&gt;</code></pre>
+	<div class="demo-row demo-row--stack">
+		<span class="saga-skeleton saga-skeleton--block"></span>
+		<span class="saga-skeleton" style="width:12rem"></span>
+	</div>
+<pre class="demo-snippet"><code>&lt;span class=&quot;saga-skeleton saga-skeleton--block&quot;&gt;&lt;/span&gt;
+&lt;span class=&quot;saga-skeleton&quot; style=&quot;width:12rem&quot;&gt;&lt;/span&gt;</code></pre>
+
+	<h3>Skeleton inside a stat card</h3>
+	<div class="demo-row demo-row--tint">
+		<div class="saga-card saga-card--stat" style="min-width:14rem" aria-busy="true">
+			<span class="saga-skeleton" style="width:3rem;height:1.5rem"></span>
+			<span class="saga-skeleton saga-skeleton--text" style="width:7rem"></span>
+			<span class="saga-skeleton saga-skeleton--text" style="width:10rem"></span>
+		</div>
+	</div>
+<pre class="demo-snippet"><code>&lt;div class=&quot;saga-card saga-card--stat&quot; style=&quot;min-width:14rem&quot; aria-busy=&quot;true&quot;&gt;
+	&lt;span class=&quot;saga-skeleton&quot; style=&quot;width:3rem;height:1.5rem&quot;&gt;&lt;/span&gt;
+	&lt;span class=&quot;saga-skeleton saga-skeleton--text&quot; style=&quot;width:7rem&quot;&gt;&lt;/span&gt;
+	&lt;span class=&quot;saga-skeleton saga-skeleton--text&quot; style=&quot;width:10rem&quot;&gt;&lt;/span&gt;
+&lt;/div&gt;</code></pre>
+</section>
+
+<section class="demo-section">
+	<h2>Progress</h2>
+	<p>Set the fill with the <code>--value</code> custom property; keep the numbers on the element for assistive tech.</p>
+	<div class="demo-row demo-row--stack">
+		<div class="saga-progress" role="progressbar" aria-valuenow="35" aria-valuemin="0" aria-valuemax="100" aria-label="Upload"><div class="saga-progress__bar" style="--value:35%"></div></div>
+		<div class="saga-progress saga-progress--lg" role="progressbar" aria-valuenow="80" aria-valuemin="0" aria-valuemax="100" aria-label="Completion"><div class="saga-progress__bar" style="--value:80%"></div></div>
+		<div class="saga-progress saga-progress--indeterminate" role="progressbar" aria-label="Working"><div class="saga-progress__bar"></div></div>
+	</div>
+<pre class="demo-snippet"><code>&lt;div class=&quot;saga-progress&quot; role=&quot;progressbar&quot; aria-valuenow=&quot;35&quot; aria-valuemin=&quot;0&quot; aria-valuemax=&quot;100&quot; aria-label=&quot;Upload&quot;&gt;&lt;div class=&quot;saga-progress__bar&quot; style=&quot;--value:35%&quot;&gt;&lt;/div&gt;&lt;/div&gt;
+&lt;div class=&quot;saga-progress saga-progress--lg&quot; role=&quot;progressbar&quot; aria-valuenow=&quot;80&quot; aria-valuemin=&quot;0&quot; aria-valuemax=&quot;100&quot; aria-label=&quot;Completion&quot;&gt;&lt;div class=&quot;saga-progress__bar&quot; style=&quot;--value:80%&quot;&gt;&lt;/div&gt;&lt;/div&gt;
+&lt;div class=&quot;saga-progress saga-progress--indeterminate&quot; role=&quot;progressbar&quot; aria-label=&quot;Working&quot;&gt;&lt;div class=&quot;saga-progress__bar&quot;&gt;&lt;/div&gt;&lt;/div&gt;</code></pre>
+</section>
+
+<section class="demo-section">
+	<h2>Notices</h2>
+	<div class="demo-row demo-row--stack">
+		<div class="saga-notice" role="status"><span class="saga-notice__icon"><iconify-icon icon="material-symbols-light:info-outline-rounded"></iconify-icon></span><div class="saga-notice__body">Reports refresh nightly; today's sessions appear tomorrow.</div></div>
+		<div class="saga-notice saga-notice--warning" role="status"><span class="saga-notice__icon"><iconify-icon icon="material-symbols-light:warning-outline-rounded"></iconify-icon></span><div class="saga-notice__body"><span class="saga-notice__title">Out of window</span> This session starts before the program's first day.</div></div>
+		<div class="saga-notice saga-notice--danger" role="alert"><span class="saga-notice__icon"><iconify-icon icon="material-symbols-light:error-outline-rounded"></iconify-icon></span><div class="saga-notice__body">Your changes were not saved.</div><button class="saga-btn saga-btn--quiet saga-btn--icon saga-btn--sm saga-notice__dismiss" aria-label="Dismiss"><iconify-icon icon="material-symbols-light:close-rounded"></iconify-icon></button></div>
+		<div class="saga-notice saga-notice--success" role="status"><span class="saga-notice__icon"><iconify-icon icon="material-symbols-light:check-circle-outline-rounded"></iconify-icon></span><div class="saga-notice__body">Survey launched in 1 session.</div></div>
+	</div>
+<pre class="demo-snippet"><code>&lt;div class=&quot;saga-notice&quot; role=&quot;status&quot;&gt;&lt;span class=&quot;saga-notice__icon&quot;&gt;&lt;iconify-icon icon=&quot;material-symbols-light:info-outline-rounded&quot;&gt;&lt;/iconify-icon&gt;&lt;/span&gt;&lt;div class=&quot;saga-notice__body&quot;&gt;Reports refresh nightly; today&#x27;s sessions appear tomorrow.&lt;/div&gt;&lt;/div&gt;
+&lt;div class=&quot;saga-notice saga-notice--warning&quot; role=&quot;status&quot;&gt;&lt;span class=&quot;saga-notice__icon&quot;&gt;&lt;iconify-icon icon=&quot;material-symbols-light:warning-outline-rounded&quot;&gt;&lt;/iconify-icon&gt;&lt;/span&gt;&lt;div class=&quot;saga-notice__body&quot;&gt;&lt;span class=&quot;saga-notice__title&quot;&gt;Out of window&lt;/span&gt; This session starts before the program&#x27;s first day.&lt;/div&gt;&lt;/div&gt;
+&lt;div class=&quot;saga-notice saga-notice--danger&quot; role=&quot;alert&quot;&gt;&lt;span class=&quot;saga-notice__icon&quot;&gt;&lt;iconify-icon icon=&quot;material-symbols-light:error-outline-rounded&quot;&gt;&lt;/iconify-icon&gt;&lt;/span&gt;&lt;div class=&quot;saga-notice__body&quot;&gt;Your changes were not saved.&lt;/div&gt;&lt;button class=&quot;saga-btn saga-btn--quiet saga-btn--icon saga-btn--sm saga-notice__dismiss&quot; aria-label=&quot;Dismiss&quot;&gt;&lt;iconify-icon icon=&quot;material-symbols-light:close-rounded&quot;&gt;&lt;/iconify-icon&gt;&lt;/button&gt;&lt;/div&gt;
+&lt;div class=&quot;saga-notice saga-notice--success&quot; role=&quot;status&quot;&gt;&lt;span class=&quot;saga-notice__icon&quot;&gt;&lt;iconify-icon icon=&quot;material-symbols-light:check-circle-outline-rounded&quot;&gt;&lt;/iconify-icon&gt;&lt;/span&gt;&lt;div class=&quot;saga-notice__body&quot;&gt;Survey launched in 1 session.&lt;/div&gt;&lt;/div&gt;</code></pre>
+</section>
+
+<section class="demo-section">
+	<h2>Avatars</h2>
+	<div class="demo-row">
+		<span class="saga-avatar saga-avatar--sm">ow</span>
+		<span class="saga-avatar">OW</span>
+		<span class="saga-avatar saga-avatar--lg">OW</span>
+		<span class="saga-avatar saga-avatar--inverse">TE</span>
+		<span class="saga-avatar" aria-label="Tutor"><iconify-icon icon="material-symbols-light:person-outline-rounded" class="saga-icon saga-icon--lg"></iconify-icon></span>
+		<span class="saga-avatar-group"><span class="saga-avatar saga-avatar--sm">ES</span><span class="saga-avatar saga-avatar--sm">IR</span><span class="saga-avatar saga-avatar--sm">AJ</span></span>
+	</div>
+<pre class="demo-snippet"><code>&lt;span class=&quot;saga-avatar saga-avatar--sm&quot;&gt;ow&lt;/span&gt;
+&lt;span class=&quot;saga-avatar&quot;&gt;OW&lt;/span&gt;
+&lt;span class=&quot;saga-avatar saga-avatar--lg&quot;&gt;OW&lt;/span&gt;
+&lt;span class=&quot;saga-avatar saga-avatar--inverse&quot;&gt;TE&lt;/span&gt;
+&lt;span class=&quot;saga-avatar&quot; aria-label=&quot;Tutor&quot;&gt;&lt;iconify-icon icon=&quot;material-symbols-light:person-outline-rounded&quot; class=&quot;saga-icon saga-icon--lg&quot;&gt;&lt;/iconify-icon&gt;&lt;/span&gt;
+&lt;span class=&quot;saga-avatar-group&quot;&gt;&lt;span class=&quot;saga-avatar saga-avatar--sm&quot;&gt;ES&lt;/span&gt;&lt;span class=&quot;saga-avatar saga-avatar--sm&quot;&gt;IR&lt;/span&gt;&lt;span class=&quot;saga-avatar saga-avatar--sm&quot;&gt;AJ&lt;/span&gt;&lt;/span&gt;</code></pre>
+</section>
+
+<section class="demo-section">
+	<h2>Icon sizes</h2>
+	<div class="demo-row">
+		<iconify-icon class="saga-icon" icon="material-symbols-light:edit-outline-rounded"></iconify-icon>
+		<iconify-icon class="saga-icon saga-icon--lg" icon="material-symbols-light:edit-outline-rounded"></iconify-icon>
+		<iconify-icon class="saga-icon saga-icon--xl" icon="material-symbols-light:edit-outline-rounded"></iconify-icon>
+	</div>
+<pre class="demo-snippet"><code>&lt;iconify-icon class=&quot;saga-icon&quot; icon=&quot;material-symbols-light:edit-outline-rounded&quot;&gt;&lt;/iconify-icon&gt;
+&lt;iconify-icon class=&quot;saga-icon saga-icon--lg&quot; icon=&quot;material-symbols-light:edit-outline-rounded&quot;&gt;&lt;/iconify-icon&gt;
+&lt;iconify-icon class=&quot;saga-icon saga-icon--xl&quot; icon=&quot;material-symbols-light:edit-outline-rounded&quot;&gt;&lt;/iconify-icon&gt;</code></pre>
+</section>
+</main>
+</body>
+</html>

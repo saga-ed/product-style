@@ -1,0 +1,317 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Cards and tables · Saga showcase</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/css/tokens.css">
+<link rel="stylesheet" href="/css/base.css">
+<link rel="stylesheet" href="/css/components.css">
+<script src="https://cdn.jsdelivr.net/npm/iconify-icon@2.1.0/dist/iconify-icon.min.js"></script>
+<style>
+	/* Showcase scaffolding only — not part of the system. */
+	.demo-page { max-width: 72rem; margin: 0 auto; padding: var(--space-xl) var(--space-lg) var(--space-3xl); }
+	.demo-page > header { margin-bottom: var(--space-xl); }
+	.demo-page > header p { color: var(--color-text-secondary); }
+	.demo-nav { display: flex; flex-wrap: wrap; gap: var(--space-sm) var(--space-md); font-size: var(--text-sm); margin-bottom: var(--space-lg); }
+	.demo-section { margin-bottom: var(--space-2xl); }
+	.demo-section > h2 { padding-bottom: var(--space-xs); border-bottom: 1px solid var(--color-border); margin-bottom: var(--space-md); }
+	.demo-section > h3 { margin-top: var(--space-lg); }
+	.demo-section > p { color: var(--color-text-secondary); font-size: var(--text-sm); }
+	.demo-row { display: flex; flex-wrap: wrap; align-items: center; gap: var(--space-md); padding: var(--space-lg); border: 1px dashed var(--color-border-hover); border-radius: var(--radius-lg) var(--radius-lg) 0 0; background: var(--color-bg); }
+	.demo-row--stack { flex-direction: column; align-items: stretch; }
+	.demo-row--tint { background: var(--color-bg-secondary); }
+	.demo-row--tall { min-height: 14rem; position: relative; }
+	.demo-snippet { margin: 0 0 var(--space-lg); padding: var(--space-md); overflow: auto; background: var(--color-bg-tertiary); border: 1px solid var(--color-border); border-top: 0; border-radius: 0 0 var(--radius-lg) var(--radius-lg); font-size: var(--text-xs); line-height: var(--leading-relaxed); color: var(--color-text-dark); }
+	.demo-snippet code { font-size: inherit; }
+	.demo-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(14rem, 1fr)); gap: var(--space-md); width: 100%; }
+</style>
+</head>
+<body>
+<main class="demo-page">
+<nav class="demo-nav" aria-label="Showcase pages">
+	<a href="/showcase/">Index</a> <a href="/showcase/buttons/">Buttons</a> <a href="/showcase/forms/">Forms</a> <a href="/showcase/cards-tables/">Cards &amp; tables</a> <a href="/showcase/overlays/">Overlays</a> <a href="/showcase/feedback/">Feedback</a> <a href="/showcase/shell/">Shell</a>
+</nav>
+<header>
+	<h1>Cards &amp; tables</h1>
+	<p>Cards are white, 8px radius, hairline border and <code>--shadow-sm</code> (DS-015). Tables take a secondary header row and 1px row lines. Chips follow the day-type colours (DS-019).</p>
+</header>
+
+<section class="demo-section">
+	<h2>Cards</h2>
+	<div class="demo-row demo-row--tint">
+		<div class="saga-card" style="flex:1;min-width:16rem">
+			<h3>Define Tutoring Patterns</h3>
+			<p>Tutoring periods meet on the same days each week, with no schedule variations.</p>
+		</div>
+		<div class="saga-card saga-card--interactive" style="flex:1;min-width:16rem">
+			<h3>Interactive</h3>
+			<p class="text-secondary">Hover lifts to <code>--shadow-md</code>.</p>
+		</div>
+		<div class="saga-card saga-card--interactive saga-card--selected" style="flex:1;min-width:16rem">
+			<h3>Selected</h3>
+			<p class="text-secondary">Blue border and tint, like a chosen rotation pattern.</p>
+		</div>
+	</div>
+<pre class="demo-snippet"><code>&lt;div class=&quot;saga-card&quot; style=&quot;flex:1;min-width:16rem&quot;&gt;
+	&lt;h3&gt;Define Tutoring Patterns&lt;/h3&gt;
+	&lt;p&gt;Tutoring periods meet on the same days each week, with no schedule variations.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;saga-card saga-card--interactive&quot; style=&quot;flex:1;min-width:16rem&quot;&gt;
+	&lt;h3&gt;Interactive&lt;/h3&gt;
+	&lt;p class=&quot;text-secondary&quot;&gt;Hover lifts to &lt;code&gt;--shadow-md&lt;/code&gt;.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;saga-card saga-card--interactive saga-card--selected&quot; style=&quot;flex:1;min-width:16rem&quot;&gt;
+	&lt;h3&gt;Selected&lt;/h3&gt;
+	&lt;p class=&quot;text-secondary&quot;&gt;Blue border and tint, like a chosen rotation pattern.&lt;/p&gt;
+&lt;/div&gt;</code></pre>
+
+	<h3>Header, body, footer</h3>
+	<div class="demo-row demo-row--tint">
+		<div class="saga-card" style="flex:1">
+			<div class="saga-card__header">
+				<h3 class="saga-card__title">Questions</h3>
+				<button class="saga-btn saga-btn--quiet saga-btn--icon saga-btn--sm" aria-label="More"><iconify-icon icon="material-symbols-light:more-horiz"></iconify-icon></button>
+			</div>
+			<div class="saga-card__body">Q1 <span class="saga-chip saga-chip--neutral">Math</span> How often do you try to complete work on your own before asking for help?</div>
+			<div class="saga-card__footer"><span class="text-secondary">5 questions</span><span style="margin-left:auto"><button class="saga-btn saga-btn--secondary saga-btn--sm">Export</button></span></div>
+		</div>
+	</div>
+<pre class="demo-snippet"><code>&lt;div class=&quot;saga-card&quot; style=&quot;flex:1&quot;&gt;
+	&lt;div class=&quot;saga-card__header&quot;&gt;
+		&lt;h3 class=&quot;saga-card__title&quot;&gt;Questions&lt;/h3&gt;
+		&lt;button class=&quot;saga-btn saga-btn--quiet saga-btn--icon saga-btn--sm&quot; aria-label=&quot;More&quot;&gt;&lt;iconify-icon icon=&quot;material-symbols-light:more-horiz&quot;&gt;&lt;/iconify-icon&gt;&lt;/button&gt;
+	&lt;/div&gt;
+	&lt;div class=&quot;saga-card__body&quot;&gt;Q1 &lt;span class=&quot;saga-chip saga-chip--neutral&quot;&gt;Math&lt;/span&gt; How often do you try to complete work on your own before asking for help?&lt;/div&gt;
+	&lt;div class=&quot;saga-card__footer&quot;&gt;&lt;span class=&quot;text-secondary&quot;&gt;5 questions&lt;/span&gt;&lt;span style=&quot;margin-left:auto&quot;&gt;&lt;button class=&quot;saga-btn saga-btn--secondary saga-btn--sm&quot;&gt;Export&lt;/button&gt;&lt;/span&gt;&lt;/div&gt;
+&lt;/div&gt;</code></pre>
+
+	<h3>Stat cards</h3>
+	<div class="demo-row demo-row--tint">
+		<div class="demo-grid">
+			<div class="saga-card saga-card--stat"><span class="saga-card__value">0%</span><span class="saga-card__label">Completion</span><span class="saga-card__caption">0 of 55 students</span></div>
+			<div class="saga-card saga-card--stat"><span class="saga-card__value">0</span><span class="saga-card__label">Submissions</span><span class="saga-card__caption">Responses received</span></div>
+			<div class="saga-card saga-card--stat"><span class="saga-card__value">1</span><span class="saga-card__label">Launches</span><span class="saga-card__caption">Sessions the survey was launched in</span></div>
+		</div>
+	</div>
+<pre class="demo-snippet"><code>&lt;div class=&quot;demo-grid&quot;&gt;
+	&lt;div class=&quot;saga-card saga-card--stat&quot;&gt;&lt;span class=&quot;saga-card__value&quot;&gt;0%&lt;/span&gt;&lt;span class=&quot;saga-card__label&quot;&gt;Completion&lt;/span&gt;&lt;span class=&quot;saga-card__caption&quot;&gt;0 of 55 students&lt;/span&gt;&lt;/div&gt;
+	&lt;div class=&quot;saga-card saga-card--stat&quot;&gt;&lt;span class=&quot;saga-card__value&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;saga-card__label&quot;&gt;Submissions&lt;/span&gt;&lt;span class=&quot;saga-card__caption&quot;&gt;Responses received&lt;/span&gt;&lt;/div&gt;
+	&lt;div class=&quot;saga-card saga-card--stat&quot;&gt;&lt;span class=&quot;saga-card__value&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;saga-card__label&quot;&gt;Launches&lt;/span&gt;&lt;span class=&quot;saga-card__caption&quot;&gt;Sessions the survey was launched in&lt;/span&gt;&lt;/div&gt;
+&lt;/div&gt;</code></pre>
+</section>
+
+<section class="demo-section">
+	<h2>Table</h2>
+	<div class="demo-row demo-row--stack">
+		<div class="saga-table-wrap saga-scrollbar">
+			<table class="saga-table saga-table--sticky">
+				<thead><tr>
+					<th class="saga-table__actions"><span class="sr-only">Actions</span></th>
+					<th aria-sort="ascending">Display Name</th>
+					<th aria-sort="none">Student ID</th>
+					<th>First Name</th>
+					<th>Last Name</th>
+					<th>Email</th>
+					<th class="num">Sessions</th>
+				</tr></thead>
+				<tbody>
+					<tr>
+						<td class="saga-table__actions"><button class="saga-btn saga-btn--quiet saga-btn--icon" aria-label="Edit"><iconify-icon icon="material-symbols-light:edit-outline-rounded"></iconify-icon></button><button class="saga-btn saga-btn--quiet saga-btn--icon" aria-label="Lock"><iconify-icon icon="material-symbols-light:lock-outline"></iconify-icon></button></td>
+						<td>Aaliyah L</td><td>sbx28-s21</td><td>Aaliyah</td><td>L</td><td>training-sbx28-s21@saga.org</td><td class="num">12</td>
+					</tr>
+					<tr aria-selected="true">
+						<td class="saga-table__actions"><button class="saga-btn saga-btn--quiet saga-btn--icon" aria-label="Edit"><iconify-icon icon="material-symbols-light:edit-outline-rounded"></iconify-icon></button><button class="saga-btn saga-btn--quiet saga-btn--icon" aria-label="Lock"><iconify-icon icon="material-symbols-light:lock-outline"></iconify-icon></button></td>
+						<td>Abigail J</td><td>sbx28-s19</td><td>Abigail</td><td>J</td><td>training-sbx28-s19@saga.org</td><td class="num">9</td>
+					</tr>
+					<tr>
+						<td class="saga-table__actions"><button class="saga-btn saga-btn--quiet saga-btn--icon" aria-label="Edit"><iconify-icon icon="material-symbols-light:edit-outline-rounded"></iconify-icon></button><button class="saga-btn saga-btn--quiet saga-btn--icon" aria-label="Lock"><iconify-icon icon="material-symbols-light:lock-outline"></iconify-icon></button></td>
+						<td>Anwar B</td><td>571716</td><td>Anwar</td><td>Balogun</td><td>anwar716@saga.org</td><td class="num">14</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+	</div>
+<pre class="demo-snippet"><code>&lt;div class=&quot;saga-table-wrap saga-scrollbar&quot;&gt;
+	&lt;table class=&quot;saga-table saga-table--sticky&quot;&gt;
+		&lt;thead&gt;&lt;tr&gt;
+			&lt;th class=&quot;saga-table__actions&quot;&gt;&lt;span class=&quot;sr-only&quot;&gt;Actions&lt;/span&gt;&lt;/th&gt;
+			&lt;th aria-sort=&quot;ascending&quot;&gt;Display Name&lt;/th&gt;
+			&lt;th aria-sort=&quot;none&quot;&gt;Student ID&lt;/th&gt;
+			&lt;th&gt;First Name&lt;/th&gt;
+			&lt;th&gt;Last Name&lt;/th&gt;
+			&lt;th&gt;Email&lt;/th&gt;
+			&lt;th class=&quot;num&quot;&gt;Sessions&lt;/th&gt;
+		&lt;/tr&gt;&lt;/thead&gt;
+		&lt;tbody&gt;
+			&lt;tr&gt;
+				&lt;td class=&quot;saga-table__actions&quot;&gt;&lt;button class=&quot;saga-btn saga-btn--quiet saga-btn--icon&quot; aria-label=&quot;Edit&quot;&gt;&lt;iconify-icon icon=&quot;material-symbols-light:edit-outline-rounded&quot;&gt;&lt;/iconify-icon&gt;&lt;/button&gt;&lt;button class=&quot;saga-btn saga-btn--quiet saga-btn--icon&quot; aria-label=&quot;Lock&quot;&gt;&lt;iconify-icon icon=&quot;material-symbols-light:lock-outline&quot;&gt;&lt;/iconify-icon&gt;&lt;/button&gt;&lt;/td&gt;
+				&lt;td&gt;Aaliyah L&lt;/td&gt;&lt;td&gt;sbx28-s21&lt;/td&gt;&lt;td&gt;Aaliyah&lt;/td&gt;&lt;td&gt;L&lt;/td&gt;&lt;td&gt;training-sbx28-s21@saga.org&lt;/td&gt;&lt;td class=&quot;num&quot;&gt;12&lt;/td&gt;
+			&lt;/tr&gt;
+			&lt;tr aria-selected=&quot;true&quot;&gt;
+				&lt;td class=&quot;saga-table__actions&quot;&gt;&lt;button class=&quot;saga-btn saga-btn--quiet saga-btn--icon&quot; aria-label=&quot;Edit&quot;&gt;&lt;iconify-icon icon=&quot;material-symbols-light:edit-outline-rounded&quot;&gt;&lt;/iconify-icon&gt;&lt;/button&gt;&lt;button class=&quot;saga-btn saga-btn--quiet saga-btn--icon&quot; aria-label=&quot;Lock&quot;&gt;&lt;iconify-icon icon=&quot;material-symbols-light:lock-outline&quot;&gt;&lt;/iconify-icon&gt;&lt;/button&gt;&lt;/td&gt;
+				&lt;td&gt;Abigail J&lt;/td&gt;&lt;td&gt;sbx28-s19&lt;/td&gt;&lt;td&gt;Abigail&lt;/td&gt;&lt;td&gt;J&lt;/td&gt;&lt;td&gt;training-sbx28-s19@saga.org&lt;/td&gt;&lt;td class=&quot;num&quot;&gt;9&lt;/td&gt;
+			&lt;/tr&gt;
+			&lt;tr&gt;
+				&lt;td class=&quot;saga-table__actions&quot;&gt;&lt;button class=&quot;saga-btn saga-btn--quiet saga-btn--icon&quot; aria-label=&quot;Edit&quot;&gt;&lt;iconify-icon icon=&quot;material-symbols-light:edit-outline-rounded&quot;&gt;&lt;/iconify-icon&gt;&lt;/button&gt;&lt;button class=&quot;saga-btn saga-btn--quiet saga-btn--icon&quot; aria-label=&quot;Lock&quot;&gt;&lt;iconify-icon icon=&quot;material-symbols-light:lock-outline&quot;&gt;&lt;/iconify-icon&gt;&lt;/button&gt;&lt;/td&gt;
+				&lt;td&gt;Anwar B&lt;/td&gt;&lt;td&gt;571716&lt;/td&gt;&lt;td&gt;Anwar&lt;/td&gt;&lt;td&gt;Balogun&lt;/td&gt;&lt;td&gt;anwar716@saga.org&lt;/td&gt;&lt;td class=&quot;num&quot;&gt;14&lt;/td&gt;
+			&lt;/tr&gt;
+		&lt;/tbody&gt;
+	&lt;/table&gt;
+&lt;/div&gt;</code></pre>
+
+	<h3>Dense, grid lines</h3>
+	<div class="demo-row demo-row--stack">
+		<table class="saga-table saga-table--dense saga-table--grid">
+			<thead><tr><th>Day Types</th><th>Time</th><th class="num">Duration</th></tr></thead>
+			<tbody>
+				<tr><td><span class="saga-chip saga-chip--regular">Regular</span></td><td>9:00 AM – 9:50 AM</td><td class="num">50m</td></tr>
+				<tr><td><span class="saga-chip saga-chip--advisory">Advisory</span></td><td>8:50 AM – 9:30 AM</td><td class="num">40m</td></tr>
+			</tbody>
+		</table>
+	</div>
+<pre class="demo-snippet"><code>&lt;table class=&quot;saga-table saga-table--dense saga-table--grid&quot;&gt;
+	&lt;thead&gt;&lt;tr&gt;&lt;th&gt;Day Types&lt;/th&gt;&lt;th&gt;Time&lt;/th&gt;&lt;th class=&quot;num&quot;&gt;Duration&lt;/th&gt;&lt;/tr&gt;&lt;/thead&gt;
+	&lt;tbody&gt;
+		&lt;tr&gt;&lt;td&gt;&lt;span class=&quot;saga-chip saga-chip--regular&quot;&gt;Regular&lt;/span&gt;&lt;/td&gt;&lt;td&gt;9:00 AM – 9:50 AM&lt;/td&gt;&lt;td class=&quot;num&quot;&gt;50m&lt;/td&gt;&lt;/tr&gt;
+		&lt;tr&gt;&lt;td&gt;&lt;span class=&quot;saga-chip saga-chip--advisory&quot;&gt;Advisory&lt;/span&gt;&lt;/td&gt;&lt;td&gt;8:50 AM – 9:30 AM&lt;/td&gt;&lt;td class=&quot;num&quot;&gt;40m&lt;/td&gt;&lt;/tr&gt;
+	&lt;/tbody&gt;
+&lt;/table&gt;</code></pre>
+
+	<h3>Empty state</h3>
+	<div class="demo-row demo-row--stack">
+		<table class="saga-table">
+			<thead><tr><th>Tutor</th><th>Students</th><th>Status</th></tr></thead>
+			<tbody><tr><td colspan="3" class="saga-table__empty">No sessions scheduled for this day.</td></tr></tbody>
+		</table>
+	</div>
+<pre class="demo-snippet"><code>&lt;table class=&quot;saga-table&quot;&gt;
+	&lt;thead&gt;&lt;tr&gt;&lt;th&gt;Tutor&lt;/th&gt;&lt;th&gt;Students&lt;/th&gt;&lt;th&gt;Status&lt;/th&gt;&lt;/tr&gt;&lt;/thead&gt;
+	&lt;tbody&gt;&lt;tr&gt;&lt;td colspan=&quot;3&quot; class=&quot;saga-table__empty&quot;&gt;No sessions scheduled for this day.&lt;/td&gt;&lt;/tr&gt;&lt;/tbody&gt;
+&lt;/table&gt;</code></pre>
+</section>
+
+<section class="demo-section">
+	<h2>Key-value list</h2>
+	<div class="demo-row">
+		<dl class="saga-kv">
+			<dt>Tutoring Period</dt><dd>Period 1 – Rm 409</dd>
+			<dt>When</dt><dd>Tue, Dec 9 <span class="saga-chip saga-chip--regular">Regular</span></dd>
+			<dt>Time</dt><dd>8:01 AM – 9:26 AM</dd>
+			<dt>Duration</dt><dd>1:25:00</dd>
+		</dl>
+		<dl class="saga-kv saga-kv--stacked">
+			<dt>District</dt><dd>Saga SC Sandbox 28</dd>
+			<dt>Program</dt><dd>Demo Program 08/17</dd>
+		</dl>
+	</div>
+<pre class="demo-snippet"><code>&lt;dl class=&quot;saga-kv&quot;&gt;
+	&lt;dt&gt;Tutoring Period&lt;/dt&gt;&lt;dd&gt;Period 1 – Rm 409&lt;/dd&gt;
+	&lt;dt&gt;When&lt;/dt&gt;&lt;dd&gt;Tue, Dec 9 &lt;span class=&quot;saga-chip saga-chip--regular&quot;&gt;Regular&lt;/span&gt;&lt;/dd&gt;
+	&lt;dt&gt;Time&lt;/dt&gt;&lt;dd&gt;8:01 AM – 9:26 AM&lt;/dd&gt;
+	&lt;dt&gt;Duration&lt;/dt&gt;&lt;dd&gt;1:25:00&lt;/dd&gt;
+&lt;/dl&gt;
+&lt;dl class=&quot;saga-kv saga-kv--stacked&quot;&gt;
+	&lt;dt&gt;District&lt;/dt&gt;&lt;dd&gt;Saga SC Sandbox 28&lt;/dd&gt;
+	&lt;dt&gt;Program&lt;/dt&gt;&lt;dd&gt;Demo Program 08/17&lt;/dd&gt;
+&lt;/dl&gt;</code></pre>
+</section>
+
+<section class="demo-section">
+	<h2>Chips and badges</h2>
+	<div class="demo-row">
+		<span class="saga-chip saga-chip--regular">Regular</span>
+		<span class="saga-chip saga-chip--advisory">Advisory</span>
+		<span class="saga-chip saga-chip--primary">Period 1 – Rm 409</span>
+		<span class="saga-chip saga-chip--neutral">Math</span>
+		<span class="saga-chip">Default</span>
+		<span class="saga-chip saga-chip--regular saga-chip--square">Regular</span>
+		<span class="saga-chip saga-chip--advisory saga-chip--square">Advisory</span>
+	</div>
+<pre class="demo-snippet"><code>&lt;span class=&quot;saga-chip saga-chip--regular&quot;&gt;Regular&lt;/span&gt;
+&lt;span class=&quot;saga-chip saga-chip--advisory&quot;&gt;Advisory&lt;/span&gt;
+&lt;span class=&quot;saga-chip saga-chip--primary&quot;&gt;Period 1 – Rm 409&lt;/span&gt;
+&lt;span class=&quot;saga-chip saga-chip--neutral&quot;&gt;Math&lt;/span&gt;
+&lt;span class=&quot;saga-chip&quot;&gt;Default&lt;/span&gt;
+&lt;span class=&quot;saga-chip saga-chip--regular saga-chip--square&quot;&gt;Regular&lt;/span&gt;
+&lt;span class=&quot;saga-chip saga-chip--advisory saga-chip--square&quot;&gt;Advisory&lt;/span&gt;</code></pre>
+	<div class="demo-row" style="color:var(--color-primary)">
+		<span class="saga-chip saga-chip--outline">Positive Relationships</span>
+		<span class="saga-chip saga-chip--outline"><iconify-icon icon="material-symbols-light:star-rounded"></iconify-icon> Cognitive Lift</span>
+		<span class="saga-chip saga-chip--outline is-active">Differentiation and Scaffolding</span>
+		<span class="saga-chip saga-chip--outline" style="color:var(--color-success)">Not Started</span>
+	</div>
+<pre class="demo-snippet"><code>&lt;span class=&quot;saga-chip saga-chip--outline&quot;&gt;Positive Relationships&lt;/span&gt;
+&lt;span class=&quot;saga-chip saga-chip--outline&quot;&gt;&lt;iconify-icon icon=&quot;material-symbols-light:star-rounded&quot;&gt;&lt;/iconify-icon&gt; Cognitive Lift&lt;/span&gt;
+&lt;span class=&quot;saga-chip saga-chip--outline is-active&quot;&gt;Differentiation and Scaffolding&lt;/span&gt;
+&lt;span class=&quot;saga-chip saga-chip--outline&quot; style=&quot;color:var(--color-success)&quot;&gt;Not Started&lt;/span&gt;</code></pre>
+	<div class="demo-row">
+		<span class="saga-badge">2</span>
+		<span class="saga-badge saga-badge--primary">19</span>
+		<span class="saga-badge saga-badge--neutral">55</span>
+		<span class="saga-badge saga-badge--attention">!</span>
+		<span class="saga-badge-anchor"><iconify-icon class="saga-icon saga-icon--lg" icon="material-symbols-light:notifications-outline-rounded"></iconify-icon><span class="saga-badge">2</span></span>
+	</div>
+<pre class="demo-snippet"><code>&lt;span class=&quot;saga-badge&quot;&gt;2&lt;/span&gt;
+&lt;span class=&quot;saga-badge saga-badge--primary&quot;&gt;19&lt;/span&gt;
+&lt;span class=&quot;saga-badge saga-badge--neutral&quot;&gt;55&lt;/span&gt;
+&lt;span class=&quot;saga-badge saga-badge--attention&quot;&gt;!&lt;/span&gt;
+&lt;span class=&quot;saga-badge-anchor&quot;&gt;&lt;iconify-icon class=&quot;saga-icon saga-icon--lg&quot; icon=&quot;material-symbols-light:notifications-outline-rounded&quot;&gt;&lt;/iconify-icon&gt;&lt;span class=&quot;saga-badge&quot;&gt;2&lt;/span&gt;&lt;/span&gt;</code></pre>
+</section>
+
+<section class="demo-section">
+	<h2>Calendar</h2>
+	<p>Month grid. A cell with sessions fills its event block blue; out-of-month days are muted, and the same block in a past or future month takes the blue tint.</p>
+	<div class="demo-row demo-row--stack">
+		<div class="saga-calendar__nav">
+			<button class="saga-btn saga-btn--quiet saga-btn--icon saga-btn--sm" aria-label="Previous month"><iconify-icon icon="material-symbols-light:chevron-left-rounded"></iconify-icon></button>
+			<span class="saga-calendar__month">October 2026</span>
+			<button class="saga-btn saga-btn--quiet saga-btn--icon saga-btn--sm" aria-label="Next month"><iconify-icon icon="material-symbols-light:chevron-right-rounded"></iconify-icon></button>
+		</div>
+		<div class="saga-calendar" role="grid" aria-label="October 2026">
+			<div class="saga-calendar__weekday">Sun</div><div class="saga-calendar__weekday">Mon</div><div class="saga-calendar__weekday">Tue</div><div class="saga-calendar__weekday">Wed</div><div class="saga-calendar__weekday">Thu</div><div class="saga-calendar__weekday">Fri</div><div class="saga-calendar__weekday">Sat</div>
+			<div class="saga-calendar__cell saga-calendar__cell--outside"><div class="saga-calendar__day"><span>27</span></div></div>
+			<div class="saga-calendar__cell saga-calendar__cell--outside saga-calendar__cell--has-sessions"><div class="saga-calendar__day"><span>28</span> <span class="saga-chip saga-chip--regular saga-chip--square">Regular</span></div><a class="saga-calendar__event" href="#">18 sessions</a></div>
+			<div class="saga-calendar__cell saga-calendar__cell--outside saga-calendar__cell--has-sessions"><div class="saga-calendar__day"><span>29</span> <span class="saga-chip saga-chip--regular saga-chip--square">Regular</span></div><a class="saga-calendar__event" href="#">19 sessions</a></div>
+			<div class="saga-calendar__cell saga-calendar__cell--outside saga-calendar__cell--has-sessions"><div class="saga-calendar__day"><span>30</span> <span class="saga-chip saga-chip--regular saga-chip--square">Regular</span></div><a class="saga-calendar__event" href="#">18 sessions</a></div>
+			<div class="saga-calendar__cell"><div class="saga-calendar__day"><span>1</span> <span class="saga-chip saga-chip--regular saga-chip--square">Regular</span></div><a class="saga-calendar__event" href="#">20 sessions</a></div>
+			<div class="saga-calendar__cell"><div class="saga-calendar__day"><span>2</span> <span class="saga-chip saga-chip--advisory saga-chip--square">Advisory</span></div><a class="saga-calendar__event" href="#">19 sessions</a></div>
+			<div class="saga-calendar__cell"><div class="saga-calendar__day"><span>3</span></div></div>
+			<div class="saga-calendar__cell"><div class="saga-calendar__day"><span>4</span></div></div>
+			<div class="saga-calendar__cell saga-calendar__cell--has-sessions"><div class="saga-calendar__day"><span>5</span> <span class="saga-chip saga-chip--regular saga-chip--square">Regular</span></div><a class="saga-calendar__event" href="#">18 sessions</a></div>
+			<div class="saga-calendar__cell saga-calendar__cell--has-sessions"><div class="saga-calendar__day"><span>6</span> <span class="saga-chip saga-chip--regular saga-chip--square">Regular</span></div><a class="saga-calendar__event" href="#">18 sessions</a></div>
+			<div class="saga-calendar__cell saga-calendar__cell--has-sessions saga-calendar__cell--today"><div class="saga-calendar__day"><span>7</span> <span class="saga-chip saga-chip--regular saga-chip--square">Regular</span></div><a class="saga-calendar__event" href="#">21 sessions</a></div>
+			<div class="saga-calendar__cell saga-calendar__cell--has-sessions"><div class="saga-calendar__day"><span>8</span> <span class="saga-chip saga-chip--regular saga-chip--square">Regular</span></div><a class="saga-calendar__event" href="#">20 sessions</a></div>
+			<div class="saga-calendar__cell saga-calendar__cell--has-sessions"><div class="saga-calendar__day"><span>9</span> <span class="saga-chip saga-chip--advisory saga-chip--square">Advisory</span></div><a class="saga-calendar__event" href="#">18 sessions</a></div>
+			<div class="saga-calendar__cell"><div class="saga-calendar__day"><span>10</span></div></div>
+		</div>
+	</div>
+<pre class="demo-snippet"><code>&lt;div class=&quot;saga-calendar__nav&quot;&gt;
+	&lt;button class=&quot;saga-btn saga-btn--quiet saga-btn--icon saga-btn--sm&quot; aria-label=&quot;Previous month&quot;&gt;&lt;iconify-icon icon=&quot;material-symbols-light:chevron-left-rounded&quot;&gt;&lt;/iconify-icon&gt;&lt;/button&gt;
+	&lt;span class=&quot;saga-calendar__month&quot;&gt;October 2026&lt;/span&gt;
+	&lt;button class=&quot;saga-btn saga-btn--quiet saga-btn--icon saga-btn--sm&quot; aria-label=&quot;Next month&quot;&gt;&lt;iconify-icon icon=&quot;material-symbols-light:chevron-right-rounded&quot;&gt;&lt;/iconify-icon&gt;&lt;/button&gt;
+&lt;/div&gt;
+&lt;div class=&quot;saga-calendar&quot; role=&quot;grid&quot; aria-label=&quot;October 2026&quot;&gt;
+	&lt;div class=&quot;saga-calendar__weekday&quot;&gt;Sun&lt;/div&gt;&lt;div class=&quot;saga-calendar__weekday&quot;&gt;Mon&lt;/div&gt;&lt;div class=&quot;saga-calendar__weekday&quot;&gt;Tue&lt;/div&gt;&lt;div class=&quot;saga-calendar__weekday&quot;&gt;Wed&lt;/div&gt;&lt;div class=&quot;saga-calendar__weekday&quot;&gt;Thu&lt;/div&gt;&lt;div class=&quot;saga-calendar__weekday&quot;&gt;Fri&lt;/div&gt;&lt;div class=&quot;saga-calendar__weekday&quot;&gt;Sat&lt;/div&gt;
+	&lt;div class=&quot;saga-calendar__cell saga-calendar__cell--outside&quot;&gt;&lt;div class=&quot;saga-calendar__day&quot;&gt;&lt;span&gt;27&lt;/span&gt;&lt;/div&gt;&lt;/div&gt;
+	&lt;div class=&quot;saga-calendar__cell saga-calendar__cell--outside saga-calendar__cell--has-sessions&quot;&gt;&lt;div class=&quot;saga-calendar__day&quot;&gt;&lt;span&gt;28&lt;/span&gt; &lt;span class=&quot;saga-chip saga-chip--regular saga-chip--square&quot;&gt;Regular&lt;/span&gt;&lt;/div&gt;&lt;a class=&quot;saga-calendar__event&quot; href=&quot;#&quot;&gt;18 sessions&lt;/a&gt;&lt;/div&gt;
+	&lt;div class=&quot;saga-calendar__cell saga-calendar__cell--outside saga-calendar__cell--has-sessions&quot;&gt;&lt;div class=&quot;saga-calendar__day&quot;&gt;&lt;span&gt;29&lt;/span&gt; &lt;span class=&quot;saga-chip saga-chip--regular saga-chip--square&quot;&gt;Regular&lt;/span&gt;&lt;/div&gt;&lt;a class=&quot;saga-calendar__event&quot; href=&quot;#&quot;&gt;19 sessions&lt;/a&gt;&lt;/div&gt;
+	&lt;div class=&quot;saga-calendar__cell saga-calendar__cell--outside saga-calendar__cell--has-sessions&quot;&gt;&lt;div class=&quot;saga-calendar__day&quot;&gt;&lt;span&gt;30&lt;/span&gt; &lt;span class=&quot;saga-chip saga-chip--regular saga-chip--square&quot;&gt;Regular&lt;/span&gt;&lt;/div&gt;&lt;a class=&quot;saga-calendar__event&quot; href=&quot;#&quot;&gt;18 sessions&lt;/a&gt;&lt;/div&gt;
+	&lt;div class=&quot;saga-calendar__cell&quot;&gt;&lt;div class=&quot;saga-calendar__day&quot;&gt;&lt;span&gt;1&lt;/span&gt; &lt;span class=&quot;saga-chip saga-chip--regular saga-chip--square&quot;&gt;Regular&lt;/span&gt;&lt;/div&gt;&lt;a class=&quot;saga-calendar__event&quot; href=&quot;#&quot;&gt;20 sessions&lt;/a&gt;&lt;/div&gt;
+	&lt;div class=&quot;saga-calendar__cell&quot;&gt;&lt;div class=&quot;saga-calendar__day&quot;&gt;&lt;span&gt;2&lt;/span&gt; &lt;span class=&quot;saga-chip saga-chip--advisory saga-chip--square&quot;&gt;Advisory&lt;/span&gt;&lt;/div&gt;&lt;a class=&quot;saga-calendar__event&quot; href=&quot;#&quot;&gt;19 sessions&lt;/a&gt;&lt;/div&gt;
+	&lt;div class=&quot;saga-calendar__cell&quot;&gt;&lt;div class=&quot;saga-calendar__day&quot;&gt;&lt;span&gt;3&lt;/span&gt;&lt;/div&gt;&lt;/div&gt;
+	&lt;div class=&quot;saga-calendar__cell&quot;&gt;&lt;div class=&quot;saga-calendar__day&quot;&gt;&lt;span&gt;4&lt;/span&gt;&lt;/div&gt;&lt;/div&gt;
+	&lt;div class=&quot;saga-calendar__cell saga-calendar__cell--has-sessions&quot;&gt;&lt;div class=&quot;saga-calendar__day&quot;&gt;&lt;span&gt;5&lt;/span&gt; &lt;span class=&quot;saga-chip saga-chip--regular saga-chip--square&quot;&gt;Regular&lt;/span&gt;&lt;/div&gt;&lt;a class=&quot;saga-calendar__event&quot; href=&quot;#&quot;&gt;18 sessions&lt;/a&gt;&lt;/div&gt;
+	&lt;div class=&quot;saga-calendar__cell saga-calendar__cell--has-sessions&quot;&gt;&lt;div class=&quot;saga-calendar__day&quot;&gt;&lt;span&gt;6&lt;/span&gt; &lt;span class=&quot;saga-chip saga-chip--regular saga-chip--square&quot;&gt;Regular&lt;/span&gt;&lt;/div&gt;&lt;a class=&quot;saga-calendar__event&quot; href=&quot;#&quot;&gt;18 sessions&lt;/a&gt;&lt;/div&gt;
+	&lt;div class=&quot;saga-calendar__cell saga-calendar__cell--has-sessions saga-calendar__cell--today&quot;&gt;&lt;div class=&quot;saga-calendar__day&quot;&gt;&lt;span&gt;7&lt;/span&gt; &lt;span class=&quot;saga-chip saga-chip--regular saga-chip--square&quot;&gt;Regular&lt;/span&gt;&lt;/div&gt;&lt;a class=&quot;saga-calendar__event&quot; href=&quot;#&quot;&gt;21 sessions&lt;/a&gt;&lt;/div&gt;
+	&lt;div class=&quot;saga-calendar__cell saga-calendar__cell--has-sessions&quot;&gt;&lt;div class=&quot;saga-calendar__day&quot;&gt;&lt;span&gt;8&lt;/span&gt; &lt;span class=&quot;saga-chip saga-chip--regular saga-chip--square&quot;&gt;Regular&lt;/span&gt;&lt;/div&gt;&lt;a class=&quot;saga-calendar__event&quot; href=&quot;#&quot;&gt;20 sessions&lt;/a&gt;&lt;/div&gt;
+	&lt;div class=&quot;saga-calendar__cell saga-calendar__cell--has-sessions&quot;&gt;&lt;div class=&quot;saga-calendar__day&quot;&gt;&lt;span&gt;9&lt;/span&gt; &lt;span class=&quot;saga-chip saga-chip--advisory saga-chip--square&quot;&gt;Advisory&lt;/span&gt;&lt;/div&gt;&lt;a class=&quot;saga-calendar__event&quot; href=&quot;#&quot;&gt;18 sessions&lt;/a&gt;&lt;/div&gt;
+	&lt;div class=&quot;saga-calendar__cell&quot;&gt;&lt;div class=&quot;saga-calendar__day&quot;&gt;&lt;span&gt;10&lt;/span&gt;&lt;/div&gt;&lt;/div&gt;
+&lt;/div&gt;</code></pre>
+</section>
+</main>
+</body>
+</html>

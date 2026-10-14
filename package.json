@@ -1,0 +1,18 @@
+{
+  "name": "@saga-ed/product-style",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Saga product style guide: design guide, CSS tokens, and the vanilla component layer.",
+  "type": "module",
+  "engines": { "node": ">=22" },
+  "scripts": {
+    "build": "node scripts/build.mjs",
+    "zip": "node scripts/build.mjs --zip",
+    "check": "node scripts/check.mjs",
+    "serve": "node scripts/build.mjs && npx -y serve dist -l 8920"
+  },
+  "devDependencies": {
+    "archiver": "^7.0.1",
+    "marked": "^15.0.12"
+  }
+}
