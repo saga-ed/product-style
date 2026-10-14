@@ -4,26 +4,13 @@ order: 0
 summary: One look and feel for every Saga product, in a form that people and AI tools can build from directly.
 ---
 
-## What Saga builds
+## What this is for
 
-Saga Education runs high-dosage math tutoring in public schools. The products
-this guide covers are the tools around that tutoring:
-
-- **The dashboard** (saga-dash): where program coordinators, site leads and
-  district admins configure programs, build tutoring schedules and pods,
-  manage rosters, take attendance, and read reports and surveys. Form-heavy,
-  table-heavy, used all day on a laptop.
-- **Saga Connect**: the live tutoring room with a shared whiteboard, video,
-  chat and activities. Used by tutors and students on laptops and tablets,
-  often in a noisy classroom.
-- **Coach**: tutor training and observation, built around video, rubrics
-  (the QTF skills) and AI-generated insights about a session.
-- **Admin consoles and prototypes**: internal tools for support staff, and
-  the public prototypes site where product ideas are tried before they are
-  built.
-
-Everything here is used by educators who are busy and not here for the
-software. Pages should be calm, scannable and quick to act on.
+Saga Education builds tools for high-impact tutoring in schools: scheduling,
+staffing, rostering, attendance, assessment and reporting for tutoring
+programs, plus Saga Connect for the tutoring session itself and Saga Coach
+for training tutors. [Products and users](/guide/products-users/) says more
+about who uses them and what that asks of a screen.
 
 ## The look, in one paragraph
 
