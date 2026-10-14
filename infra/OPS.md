@@ -28,6 +28,17 @@ The domain association is created by CLI, not CloudFormation, because CFN
 times out waiting for ACM validation. Expect `PENDING_VERIFICATION` for
 minutes; `aws amplify get-domain-association` shows progress.
 
+## Gotchas met on first setup
+
+- **Immutable OIDC subject.** New GitHub repos get `use_immutable_subject: true`
+  (`gh api repos/saga-ed/product-style/actions/oidc/customization/sub`), so the
+  token's `sub` is `repo:saga-ed@<org-id>/product-style@<repo-id>:…`. The
+  trust policy accepts both forms.
+- **Domain association needs Route 53 write on the caller.** `saga-infra-dev`
+  cannot `route53:ChangeResourceRecordSets` on the wootdev.com zone, so run
+  `create-domain-association` with `saga-admin-dev`. The association sits in
+  `PENDING_DEPLOYMENT` until the first successful deploy of `main`.
+
 ## Day to day
 
 - Push to `main` → `deploy-main.yml` → live in about two minutes.

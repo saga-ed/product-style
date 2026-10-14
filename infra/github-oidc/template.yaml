@@ -45,7 +45,11 @@ Resources:
                 token.actions.githubusercontent.com:aud: sts.amazonaws.com
               StringLike:
                 # All branches — required because PR-preview deploys run from PR head refs.
-                token.actions.githubusercontent.com:sub: !Sub "repo:${GitHubOrg}/${GitHubRepo}:*"
+                # Two subject forms: the classic one, and the immutable one GitHub issues
+                # for repos created after mid-2026 (repo:<org>@<org-id>/<repo>@<repo-id>:...).
+                token.actions.githubusercontent.com:sub:
+                  - !Sub "repo:${GitHubOrg}/${GitHubRepo}:*"
+                  - !Sub "repo:${GitHubOrg}@*/${GitHubRepo}@*:*"
       Policies:
         - PolicyName: CloudFormation
           PolicyDocument:
