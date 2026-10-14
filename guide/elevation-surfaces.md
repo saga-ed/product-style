@@ -36,9 +36,9 @@ Six steps (DS-011). Smaller things get smaller corners; the ladder below says wh
 | Token | Value | Gets it |
 |---|---|---|
 | `--radius-xs` | `2px` | Checkboxes, skeleton bars, the tab underline ends, tiny status squares |
-| `--radius-sm` | `4px` | Small status tags ("Regular" on the Edit Session modal), tooltips, menu items, table-cell badges |
-| `--radius-md` | `6px` | Buttons (`--btn-radius`), inputs and selects (`--input-radius`), nav "Exit configuration" box |
-| `--radius-lg` | `8px` | Cards (`--card-radius`), modals, popovers, menus, date pickers, toasts, notices |
+| `--radius-sm` | `4px` | Small status tags ("Regular" on the Edit Session modal), menu items, table-cell badges, the segmented control's pressed segment |
+| `--radius-md` | `6px` | Buttons (`--btn-radius`), inputs and selects (`--input-radius`), popover menus, toasts, notices, list containers, nav "Exit configuration" box |
+| `--radius-lg` | `8px` | Cards (`--card-radius`), modals, date pickers, tooltips, empty-state boxes |
 | `--radius-xl` | `12px` | Hero cards, the video player frame, decision-board panels; rare |
 | `--radius-full` | `9999px` | Pills: chips, count badges, active nav item, toggles, avatars, AI Insights skill chips |
 
@@ -72,7 +72,7 @@ Hover on a card that is itself clickable (a session card, a day-type card) goes 
 
 ```css
 .saga-card { background: var(--card-bg); border: var(--card-border); border-radius: var(--card-radius); box-shadow: var(--card-shadow); padding: var(--card-padding); }
-.saga-card[href]:hover, .saga-card.is-clickable:hover { box-shadow: var(--shadow-md); border-color: var(--color-border-hover); }
+.saga-card--interactive:hover { box-shadow: var(--shadow-md); border-color: var(--color-border-hover); }
 ```
 
 Never animate `box-shadow` (it repaints). If a shadow must fade in, layer a second
@@ -84,22 +84,32 @@ The card contract (DS-015): white, `8px` radius, `1px` `--color-border`, `--shad
 `24px` padding. That is the Reports and Program Config cards exactly.
 
 Variants:
-- `.saga-card--stat`: adds a `2px` top edge in `--color-primary` (a modifier, not a
-  token), a blue `--text-3xl` number, a 600 label and a secondary caption.
+- `.saga-card--stat`: adds a `--border-width-emphasis` (2px) top edge in
+  `--color-primary`, a blue `--text-2xl` `.saga-card__value`, a 600
+  `.saga-card__label` and a `--text-sm` secondary `.saga-card__caption`.
+- `.saga-card__header` / `__body` / `__footer` split a card into a titled band,
+  the content and a `--color-bg-secondary` well for actions; a plain card that
+  only needs a heading beside a control uses `.saga-card__title-row`.
+- `.saga-card--interactive` lifts on hover; `.saga-card--selected` takes the
+  blue border and tint.
 - Option card (a radio rendered as a card): `--color-border`; when selected, border
   `--color-primary` and background `--color-primary-light`. The radio itself stays
   visible; the colour is not the only signal.
 - Day-type card: a `12px` colour band across the top (`--chip-regular` or
   `--chip-advisory`) above the white body. The band is the only non-white fill a card
   ever has.
-- Placeholder slot ("Add Day Type"): `--color-bg-secondary`, `2px` dashed
-  `--color-border-hover`, no shadow, centred label in `--color-text-secondary`.
+- Placeholder slot ("Add Day Type"): `.saga-card--empty`, `--color-bg-secondary`,
+  `2px` dashed `--color-border-hover`, no shadow, centred label in
+  `--color-text-secondary`. (An empty *state* with a message, rather than a slot
+  to fill, is `.saga-empty`; see [tables-data](tables-data.md#data-tables).)
+
+Cards sit in a `.saga-grid` (see [spacing-layout](spacing-layout.md#cards)).
 
 ```html
 <div class="saga-card saga-card--stat">
-  <div class="value">0%</div>
-  <div class="label">Completion</div>
-  <div class="text-secondary">0 of 55 students</div>
+  <span class="saga-card__value">0%</span>
+  <span class="saga-card__label">Completion</span>
+  <span class="saga-card__caption">0 of 55 students</span>
 </div>
 ```
 
@@ -129,16 +139,20 @@ A scrim sits between the page and anything modal. Two strengths:
 | Token | Value | Use |
 |---|---|---|
 | `--modal-scrim` | `rgba(11,42,74,.4)` | Dialogs, the nav drawer under 1024px |
-| `--modal-scrim-strong` | `rgba(11,42,74,.45)` | A confirm dialog stacked over an open dialog |
+| `--modal-scrim-strong` | `rgba(11,42,74,.45)` | A confirm dialog stacked over an open dialog (`.saga-scrim--strong`) |
 
 The scrim is navy, not black (DS-012): black at 40% turns the page muddy, navy keeps it
 in the brand. The scrim fades on `--motion-fade` (see [Motion](motion.md)) and clicking
 it closes a dismissible dialog but never a destructive confirm.
 
 ```html
-<div class="saga-scrim"></div>
-<div class="saga-modal" role="dialog" aria-modal="true" aria-labelledby="t">…</div>
+<div class="saga-scrim">
+  <div class="saga-modal" role="dialog" aria-modal="true" aria-labelledby="t">…</div>
+</div>
 ```
+
+`.saga-scrim` is fixed to the viewport. Inside a `.saga-shell--framed` (or any
+positioned frame) use `.saga-scrim--local`, which is absolute to that frame.
 
 ## Layering
 

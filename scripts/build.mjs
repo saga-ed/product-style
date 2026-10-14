@@ -57,7 +57,9 @@ async function layout({ title, summary, nav, content, path: here, buildInfo }) {
 	const navHtml = nav
 		.map((p) => `<li><a href="/guide/${p.name}/"${p.name === here ? ' aria-current="page"' : ""}>${esc(p.title)}</a></li>`)
 		.join("\n");
+	const docTitle = title === "Saga product style" ? title : `${title} · Saga product style`;
 	return tpl
+		.replaceAll("{{docTitle}}", esc(docTitle))
 		.replaceAll("{{title}}", esc(title))
 		.replaceAll("{{summary}}", esc(summary || ""))
 		.replaceAll("{{nav}}", navHtml)

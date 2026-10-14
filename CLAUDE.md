@@ -15,7 +15,7 @@ how Saga products look. Read this file, then the chapters you need.
 ## Non-negotiable rules
 
 - Colour: `--color-primary` (`#006298`) is the only action colour. Teal `#1ececa` is decorative only and never carries white text. Danger is clay `#991a21`; warning and attention are amber. Never pink `#ff595a` for errors.
-- Type: Montserrat only. Root 15px, 17px at ≥1400, 19px at ≥1800. Body 400, emphasis 500, headings and buttons 600.
+- Type: Montserrat only. Root 15px, 17px at ≥1400, 19px at ≥1800. Body 400, emphasis 500, h1/h3 and buttons 600, h2 400.
 - Every colour, spacing, radius, shadow and duration is a `var(--token)` from `css/tokens.css`. If a token is missing, use the nearest one and say so; do not invent a value.
 - One focus ring (`:focus-visible`, 2px blue). Never override it per component.
 - No native `title=` tooltips, no native `<select>` in product UI, no native date inputs. Use the tooltip, select menu and date picker patterns.

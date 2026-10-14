@@ -17,7 +17,7 @@ them into one.
 | `--btn-radius` | `--radius-md` (`6px`) |
 | `--btn-padding-y` / `--btn-padding-x` | `0.5rem` / `1.25rem` |
 | `--btn-font-weight` | `--weight-semibold` (600) |
-| font size | `--text-sm` for the default size, `--text-xs` for `--sm` |
+| font size | inherits (`--text-base`) for the default size, `--text-sm` for `--sm` |
 | shadow | none, ever |
 | hover | `--btn-surface-primary-hover` for filled; `--btn-surface-quiet-hover` wash for the rest |
 | focus | the global ring, `--focus-ring-width` `--focus-ring-color`, offset `--focus-ring-offset` |
@@ -32,11 +32,12 @@ around it.
 
 | Intent | Class | Surface | Text | Border | Use for |
 |---|---|---|---|---|---|
-| Primary | `.saga-btn--primary` | `--btn-surface-primary` (`#006298`) | `--btn-text-primary` (white) | none | the one main action in a view |
+| Primary | `.saga-btn` alone, or the explicit alias `.saga-btn--primary` | `--btn-surface-primary` (`#006298`) | `--btn-text-primary` (white) | none | the one main action in a view |
 | Secondary | `.saga-btn--secondary` | `--btn-surface-secondary` (white) | `--btn-text-secondary` | 1px `--btn-border-secondary` (`#d9d9d9`) | Cancel, Upload, Download, anything that is not the main action |
 | Quiet | `.saga-btn--quiet` | transparent | `--color-primary` | none | inline and icon-only actions, toolbar buttons |
 | Danger | `.saga-btn--danger` | `--btn-surface-danger` (clay `#991a21`) | white | none | destructive confirms: Delete, Remove, Cancel session |
 | Affirmative | `.saga-btn--affirmative` | `--btn-surface-affirmative` (green `#20912d`) | white | none | rare: a positive terminal action in a flow that also has a danger button |
+| Caution | `.saga-btn--caution` | `--color-warning-strong` (amber `#b45309`) | white | none | the confirming button of a caution confirm only (see [modals](modals-toasts-notices.md#confirm-dialog)) |
 
 Quiet hovers to `--btn-surface-quiet-hover` (`--color-primary-light`, the
 soft blue). Secondary hovers to the same soft blue when it is an action, and to
@@ -104,11 +105,12 @@ right now would enable it.
 
 ## Loading
 
-A button that has started something it must wait for keeps its width, keeps
-its label, and shows a small spinner before the label at `1em`. It is
-`aria-disabled="true"` while busy. Do not swap the label for "Saving..."
-alone; the width jump is distracting, and the spinner says the same thing.
-Buttons never show a progress bar; long work gets a toast.
+A button that has started something it must wait for (`data-loading`) keeps
+its width and colour, hides its label (the text goes transparent so the box
+does not reflow) and shows a `1em` ring in its place (DS-108). It is
+`aria-busy="true"` and ignores pointer events while busy. Do not swap the
+label for "Saving..."; the width jump is distracting, and the spinner says
+the same thing. Buttons never show a progress bar; long work gets a toast.
 
 ## Groups and modal footers
 
@@ -136,16 +138,16 @@ step says what it does: "Create program", not "Finish".
 ## The Add pattern
 
 Adding something is the most common page-level action, so it has a fixed
-look: a secondary button whose icon is a **filled blue disc with a white
-plus** (`material-symbols-light:add-circle-rounded` in `--color-primary`),
-then "Add" plus the noun: "Add Student", "Add period", "Add New Session".
-The disc is the brand's add glyph and appears only on an Add action.
+look: a secondary button whose leading mark is a **filled blue disc with a
+white plus** (`.saga-btn__plus` wrapping a plain `add-rounded` glyph), then
+"Add" plus the noun: "Add Student", "Add period", "Add New Session". The disc
+is the brand's add glyph and appears only on an Add action (DS-051).
 
 Two lighter relatives:
 
-- **Inline add link.** Inside a card, "Add period" is quiet intent (blue text,
-  no border) with the same disc. Use it when the thing being added lands in
-  the list right below.
+- **Inline add link.** Inside a card, "Add period" is `.saga-btn--add`
+  (quiet intent: blue text, no border) with the same disc. Use it when the
+  thing being added lands in the list right below.
 - **Dotted outline tertiary.** "Add drop-in student" in the Edit Session modal
   is a `--sm` button with a 1px dashed `--color-primary` border, blue text,
   transparent fill. Use it for an optional, secondary add that should not
@@ -157,11 +159,11 @@ Two lighter relatives:
 
 ```html
 <button class="saga-btn saga-btn--secondary">
-  <iconify-icon icon="material-symbols-light:add-circle-rounded" style="color: var(--color-primary)"></iconify-icon>
+  <span class="saga-btn__plus"><iconify-icon icon="material-symbols-light:add-rounded"></iconify-icon></span>
   Add student
 </button>
-<button class="saga-btn saga-btn--quiet">
-  <iconify-icon icon="material-symbols-light:add-circle-rounded"></iconify-icon>
+<button class="saga-btn saga-btn--add">
+  <span class="saga-btn__plus"><iconify-icon icon="material-symbols-light:add-rounded"></iconify-icon></span>
   Add period
 </button>
 ```
@@ -175,8 +177,8 @@ buttons:
 - Container: `--color-bg-tertiary` fill, `--radius-md`, no border, 2px inner
   padding.
 - Segment: `--text-sm` semibold, `--color-text-dark`, transparent.
-- Pressed segment (`aria-pressed="true"`): `--color-primary` fill, white text,
-  `--radius-sm`.
+- Pressed segment (`aria-pressed="true"`, or `aria-checked="true"` when the
+  group is a `radiogroup`): `--color-primary` fill, white text, `--radius-sm`.
 - Exactly one segment is pressed at all times.
 
 ```html
@@ -186,9 +188,34 @@ buttons:
 </div>
 ```
 
-A toggle that shows or hides a mode ("Show Bulk Actions") is a single
-primary button that becomes `--color-primary-light` with blue text while the
-mode is on, with `aria-pressed`.
+## Pressed buttons
+
+A single button that shows or hides a mode ("Show Bulk Actions") carries
+`aria-pressed`. Any `.saga-btn[aria-pressed="true"]` becomes the quiet-hover
+wash (`--btn-surface-quiet-hover`) with `--color-primary` semibold text while
+the mode is on; the label does not change ("Show Bulk Actions" stays, the
+state says it is on). It is the bare primary button when off.
+
+A **status-filled** toggle (an attendance mark: Present, Absent, Tardy) is
+`.saga-btn--status`. At rest it is the outlined secondary look; pressed, it
+fills with the meaning given by `--_status` (set inline or on the row) and
+white text, so a row of marks reads as what was chosen, not as five blue
+buttons (DS-113). Keep `--_status` to colours that pass 4.5:1 under white:
+`--color-primary`, `--color-success-strong`, `--color-warning-strong`,
+`--color-danger`, `--color-teal`.
+
+```html
+<button class="saga-btn saga-btn--sm" aria-pressed="true">Show Bulk Actions</button>
+<div role="group" aria-label="Attendance for Aaliyah L">
+  <button class="saga-btn saga-btn--sm saga-btn--status" aria-pressed="true" style="--_status: var(--color-success-strong)">Present</button>
+  <button class="saga-btn saga-btn--sm saga-btn--status" aria-pressed="false" style="--_status: var(--color-warning-strong)">Tardy</button>
+  <button class="saga-btn saga-btn--sm saga-btn--status" aria-pressed="false" style="--_status: var(--color-danger)">Absent</button>
+</div>
+```
+
+A link-shaped action inside a sentence or a table cell ("Edit", "Reset
+password") is `button.saga-link`: no box, inherits the font, `--color-primary`,
+underline on hover.
 
 ## Do and don't
 

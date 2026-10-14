@@ -448,7 +448,7 @@ longer "50 min" form only in picker lists. Existing compact `<Time>` output
 is a Tier 3 app choice until it is migrated.
 
 ### DS-062 — Table header: `--color-bg-tertiary` fill, semibold, one hairline weight
-Status: proposed · See it: /guide/tables-data#data-tables
+Status: overturned → DS-122 (fill is `--color-bg-secondary`) · See it: /guide/tables-data#data-tables
 
 The roster grid and the Configure Period table agree on a light grey header
 and 1px borders; some legacy tables use a 2px rule under the header. The
@@ -588,3 +588,146 @@ Status: proposed · See it: /css/tokens.css
 they stop borrowing `--nav-bg`; `--border-width-emphasis` (2px) is the one
 non-hairline border (stat-card top edge, checkbox tick, spinner ring, avatar
 ring). Configure-mode check marks use `--nav-status-complete`.
+
+### DS-111 — Chart neutral and reference tokens
+Status: proposed · See it: /showcase/cards-tables/#charts
+
+`--chart-neutral` (`--gray-legacy-light`, `#d9d9d9`) is the remainder or
+"not yet" segment behind a bar or ring; `--chart-reference` (`--gray-700`,
+`#374151`) is a target or threshold mark. The two are separate from
+`--chart-average` (gray-400) because an average sits on white at 2.5:1,
+which is fine for a rule, while a reference mark has to stay 3:1 over the
+neutral track and the gray period bands, which gray-400 does not (about
+1.6:1). Prototypes were painting both with `--chart-average` or inventing
+grays; the gate reports asked for the pair.
+Alternatives: one `--chart-muted` for both (fails on the track).
+
+### DS-112 — `--color-warning-strong` for white-on-amber fills
+Status: proposed · See it: /showcase/buttons/#variants
+
+`--color-warning` (`#d97706`) under white text is 3.2:1, so the chapter's
+amber caution button and the attendance "Tardy" mark could not be built
+without a hex. `--color-warning-strong` is `#b45309` (4.6:1 under white,
+the same value as `--color-attention` but named for its job as a fill).
+`.saga-btn--caution` uses it; `--color-warning` stays the icon, edge and
+border amber (DS-004/025).
+Alternatives: alias `--color-attention` directly (the attention token is
+text-and-icon semantics; a later retune of one should not move the other).
+
+### DS-113 — Pressed buttons: quiet wash for a mode, status fill for a mark
+Status: proposed · See it: /showcase/buttons/#pressed-and-status
+
+`.saga-btn[aria-pressed="true"]` is the quiet-hover wash with
+`--color-primary` semibold text, which is what buttons.md described for
+"Show Bulk Actions" and the CSS lacked. `.saga-btn--status` is the
+attendance-style toggle: secondary outline at rest, and pressed it fills from
+`--_status` (default `--color-primary`) with white text so a row of marks
+reads by meaning. `--_status` is an instance hook, like `--_edge` on toasts;
+callers keep it to fills that pass 4.5:1 under white.
+Alternatives: one modifier per status (`--present`, `--absent`), rejected as
+product vocabulary in a component layer.
+
+### DS-114 — Confirm dialogs are 440px; the default modal is 640px, centred
+Status: proposed · See it: /showcase/overlays/#confirm-dialog
+
+`.saga-modal--confirm` is `min(440px, 100%)`, the width the chapter already
+named. The chapter's "default 560 / large 900, top-aligned with a 4vh gap"
+was the prototype convention; the CSS and showcase ship 640 / 960 and centre
+the card in the scrim with `margin: auto`, and a tall modal scrolls its body
+inside `92vh` rather than growing, so the jump the top-alignment rule guarded
+against does not happen. The chapter now matches the CSS.
+
+### DS-115 — Toast stack is bottom-right (confirming CSS over the chapter)
+Status: proposed · See it: /showcase/overlays/#toasts
+
+The chapter said bottom centre with an 8px edge, `--radius-lg`, semibold
+text and buttons under the message; DS-102 and the CSS ship bottom-right,
+a `--space-xs` (4px) edge, `--radius-md`, medium weight and a one-row layout
+with the action pill and ✕ inline. Bottom-right keeps the stack clear of a
+modal's footer buttons and of the Session Viewer's centred controls. The
+chapter now matches the CSS; `.saga-toast-stack--local` pins the stack to a
+frame instead of the window.
+
+### DS-116 — Checkbox and radio fill blue when checked (confirming CSS)
+Status: proposed · See it: /showcase/forms/#checkbox-radio-toggle
+
+The chapter described a white box with a blue check and a 2px ring radio at
+em sizes; the CSS draws both at `--space-md` with a 1px border and fills them
+`--color-primary` with a white mark when checked (DS-060 for the radio). The
+filled state survives the high-contrast remap and reads at 16px where a
+thin blue check does not. The toggle is 36 × 20px with a `--space-md` knob
+inset `--space-2xs`. The chapter now matches the CSS.
+
+### DS-117 — Painted select in product UI; native `<select>` only in prototypes
+Status: proposed · See it: /showcase/forms/#select
+
+Product UI renders `.saga-select > .saga-select__trigger` with the
+`.saga-select__menu` listbox and never a native `<select>` (the dash CI guard
+already enforces this). A native `<select>` inside `.saga-select` keeps the
+same box and caret (DS-101) and is acceptable only in a prototype where the
+dropdown's behaviour is not the point; it is labelled as a stand-in and
+replaced by `SelectMenu` on hand-off. The showcase's primary select demo is
+now the painted trigger; the native one is a marked fallback. The option
+class works on the `<li>` or a `<button role="option">` inside it, with
+`data-active` for the keyboard row and `.is-placeholder` on the trigger.
+
+### DS-118 — Framed shell, local overlays, and the layout helpers
+Status: proposed · See it: /showcase/overlays/#confirm-dialog
+
+`.saga-shell--framed` makes the shell fill a positioned parent (height 100%,
+`position: relative`, clipped) instead of `100vh`, so a decision-board scene
+or a preview can hold a whole dashboard; `.saga-scrim--local` and
+`.saga-toast-stack--local` are `position: absolute` so overlays stay inside
+that frame. A native `<dialog>` always goes to the top layer, so a framed
+scene uses the `div` modal. Alongside: `.saga-grid` (`--2/--3/--4`,
+`--stats` auto-fit at 220px with `.stat-grid` as an alias, `--lg` gap),
+`.saga-list` row stacks (`--edge` 3px meaning edge from `--_edge`, `--ghost`
+dimmed by colour not opacity), `.saga-empty` and `.saga-card--empty`,
+`.saga-card__title-row`, `.saga-table tfoot`, `.saga-select--inline/--sm`,
+`.saga-notice--notice`, and `.saga-link` — all things the three rebuilt
+prototypes had each written by hand.
+
+### DS-119 — Minimal chart primitives: bar, stacked bar, mark, axis, legend
+Status: proposed · See it: /showcase/cards-tables/#charts
+
+`.saga-bar` is a 14px `--chart-neutral` track with `--radius-xs`;
+`.saga-bar__fill` takes `--value` for width and `--_c` for colour (default
+`--chart-1`); `.saga-bar--stacked` lays fills side by side with a hairline
+between; `.saga-bar__mark` is a `--chart-reference` tick at `--value`;
+`.saga-axis` is the `--text-xs` secondary label row; `.saga-legend` pairs a
+10px `--_c` swatch (`--line` for rules) with a label. Enough for completion,
+attendance and survey bars without a chart library; anything with axes and
+series stays in the app's charting code on the `--chart-*` tokens.
+
+### DS-120 — Tooltip is white by default (dash core-ui); filled variant for emphasis
+Status: proposed · See it: /showcase/overlays/#tooltip
+
+The component layer had shipped a navy `--text-xs` bubble on
+`--color-surface-inverse`; dash's real core-ui Tooltip is white with a warm
+hairline (`#c6beb8`, nearest `--color-border-strong`), 8px radius,
+`--shadow-md` and `--text-sm`, with a filled primary variant for the
+info-icon trigger, which is what DS-057 and the chapter described. The CSS
+now matches: `.saga-tooltip` white and bordered, `.saga-tooltip--filled`
+primary blue with white text, `.saga-tooltip--rich` left-aligned with a
+semibold `.saga-tooltip__title`. `--color-surface-inverse` (DS-110) remains
+the toast surface only.
+
+### DS-121 — Skeletons shimmer (confirming CSS over the chapter)
+Status: proposed · See it: /showcase/feedback/#skeleton
+
+tables-data.md said a skeleton pulses opacity and "never a sliding shimmer";
+the CSS, the feedback showcase and dash's `Skeleton` all run a slow
+left-to-right `--color-border` band over `--color-bg-tertiary`
+(`calc(--motion-slow * 5)`), static under reduced motion. The shimmer is
+movement on a background position, not opacity, and the chapter's opacity
+pulse would have failed the "no fading disabled-looking content" reading of
+DS-016. The chapter now matches the CSS.
+
+### DS-122 — Table header fill is `--color-bg-secondary` (overturns DS-062)
+Status: proposed · See it: /showcase/cards-tables/#table
+
+DS-062 named `--color-bg-tertiary`; the CSS, the shell showcase and
+spacing-layout.md all use `--color-bg-secondary` (`#f9fafb`), one step
+lighter, so the header reads as part of the white card rather than a grey
+band, and `--color-text-secondary` keeps 4.5:1 on it (it is 4.4:1 on
+tertiary, color.md). tables-data.md now matches.

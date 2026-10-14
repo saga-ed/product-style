@@ -47,12 +47,17 @@
 		<button class="saga-btn saga-btn--quiet">Quiet</button>
 		<button class="saga-btn saga-btn--danger">Delete</button>
 		<button class="saga-btn saga-btn--affirmative">Approve</button>
+		<button class="saga-btn saga-btn--caution">Yes, move them</button>
+		<button class="saga-btn saga-btn--primary">Primary (alias)</button>
 	</div>
 <pre class="demo-snippet"><code>&lt;button class=&quot;saga-btn&quot;&gt;Save&lt;/button&gt;
 &lt;button class=&quot;saga-btn saga-btn--secondary&quot;&gt;Cancel&lt;/button&gt;
 &lt;button class=&quot;saga-btn saga-btn--quiet&quot;&gt;Quiet&lt;/button&gt;
 &lt;button class=&quot;saga-btn saga-btn--danger&quot;&gt;Delete&lt;/button&gt;
-&lt;button class=&quot;saga-btn saga-btn--affirmative&quot;&gt;Approve&lt;/button&gt;</code></pre>
+&lt;button class=&quot;saga-btn saga-btn--affirmative&quot;&gt;Approve&lt;/button&gt;
+&lt;button class=&quot;saga-btn saga-btn--caution&quot;&gt;Yes, move them&lt;/button&gt;
+&lt;button class=&quot;saga-btn saga-btn--primary&quot;&gt;Primary (alias)&lt;/button&gt;</code></pre>
+	<p><code>.saga-btn</code> alone is primary; <code>.saga-btn--primary</code> is an explicit alias for pages that name every intent. <code>--caution</code> is the amber confirm fill on <code>--color-warning-strong</code> (DS-112), used only as the confirming button of a caution dialog.</p>
 
 	<h3>With icons</h3>
 	<div class="demo-row">
@@ -85,15 +90,17 @@
 &lt;button class=&quot;saga-btn saga-btn--secondary saga-btn--block&quot;&gt;Back&lt;/button&gt;</code></pre>
 
 	<h3>Icon-only</h3>
-	<p>Always give an icon button an accessible name via <code>aria-label</code>.</p>
+	<p>Always give an icon button an accessible name via <code>aria-label</code>. Default is 35px square; <code>--sm</code> is 28px.</p>
 	<div class="demo-row">
+		<button class="saga-btn saga-btn--quiet saga-btn--icon saga-btn--sm" aria-label="Edit (small)"><iconify-icon icon="material-symbols-light:edit-outline-rounded"></iconify-icon></button>
 		<button class="saga-btn saga-btn--icon" aria-label="Add"><iconify-icon icon="material-symbols-light:add-rounded"></iconify-icon></button>
 		<button class="saga-btn saga-btn--secondary saga-btn--icon" aria-label="Filter"><iconify-icon icon="material-symbols-light:filter-list-rounded"></iconify-icon></button>
 		<button class="saga-btn saga-btn--quiet saga-btn--icon" aria-label="Edit"><iconify-icon icon="material-symbols-light:edit-outline-rounded"></iconify-icon></button>
 		<button class="saga-btn saga-btn--quiet saga-btn--icon" aria-label="Lock"><iconify-icon icon="material-symbols-light:lock-outline"></iconify-icon></button>
 		<button class="saga-btn saga-btn--quiet saga-btn--icon" aria-label="Notifications"><span class="saga-badge-anchor"><iconify-icon icon="material-symbols-light:notifications-outline-rounded"></iconify-icon><span class="saga-badge">2</span></span></button>
 	</div>
-<pre class="demo-snippet"><code>&lt;button class=&quot;saga-btn saga-btn--icon&quot; aria-label=&quot;Add&quot;&gt;&lt;iconify-icon icon=&quot;material-symbols-light:add-rounded&quot;&gt;&lt;/iconify-icon&gt;&lt;/button&gt;
+<pre class="demo-snippet"><code>&lt;button class=&quot;saga-btn saga-btn--quiet saga-btn--icon saga-btn--sm&quot; aria-label=&quot;Edit (small)&quot;&gt;&lt;iconify-icon icon=&quot;material-symbols-light:edit-outline-rounded&quot;&gt;&lt;/iconify-icon&gt;&lt;/button&gt;
+&lt;button class=&quot;saga-btn saga-btn--icon&quot; aria-label=&quot;Add&quot;&gt;&lt;iconify-icon icon=&quot;material-symbols-light:add-rounded&quot;&gt;&lt;/iconify-icon&gt;&lt;/button&gt;
 &lt;button class=&quot;saga-btn saga-btn--secondary saga-btn--icon&quot; aria-label=&quot;Filter&quot;&gt;&lt;iconify-icon icon=&quot;material-symbols-light:filter-list-rounded&quot;&gt;&lt;/iconify-icon&gt;&lt;/button&gt;
 &lt;button class=&quot;saga-btn saga-btn--quiet saga-btn--icon&quot; aria-label=&quot;Edit&quot;&gt;&lt;iconify-icon icon=&quot;material-symbols-light:edit-outline-rounded&quot;&gt;&lt;/iconify-icon&gt;&lt;/button&gt;
 &lt;button class=&quot;saga-btn saga-btn--quiet saga-btn--icon&quot; aria-label=&quot;Lock&quot;&gt;&lt;iconify-icon icon=&quot;material-symbols-light:lock-outline&quot;&gt;&lt;/iconify-icon&gt;&lt;/button&gt;
@@ -140,8 +147,53 @@
 </section>
 
 <section class="demo-section">
+	<h2>Pressed and status</h2>
+	<p>A mode toggle carries <code>aria-pressed</code>; on, it sits in the quiet-hover wash with blue semibold text and keeps its label. <code>.saga-btn--status</code> is outlined at rest and fills by meaning from <code>--_status</code> when pressed (DS-113). Click the first button to toggle it.</p>
+	<div class="demo-row">
+		<button class="saga-btn saga-btn--sm" aria-pressed="false" onclick="this.setAttribute('aria-pressed', this.getAttribute('aria-pressed') !== 'true')">Show Bulk Actions</button>
+		<button class="saga-btn saga-btn--sm" aria-pressed="true">Show Bulk Actions (on)</button>
+	</div>
+<pre class="demo-snippet"><code>&lt;button class=&quot;saga-btn saga-btn--sm&quot; aria-pressed=&quot;false&quot; onclick=&quot;this.setAttribute(&#x27;aria-pressed&#x27;, this.getAttribute(&#x27;aria-pressed&#x27;) !== &#x27;true&#x27;)&quot;&gt;Show Bulk Actions&lt;/button&gt;
+&lt;button class=&quot;saga-btn saga-btn--sm&quot; aria-pressed=&quot;true&quot;&gt;Show Bulk Actions (on)&lt;/button&gt;</code></pre>
+	<div class="demo-row">
+		<div role="group" aria-label="Attendance for Aaliyah L" style="display:flex;gap:var(--space-xs)">
+			<button class="saga-btn saga-btn--sm saga-btn--status" aria-pressed="true" style="--_status: var(--color-success-strong)">Present</button>
+			<button class="saga-btn saga-btn--sm saga-btn--status" aria-pressed="false" style="--_status: var(--color-warning-strong)">Tardy</button>
+			<button class="saga-btn saga-btn--sm saga-btn--status" aria-pressed="false" style="--_status: var(--color-danger)">Absent</button>
+		</div>
+		<div role="group" aria-label="Attendance for Abigail J" style="display:flex;gap:var(--space-xs)">
+			<button class="saga-btn saga-btn--sm saga-btn--status" aria-pressed="false" style="--_status: var(--color-success-strong)">Present</button>
+			<button class="saga-btn saga-btn--sm saga-btn--status" aria-pressed="true" style="--_status: var(--color-warning-strong)">Tardy</button>
+			<button class="saga-btn saga-btn--sm saga-btn--status" aria-pressed="false" style="--_status: var(--color-danger)">Absent</button>
+		</div>
+		<button class="saga-btn saga-btn--status" aria-pressed="true">Default status</button>
+	</div>
+<pre class="demo-snippet"><code>&lt;div role=&quot;group&quot; aria-label=&quot;Attendance for Aaliyah L&quot; style=&quot;display:flex;gap:var(--space-xs)&quot;&gt;
+&lt;button class=&quot;saga-btn saga-btn--sm saga-btn--status&quot; aria-pressed=&quot;true&quot; style=&quot;--_status: var(--color-success-strong)&quot;&gt;Present&lt;/button&gt;
+	&lt;button class=&quot;saga-btn saga-btn--sm saga-btn--status&quot; aria-pressed=&quot;false&quot; style=&quot;--_status: var(--color-warning-strong)&quot;&gt;Tardy&lt;/button&gt;
+	&lt;button class=&quot;saga-btn saga-btn--sm saga-btn--status&quot; aria-pressed=&quot;false&quot; style=&quot;--_status: var(--color-danger)&quot;&gt;Absent&lt;/button&gt;
+&lt;/div&gt;
+&lt;div role=&quot;group&quot; aria-label=&quot;Attendance for Abigail J&quot; style=&quot;display:flex;gap:var(--space-xs)&quot;&gt;
+	&lt;button class=&quot;saga-btn saga-btn--sm saga-btn--status&quot; aria-pressed=&quot;false&quot; style=&quot;--_status: var(--color-success-strong)&quot;&gt;Present&lt;/button&gt;
+	&lt;button class=&quot;saga-btn saga-btn--sm saga-btn--status&quot; aria-pressed=&quot;true&quot; style=&quot;--_status: var(--color-warning-strong)&quot;&gt;Tardy&lt;/button&gt;
+	&lt;button class=&quot;saga-btn saga-btn--sm saga-btn--status&quot; aria-pressed=&quot;false&quot; style=&quot;--_status: var(--color-danger)&quot;&gt;Absent&lt;/button&gt;
+&lt;/div&gt;
+&lt;button class=&quot;saga-btn saga-btn--status&quot; aria-pressed=&quot;true&quot;&gt;Default status&lt;/button&gt;</code></pre>
+	<h3>Link-styled button</h3>
+	<p><code>.saga-link</code> is a button reset that reads as a text link, for actions inside a sentence or a table cell.</p>
+	<div class="demo-row demo-row--stack">
+		<table class="saga-table saga-table--dense" style="width:auto">
+			<tbody><tr><td>Aaliyah L</td><td>sbx28-s21</td><td><button class="saga-link">Edit</button> · <button class="saga-link">Reset password</button> · <button class="saga-link" disabled>Lock</button></td></tr></tbody>
+		</table>
+	</div>
+<pre class="demo-snippet"><code>&lt;table class=&quot;saga-table saga-table--dense&quot; style=&quot;width:auto&quot;&gt;
+&lt;tbody&gt;&lt;tr&gt;&lt;td&gt;Aaliyah L&lt;/td&gt;&lt;td&gt;sbx28-s21&lt;/td&gt;&lt;td&gt;&lt;button class=&quot;saga-link&quot;&gt;Edit&lt;/button&gt; · &lt;button class=&quot;saga-link&quot;&gt;Reset password&lt;/button&gt; · &lt;button class=&quot;saga-link&quot; disabled&gt;Lock&lt;/button&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/tbody&gt;
+&lt;/table&gt;</code></pre>
+</section>
+
+<section class="demo-section">
 	<h2>Segmented control</h2>
-	<p>A pressed-button group; the pressed segment is a filled blue pill (Reports → Surveys).</p>
+	<p>A pressed-button group; the pressed segment is a filled blue pill (Reports → Surveys). Keys on <code>aria-pressed</code>, or <code>aria-checked</code> inside a <code>radiogroup</code>.</p>
 	<div class="demo-row">
 		<div class="saga-segmented" role="group" aria-label="Report view">
 			<button type="button" aria-pressed="true">Overall Summary</button>
@@ -151,6 +203,10 @@
 			<button type="button" aria-pressed="false" aria-label="List"><iconify-icon icon="material-symbols-light:format-list-bulleted-rounded"></iconify-icon></button>
 			<button type="button" aria-pressed="true" aria-label="Grid"><iconify-icon icon="material-symbols-light:calendar-view-month-outline-rounded"></iconify-icon></button>
 		</div>
+		<div class="saga-segmented" role="radiogroup" aria-label="Range">
+			<button type="button" role="radio" aria-checked="true">Month</button>
+			<button type="button" role="radio" aria-checked="false">Week</button>
+		</div>
 	</div>
 <pre class="demo-snippet"><code>&lt;div class=&quot;saga-segmented&quot; role=&quot;group&quot; aria-label=&quot;Report view&quot;&gt;
 	&lt;button type=&quot;button&quot; aria-pressed=&quot;true&quot;&gt;Overall Summary&lt;/button&gt;
@@ -159,6 +215,10 @@
 &lt;div class=&quot;saga-segmented&quot; role=&quot;group&quot; aria-label=&quot;Calendar view&quot;&gt;
 	&lt;button type=&quot;button&quot; aria-pressed=&quot;false&quot; aria-label=&quot;List&quot;&gt;&lt;iconify-icon icon=&quot;material-symbols-light:format-list-bulleted-rounded&quot;&gt;&lt;/iconify-icon&gt;&lt;/button&gt;
 	&lt;button type=&quot;button&quot; aria-pressed=&quot;true&quot; aria-label=&quot;Grid&quot;&gt;&lt;iconify-icon icon=&quot;material-symbols-light:calendar-view-month-outline-rounded&quot;&gt;&lt;/iconify-icon&gt;&lt;/button&gt;
+&lt;/div&gt;
+&lt;div class=&quot;saga-segmented&quot; role=&quot;radiogroup&quot; aria-label=&quot;Range&quot;&gt;
+	&lt;button type=&quot;button&quot; role=&quot;radio&quot; aria-checked=&quot;true&quot;&gt;Month&lt;/button&gt;
+	&lt;button type=&quot;button&quot; role=&quot;radio&quot; aria-checked=&quot;false&quot;&gt;Week&lt;/button&gt;
 &lt;/div&gt;</code></pre>
 </section>
 </main>

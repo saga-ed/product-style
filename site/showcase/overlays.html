@@ -29,6 +29,7 @@
 	.demo-snippet code { font-size: inherit; }
 	.demo-row--tall .saga-popover, .demo-row--tall .saga-tooltip { position: static; }
 	.demo-modal-inline .saga-modal { position: static; z-index: auto; box-shadow: var(--shadow-modal); }
+	.demo-frame { position: relative; height: 22rem; width: 100%; border: 1px solid var(--color-border); border-radius: var(--radius-lg); overflow: hidden; }
 </style>
 </head>
 <body>
@@ -57,10 +58,10 @@
 					<div class="saga-field"><label class="saga-label" for="m-title">Session Title</label><input class="saga-input" id="m-title" value="Out Of Window Test - Early"></div>
 				</div>
 				<div class="saga-modal__footer">
-					<button class="saga-btn saga-btn--danger" value="delete">Delete</button>
 					<div class="saga-modal__footer-end">
 						<button class="saga-btn saga-btn--secondary" value="cancel">Cancel</button>
 						<button class="saga-btn" value="save">Save</button>
+						<button class="saga-btn saga-btn--danger" value="delete">Delete</button>
 					</div>
 				</div>
 			</form>
@@ -78,10 +79,10 @@
 			&lt;div class=&quot;saga-field&quot;&gt;&lt;label class=&quot;saga-label&quot; for=&quot;m-title&quot;&gt;Session Title&lt;/label&gt;&lt;input class=&quot;saga-input&quot; id=&quot;m-title&quot; value=&quot;Out Of Window Test - Early&quot;&gt;&lt;/div&gt;
 		&lt;/div&gt;
 		&lt;div class=&quot;saga-modal__footer&quot;&gt;
-			&lt;button class=&quot;saga-btn saga-btn--danger&quot; value=&quot;delete&quot;&gt;Delete&lt;/button&gt;
 			&lt;div class=&quot;saga-modal__footer-end&quot;&gt;
 				&lt;button class=&quot;saga-btn saga-btn--secondary&quot; value=&quot;cancel&quot;&gt;Cancel&lt;/button&gt;
 				&lt;button class=&quot;saga-btn&quot; value=&quot;save&quot;&gt;Save&lt;/button&gt;
+				&lt;button class=&quot;saga-btn saga-btn--danger&quot; value=&quot;delete&quot;&gt;Delete&lt;/button&gt;
 			&lt;/div&gt;
 		&lt;/div&gt;
 	&lt;/form&gt;
@@ -120,6 +121,109 @@
 			&lt;button class=&quot;saga-btn&quot;&gt;Save&lt;/button&gt;
 			&lt;button class=&quot;saga-btn saga-btn--danger&quot;&gt;Delete&lt;/button&gt;
 		&lt;/div&gt;
+	&lt;/div&gt;
+&lt;/div&gt;</code></pre>
+</section>
+
+<section class="demo-section">
+	<h2>Confirm dialog</h2>
+	<p><code>.saga-modal--confirm</code> is 440px: a question for a title, one secondary paragraph, two buttons, <code>role="alertdialog"</code>, the safe button focused first. Caution confirms use <code>.saga-btn--caution</code> (<code>--color-warning-strong</code>) and a <code>--color-warning-border</code> top edge.</p>
+	<div class="demo-row">
+		<button class="saga-btn saga-btn--danger" onclick="document.getElementById('demo-confirm').showModal()">Open delete confirm</button>
+		<dialog class="saga-modal saga-modal--confirm" id="demo-confirm" aria-labelledby="dc-title">
+			<form method="dialog" style="display:contents">
+				<div class="saga-modal__header"><h2 class="saga-modal__title" id="dc-title">Delete this session?</h2></div>
+				<div class="saga-modal__body"><p class="text-secondary">Students will lose their place in Pod 6. This cannot be undone.</p></div>
+				<div class="saga-modal__footer"><div class="saga-modal__footer-end"><button class="saga-btn saga-btn--secondary" value="cancel" autofocus>Cancel</button><button class="saga-btn saga-btn--danger" value="delete">Delete session</button></div></div>
+			</form>
+		</dialog>
+	</div>
+<pre class="demo-snippet"><code>&lt;dialog class=&quot;saga-modal saga-modal--confirm&quot; id=&quot;demo-confirm&quot; aria-labelledby=&quot;dc-title&quot;&gt;
+	&lt;form method=&quot;dialog&quot; style=&quot;display:contents&quot;&gt;
+		&lt;div class=&quot;saga-modal__header&quot;&gt;&lt;h2 class=&quot;saga-modal__title&quot; id=&quot;dc-title&quot;&gt;Delete this session?&lt;/h2&gt;&lt;/div&gt;
+		&lt;div class=&quot;saga-modal__body&quot;&gt;&lt;p class=&quot;text-secondary&quot;&gt;Students will lose their place in Pod 6. This cannot be undone.&lt;/p&gt;&lt;/div&gt;
+		&lt;div class=&quot;saga-modal__footer&quot;&gt;&lt;div class=&quot;saga-modal__footer-end&quot;&gt;&lt;button class=&quot;saga-btn saga-btn--secondary&quot; value=&quot;cancel&quot; autofocus&gt;Cancel&lt;/button&gt;&lt;button class=&quot;saga-btn saga-btn--danger&quot; value=&quot;delete&quot;&gt;Delete session&lt;/button&gt;&lt;/div&gt;&lt;/div&gt;
+	&lt;/form&gt;
+&lt;/dialog&gt;</code></pre>
+	<h3>Shown inline: danger and caution</h3>
+	<div class="demo-row demo-row--stack demo-modal-inline" style="background:var(--modal-scrim)">
+		<div class="saga-modal saga-modal--confirm" role="alertdialog" aria-modal="true" aria-labelledby="cf-title" aria-describedby="cf-body" style="margin:0 auto">
+			<div class="saga-modal__header"><h2 class="saga-modal__title" id="cf-title">Delete this session?</h2></div>
+			<div class="saga-modal__body"><p class="text-secondary" id="cf-body">Students will lose their place in Pod 6. This cannot be undone.</p></div>
+			<div class="saga-modal__footer">
+				<div class="saga-modal__footer-end">
+					<button class="saga-btn saga-btn--secondary">Cancel</button>
+					<button class="saga-btn saga-btn--danger">Delete session</button>
+				</div>
+			</div>
+		</div>
+		<div class="saga-modal saga-modal--confirm" role="alertdialog" aria-modal="true" aria-labelledby="cf2-title" style="margin:0 auto;border-top:var(--space-xs) solid var(--color-warning-border)">
+			<div class="saga-modal__header"><h2 class="saga-modal__title" id="cf2-title">Move 3 students to Pod 2?</h2></div>
+			<div class="saga-modal__body"><p class="text-secondary">They keep their attendance history. Their current tutor will see the change on the next schedule refresh.</p></div>
+			<div class="saga-modal__footer">
+				<div class="saga-modal__footer-end">
+					<button class="saga-btn saga-btn--secondary">Never mind</button>
+					<button class="saga-btn saga-btn--caution">Yes, move them</button>
+				</div>
+			</div>
+		</div>
+	</div>
+<pre class="demo-snippet"><code>&lt;div class=&quot;saga-modal saga-modal--confirm&quot; role=&quot;alertdialog&quot; aria-modal=&quot;true&quot; aria-labelledby=&quot;cf-title&quot; aria-describedby=&quot;cf-body&quot; style=&quot;margin:0 auto&quot;&gt;
+	&lt;div class=&quot;saga-modal__header&quot;&gt;&lt;h2 class=&quot;saga-modal__title&quot; id=&quot;cf-title&quot;&gt;Delete this session?&lt;/h2&gt;&lt;/div&gt;
+	&lt;div class=&quot;saga-modal__body&quot;&gt;&lt;p class=&quot;text-secondary&quot; id=&quot;cf-body&quot;&gt;Students will lose their place in Pod 6. This cannot be undone.&lt;/p&gt;&lt;/div&gt;
+	&lt;div class=&quot;saga-modal__footer&quot;&gt;
+		&lt;div class=&quot;saga-modal__footer-end&quot;&gt;
+			&lt;button class=&quot;saga-btn saga-btn--secondary&quot;&gt;Cancel&lt;/button&gt;
+			&lt;button class=&quot;saga-btn saga-btn--danger&quot;&gt;Delete session&lt;/button&gt;
+		&lt;/div&gt;
+	&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class=&quot;saga-modal saga-modal--confirm&quot; role=&quot;alertdialog&quot; aria-modal=&quot;true&quot; aria-labelledby=&quot;cf2-title&quot; style=&quot;margin:0 auto;border-top:var(--space-xs) solid var(--color-warning-border)&quot;&gt;
+	&lt;div class=&quot;saga-modal__header&quot;&gt;&lt;h2 class=&quot;saga-modal__title&quot; id=&quot;cf2-title&quot;&gt;Move 3 students to Pod 2?&lt;/h2&gt;&lt;/div&gt;
+	&lt;div class=&quot;saga-modal__body&quot;&gt;&lt;p class=&quot;text-secondary&quot;&gt;They keep their attendance history. Their current tutor will see the change on the next schedule refresh.&lt;/p&gt;&lt;/div&gt;
+	&lt;div class=&quot;saga-modal__footer&quot;&gt;
+		&lt;div class=&quot;saga-modal__footer-end&quot;&gt;
+			&lt;button class=&quot;saga-btn saga-btn--secondary&quot;&gt;Never mind&lt;/button&gt;
+			&lt;button class=&quot;saga-btn saga-btn--caution&quot;&gt;Yes, move them&lt;/button&gt;
+		&lt;/div&gt;
+	&lt;/div&gt;
+&lt;/div&gt;</code></pre>
+	<h3>Framed shell with a local scrim and toast stack</h3>
+	<p>A <code>.saga-shell--framed</code> fills its positioned frame instead of the viewport (a decision-board scene, a preview). Inside it, <code>.saga-scrim--local</code> and <code>.saga-toast-stack--local</code> are absolute to the frame, so overlays stay in the scene. A native <code>&lt;dialog&gt;</code> always goes to the top layer, so a framed scene uses the <code>div</code> form (DS-118).</p>
+	<div class="demo-row demo-row--stack demo-row--tint">
+		<div class="demo-frame">
+			<div class="saga-shell saga-shell--framed">
+				<nav class="saga-nav" aria-label="Scene nav"><div class="saga-nav__logo"></div><ul class="saga-nav__items"><li><a class="saga-nav__item" href="#" aria-current="page"><iconify-icon icon="material-symbols-light:calendar-month-outline-rounded"></iconify-icon> Sessions</a></li></ul></nav>
+				<div class="saga-shell__main">
+					<header class="saga-topbar"><h1 class="saga-topbar__title">Demo Program 08/17</h1></header>
+					<main class="saga-page"><p class="text-secondary">A framed shell: the scrim and toast stack stay inside this box.</p></main>
+				</div>
+				<div class="saga-scrim saga-scrim--local">
+					<div class="saga-modal saga-modal--confirm" role="alertdialog" aria-modal="true" aria-labelledby="cf3-title">
+						<div class="saga-modal__header"><h2 class="saga-modal__title" id="cf3-title">Discard changes?</h2></div>
+						<div class="saga-modal__body"><p class="text-secondary">Your edits to Period 1 will be lost.</p></div>
+						<div class="saga-modal__footer"><div class="saga-modal__footer-end"><button class="saga-btn saga-btn--secondary">Keep editing</button><button class="saga-btn saga-btn--danger">Discard</button></div></div>
+					</div>
+				</div>
+				<div class="saga-toast-stack saga-toast-stack--local"><div class="saga-toast saga-toast--success" role="status"><span class="saga-toast__msg">Period 2 saved.</span></div></div>
+			</div>
+		</div>
+	</div>
+<pre class="demo-snippet"><code>&lt;div class=&quot;demo-frame&quot;&gt;
+	&lt;div class=&quot;saga-shell saga-shell--framed&quot;&gt;
+		&lt;nav class=&quot;saga-nav&quot; aria-label=&quot;Scene nav&quot;&gt;&lt;div class=&quot;saga-nav__logo&quot;&gt;&lt;/div&gt;&lt;ul class=&quot;saga-nav__items&quot;&gt;&lt;li&gt;&lt;a class=&quot;saga-nav__item&quot; href=&quot;#&quot; aria-current=&quot;page&quot;&gt;&lt;iconify-icon icon=&quot;material-symbols-light:calendar-month-outline-rounded&quot;&gt;&lt;/iconify-icon&gt; Sessions&lt;/a&gt;&lt;/li&gt;&lt;/ul&gt;&lt;/nav&gt;
+		&lt;div class=&quot;saga-shell__main&quot;&gt;
+			&lt;header class=&quot;saga-topbar&quot;&gt;&lt;h1 class=&quot;saga-topbar__title&quot;&gt;Demo Program 08/17&lt;/h1&gt;&lt;/header&gt;
+			&lt;main class=&quot;saga-page&quot;&gt;&lt;p class=&quot;text-secondary&quot;&gt;A framed shell: the scrim and toast stack stay inside this box.&lt;/p&gt;&lt;/main&gt;
+		&lt;/div&gt;
+		&lt;div class=&quot;saga-scrim saga-scrim--local&quot;&gt;
+			&lt;div class=&quot;saga-modal saga-modal--confirm&quot; role=&quot;alertdialog&quot; aria-modal=&quot;true&quot; aria-labelledby=&quot;cf3-title&quot;&gt;
+				&lt;div class=&quot;saga-modal__header&quot;&gt;&lt;h2 class=&quot;saga-modal__title&quot; id=&quot;cf3-title&quot;&gt;Discard changes?&lt;/h2&gt;&lt;/div&gt;
+				&lt;div class=&quot;saga-modal__body&quot;&gt;&lt;p class=&quot;text-secondary&quot;&gt;Your edits to Period 1 will be lost.&lt;/p&gt;&lt;/div&gt;
+				&lt;div class=&quot;saga-modal__footer&quot;&gt;&lt;div class=&quot;saga-modal__footer-end&quot;&gt;&lt;button class=&quot;saga-btn saga-btn--secondary&quot;&gt;Keep editing&lt;/button&gt;&lt;button class=&quot;saga-btn saga-btn--danger&quot;&gt;Discard&lt;/button&gt;&lt;/div&gt;&lt;/div&gt;
+			&lt;/div&gt;
+		&lt;/div&gt;
+		&lt;div class=&quot;saga-toast-stack saga-toast-stack--local&quot;&gt;&lt;div class=&quot;saga-toast saga-toast--success&quot; role=&quot;status&quot;&gt;&lt;span class=&quot;saga-toast__msg&quot;&gt;Period 2 saved.&lt;/span&gt;&lt;/div&gt;&lt;/div&gt;
 	&lt;/div&gt;
 &lt;/div&gt;</code></pre>
 </section>
@@ -185,7 +289,7 @@
 
 <section class="demo-section">
 	<h2>Toasts</h2>
-	<p>Bottom-right stack. Dwell is 3500ms + 50ms per character, clamped to 4–15s. Enter and exit animate opacity and transform only; under reduced motion the rise collapses and the fade stays.</p>
+	<p>Bottom-right stack, navy surface, a 4px coloured left edge (DS-102, DS-115). Dwell is 3500ms + 50ms per character, clamped to 4–15s. Enter and exit animate opacity and transform only; under reduced motion the rise collapses and the fade stays.</p>
 	<div class="demo-row">
 		<button class="saga-btn saga-btn--secondary" onclick="showToast('Roster uploaded.', 'success')">Success toast</button>
 		<button class="saga-btn saga-btn--secondary" onclick="showToast('Session saved without a period — it will not appear on the schedule.', 'warning', 'Undo')">Warning with action</button>
@@ -239,16 +343,22 @@
 
 <section class="demo-section">
 	<h2>Tooltip</h2>
-	<div class="demo-row demo-row--tall" style="min-height:auto">
+	<p>White with a <code>--color-border-strong</code> hairline and <code>--shadow-md</code>, as dash's core-ui Tooltip renders (DS-057, DS-120); <code>--filled</code> is the primary-blue variant for the info-icon trigger; <code>--rich</code> is left-aligned with a semibold <code>.saga-tooltip__title</code> first line.</p>
+	<div class="demo-row demo-row--tall demo-row--tint" style="min-height:auto">
 		<span class="saga-tooltip" role="tooltip">Configure program</span>
 		<span class="saga-tooltip" role="tooltip">Students and tutors always meet in the same pods. Tooltips wrap at 16rem.</span>
+		<span class="saga-tooltip saga-tooltip--filled" role="tooltip">Search pages <kbd>⌘K</kbd></span>
+		<span class="saga-tooltip saga-tooltip--rich" role="tooltip"><span class="saga-tooltip__title">Aaliyah Lawrence</span>Period 1 · Pod 6 · joined 09/02/2026</span>
 	</div>
 <pre class="demo-snippet"><code>&lt;span class=&quot;saga-tooltip&quot; role=&quot;tooltip&quot;&gt;Configure program&lt;/span&gt;
-&lt;span class=&quot;saga-tooltip&quot; role=&quot;tooltip&quot;&gt;Students and tutors always meet in the same pods. Tooltips wrap at 16rem.&lt;/span&gt;</code></pre>
+&lt;span class=&quot;saga-tooltip&quot; role=&quot;tooltip&quot;&gt;Students and tutors always meet in the same pods. Tooltips wrap at 16rem.&lt;/span&gt;
+&lt;span class=&quot;saga-tooltip saga-tooltip--filled&quot; role=&quot;tooltip&quot;&gt;Search pages &lt;kbd&gt;⌘K&lt;/kbd&gt;&lt;/span&gt;
+&lt;span class=&quot;saga-tooltip saga-tooltip--rich&quot; role=&quot;tooltip&quot;&gt;&lt;span class=&quot;saga-tooltip__title&quot;&gt;Aaliyah Lawrence&lt;/span&gt;Period 1 · Pod 6 · joined 09/02/2026&lt;/span&gt;</code></pre>
 </section>
 
 <section class="demo-section">
 	<h2>Notices</h2>
+	<p>Levels are the modifier: bare <code>.saga-notice</code> is the notice level (<code>--notice</code> is an accepted alias), then <code>--warning</code>, <code>--danger</code>, <code>--success</code>, and <code>--attention</code> for a standing problem.</p>
 	<div class="demo-row demo-row--stack">
 		<div class="saga-notice" role="status"><span class="saga-notice__icon"><iconify-icon icon="material-symbols-light:info-outline-rounded"></iconify-icon></span><div class="saga-notice__body"><span class="saga-notice__title">Preview deploy skipped</span> Switch the PR to ready for review to trigger it.</div><button class="saga-btn saga-btn--quiet saga-btn--icon saga-btn--sm saga-notice__dismiss" aria-label="Dismiss"><iconify-icon icon="material-symbols-light:close-rounded"></iconify-icon></button></div>
 		<div class="saga-notice saga-notice--warning" role="status"><span class="saga-notice__icon"><iconify-icon icon="material-symbols-light:warning-outline-rounded"></iconify-icon></span><div class="saga-notice__body">This session has no period and will not appear on the schedule. <button class="saga-notice__action">Assign a period</button></div></div>

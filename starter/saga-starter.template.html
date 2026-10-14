@@ -38,15 +38,23 @@
 <body>
 <div class="saga-shell">
 	<nav class="saga-nav" aria-label="Main">
-		<div class="saga-nav__logo"><img src="https://style.wootdev.com/assets/brand/saga-logo-white.png" alt="Saga" width="96"></div>
-		<div class="saga-nav__section">Current program</div>
-		<div style="padding: 0 var(--space-md)"><button class="saga-select" type="button" aria-haspopup="listbox">Demo Program 08/17</button></div>
-		<a class="saga-nav__item" href="#"><iconify-icon icon="material-symbols-light:grid-view-outline-rounded"></iconify-icon> Dashboard</a>
-		<a class="saga-nav__item" href="#" aria-current="page"><iconify-icon icon="material-symbols-light:calendar-month-outline-rounded"></iconify-icon> Sessions</a>
-		<a class="saga-nav__item" href="#"><iconify-icon icon="material-symbols-light:group-outline-rounded"></iconify-icon> Rosters</a>
-		<div class="saga-nav__footer"><div class="saga-nav__section">District</div>Saga Sandbox District</div>
+		<div class="saga-nav__logo"><img src="https://style.wootdev.com/assets/brand/saga-logo-white.png" alt="Saga Education"></div>
+		<div class="saga-nav__group">
+			<span class="saga-nav__label" id="prog-label">Current Program</span>
+			<div class="saga-select">
+				<button type="button" class="saga-select__trigger" aria-haspopup="listbox" aria-expanded="false" aria-labelledby="prog-label"><span>Demo Program 08/17</span></button>
+			</div>
+			<a class="saga-nav__link" href="#"><iconify-icon icon="material-symbols-light:settings-outline-rounded"></iconify-icon> Configure program</a>
+		</div>
+		<ul class="saga-nav__items">
+			<li><a class="saga-nav__item" href="#"><iconify-icon icon="material-symbols-light:dashboard-outline-rounded"></iconify-icon> Dashboard</a></li>
+			<li><a class="saga-nav__item" href="#" aria-current="page"><iconify-icon icon="material-symbols-light:calendar-month-outline-rounded"></iconify-icon> Sessions</a></li>
+			<li><a class="saga-nav__item" href="#"><iconify-icon icon="material-symbols-light:group-outline-rounded"></iconify-icon> Rosters</a></li>
+			<li><a class="saga-nav__item" href="#"><iconify-icon icon="material-symbols-light:bar-chart-rounded"></iconify-icon> Reports</a></li>
+		</ul>
+		<div class="saga-nav__footer"><span class="saga-nav__label">District</span><div>Saga Sandbox District</div></div>
 	</nav>
-	<div class="saga-main">
+	<div class="saga-shell__main">
 		<header class="saga-topbar">
 			<h1 class="saga-topbar__title">Demo Program 08/17</h1>
 			<div class="saga-topbar__actions"><span class="ptag">prototype</span></div>
@@ -54,7 +62,8 @@
 		<main class="saga-page">
 			<div class="saga-card">
 				<h2>Start here</h2>
-				<p>Replace this card with the prototype. Buttons: <button class="saga-btn saga-btn--primary">Save</button> <button class="saga-btn saga-btn--secondary">Cancel</button></p>
+				<p>Replace this card with the prototype. The markup above mirrors <a href="https://style.wootdev.com/showcase/shell/">the shell showcase</a>; every class is documented at <a href="https://style.wootdev.com">style.wootdev.com</a>.</p>
+				<p><button class="saga-btn saga-btn--primary">Save</button> <button class="saga-btn saga-btn--secondary">Cancel</button> <button class="saga-btn saga-btn--quiet">Quiet</button></p>
 			</div>
 		</main>
 	</div>

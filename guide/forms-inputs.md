@@ -24,10 +24,11 @@ during a tab share, and every tutoring session runs inside a tab share.
   `--color-text`, Title Case, `--space-xs` below it. Every control has one;
   a search box may use a visually hidden label plus placeholder.
 - **Control** at full width of its column.
-- **Help** below, `--text-xs`, `--color-text-secondary`, `--space-xs` above.
-  Optional. One sentence.
-- **Error** replaces help (same slot), `--text-xs`, `--color-danger`, with a
-  small warning glyph. The control's border turns `--input-border-color-invalid`.
+- **Help** (`.saga-help`) below, `--text-sm`, `--color-text-secondary`,
+  `--space-xs` above. Optional. One sentence.
+- **Error** (`.saga-error`) replaces help (same slot; `data-invalid` on the
+  field hides the help), `--text-sm`, `--color-danger`, with a small warning
+  glyph. The control's border turns `--input-border-color-invalid`.
 - Fields stack `--space-md` apart; related fields sit side by side on one
   row with `--space-md` between them (Tutoring Period | When | Time in the
   Edit Session modal).
@@ -50,7 +51,7 @@ beneath it.
 | `--input-border-color-focus` | `--color-primary`, plus the global focus ring |
 | `--input-border-color-invalid` | `--color-danger` |
 | `--input-color-placeholder` | `--saga-beige-dark` (`#a59c94`), italic |
-| text | `--text-sm`, `--color-text` |
+| text | inherits (`--text-base`), `--color-text`; `.saga-input--sm` drops to `--text-sm` at 80% height |
 
 Placeholder text is italic and beige, so an empty field and a filled field
 are different at a glance even in a screenshot. Placeholders describe the
@@ -60,26 +61,34 @@ format ("Search whole name, Student ID, school"), not the label.
 
 ## Select
 
-Never a native `<select>`. The select is a button that looks like an input
-with a blue caret at the right, and it opens a painted list:
+Product UI never renders a native `<select>` (dash enforces it in CI). The
+select is a painted trigger that looks like an input with a blue caret at the
+right, and it opens a painted listbox (DS-101, DS-117):
 
-- **Trigger**: `.saga-select`, the text-input box with a down caret in
-  `--color-primary` at the right. Shows the chosen value, or the placeholder in
-  italic beige.
-- **List**: a white panel, 1px `--color-border-strong`, `--radius-md`,
-  `--shadow-popover`, anchored under the trigger at the trigger's width or
-  wider, max height about 240px then scrolls. It flips above when there is no
-  room below. Layer `--z-dropdown`.
-- **Search** row at the top once there are more than a handful of options:
-  a magnifier glyph and an italic "Search..." input, hairline rule below.
-- **Rows**: `--text-sm`, `--color-text-dark`, `0.375rem 0.75rem` padding.
-  Hover `--color-bg-tertiary`. The selected row is `--color-primary-light`
-  fill with `--color-primary` semibold text (the "Demo Program 08/17" row in
-  `program_dropdown.png`).
-- **Footer** slot for an add action, separated by a hairline: the blue
-  add-disc and "Add New Program".
+- **Trigger**: `.saga-select > button.saga-select__trigger`, the text-input
+  box with a CSS-drawn down caret in `--color-primary` at the right. Shows the
+  chosen value in a `<span>`, or the placeholder (`.is-placeholder`) in italic
+  beige. `aria-haspopup="listbox"`, `aria-expanded` while open.
+- **List**: `.saga-select__menu`, a white panel, 1px `--color-border`,
+  `--radius-md`, `--shadow-popover`, anchored under the trigger at the
+  trigger's width or wider, max height 18rem then scrolls. It flips above when
+  there is no room below. Layer `--z-dropdown`.
+- **Search** row (`.saga-select__search`) at the top once there are more than
+  a handful of options: a `.saga-search` with a magnifier glyph and an italic
+  "Search..." input, hairline rule below.
+- **Rows**: `.saga-select__option`, either the `<li role="option">` itself or
+  a `<button role="option">` inside it; `--space-sm --space-md` padding.
+  Hover and the keyboard-active row (`data-active`) take `--color-bg-tertiary`.
+  The selected row (`aria-selected="true"`) is `--color-primary-light` fill
+  with `--color-primary` semibold text (the "Demo Program 08/17" row in
+  `program_dropdown.png`). A row that cannot be chosen is
+  `aria-disabled="true"` in `--color-text-disabled`.
+- **Footer** slot (`.saga-select__footer`) for an add action, separated by a
+  hairline: the blue add-disc and "Add New Program".
 - Group headers inside the list are navy, `--text-xs` bold, uppercase, with a
   hairline beneath; de-emphasized options are italic.
+- `.saga-select--inline` makes the control shrink to its content (a filter in
+  a toolbar); `.saga-select--sm` takes the `--sm` input metrics.
 
 Keyboard: arrow keys move, Enter picks, Esc closes, typing filters. Multi-select
 rows carry a checkbox; single-select rows carry no indicator, the highlight is
@@ -87,26 +96,55 @@ the mark.
 
 ```html
 <div class="saga-field">
-  <label class="saga-label">Tutor:Student Ratio</label>
-  <button class="saga-select" aria-haspopup="listbox" aria-expanded="false">1:3</button>
+  <label class="saga-label" id="ratio-label">Tutor:Student Ratio</label>
+  <div class="saga-select">
+    <button type="button" class="saga-select__trigger" aria-haspopup="listbox" aria-expanded="false" aria-labelledby="ratio-label"><span>1:3</span></button>
+    <ul class="saga-select__menu" role="listbox" aria-labelledby="ratio-label" hidden>
+      <li class="saga-select__option" role="option" aria-selected="false">1:1</li>
+      <li class="saga-select__option" role="option" aria-selected="true">1:3</li>
+      <li class="saga-select__option" role="option" aria-selected="false">1:4</li>
+    </ul>
+  </div>
 </div>
+```
+
+**Prototype exception.** A native `<select>` wrapped in `.saga-select` takes
+the same box and caret (`appearance: none`), so a prototype whose point is not
+the dropdown's behaviour may use it to get a working control in one line. It
+is a stand-in, not the design: the open list will look native, will not show
+in a tab share, and an engineer replaces it with `SelectMenu`. Never ship it
+in product UI.
+
+```html
+<div class="saga-select"><select aria-label="Ratio"><option>1:1</option><option selected>1:3</option></select></div>
 ```
 
 ## Checkbox, radio, toggle
 
-All three share one geometry built on the em, so they scale with text.
+All three are the native input drawn with `appearance: none`, sized by the
+spacing tokens, wrapped in a `label.saga-check` that puts the text `--space-sm`
+to the right (DS-116).
 
-- **Checkbox** `.saga-checkbox`: a 1.375em square, 1px `--color-gray`
-  border, `--radius-xs`, transparent. Checked draws a `--color-primary` check
-  inside; the box itself stays white. Label to the right, `--space-sm` away,
-  `--text-sm`.
-- **Radio** `.saga-radio`: a 1.125em circle, 2px `--color-gray` ring. Selected
-  fills the centre with `--color-primary`, leaving a 2px white gap inside the
-  ring. Radios in a row sit 1.5em apart; in a column, `--space-sm`.
-- **Toggle** `.saga-toggle`: a 2.25em by 1em track, `--radius-full`, with a
-  1.375em white knob that overhangs the track. Off is `--color-gray-light`
-  track; on is `--color-primary` track with the knob at the right. The label
-  follows ("Show Entire District").
+- **Checkbox** `.saga-checkbox`: a `--space-md` (16px) square, 1px
+  `--input-border-color-hover` border, `--radius-xs`, white. Checked fills the
+  box `--color-primary` and draws a white check inside; indeterminate fills
+  it and draws a white bar. Hover turns the border blue.
+- **Radio** `.saga-radio`: a `--space-md` circle, the same 1px ring. Selected
+  fills `--color-primary` with a white dot in the centre (DS-060). Radios in
+  a row sit `--space-md` apart; in a column, `--space-sm`.
+- **Toggle** `.saga-toggle` (`role="switch"`): a 36 × 20px track
+  (`--space-xl + --space-xs` by `--space-md + --space-xs`), `--radius-full`,
+  with a `--space-md` white knob inset `--space-2xs` from the track edge. Off
+  is `--color-gray-light` track; on is `--color-primary` track with the knob
+  slid `--space-md` to the right. The label follows ("Show Entire District").
+- Disabled is a `--input-bg-disabled` fill with a `--color-gray-light` border
+  (checked and disabled: `--color-gray` fill), never opacity.
+
+```html
+<label class="saga-check"><input type="checkbox" class="saga-checkbox" checked> Email me a copy</label>
+<label class="saga-check"><input type="radio" name="pattern" class="saga-radio" checked> Same Every Week</label>
+<label class="saga-check"><input type="checkbox" class="saga-toggle" role="switch"> Show Entire District</label>
+```
 
 Large choices become **option cards** (Same Every Week / Varies by Day Type;
 the four Rotation Pattern tiles): a `.saga-card` with the radio or an icon in
@@ -117,22 +155,48 @@ sentence of explanation; use plain radios when the labels are enough.
 
 ## Date picker
 
-The date field is a trigger that looks like an input with a calendar glyph in
-`--color-text-secondary` at the right ("10/12/2026"). Clicking opens a
-calendar popover (`date_picker.png`):
+The date field is `.saga-datepicker`: a `.saga-datepicker__trigger` that looks
+like an input with a calendar glyph in `--color-text-secondary` at the right
+("10/12/2026"), sized to its content rather than the column. Clicking opens a
+`.saga-datepicker__popover` (`date_picker.png`):
 
-- 264px wide, white, 1px `--color-border-strong`, `--radius-md`,
-  `--shadow-popover`, `--z-dropdown`.
-- Header: a month and year label in `--text-sm` semibold, with round
-  26px chevron buttons in `--color-primary` on either side.
-- Weekday row in `--text-xs` semibold, Su through Sa.
-- Day cells are 32px squares, `--text-sm`. Adjacent-month days are
-  `--color-text-muted`. Today has a 1px `--color-primary` ring. The selected
-  day is a `--color-primary` filled square with white text and `--radius-sm`
-  corners. Disabled days are `--color-text-muted` with no hover.
+- 264px wide, white, 1px `--color-border`, `--radius-lg`, `--space-md`
+  padding, `--shadow-popover`, `--z-dropdown`.
+- `.saga-datepicker__nav`: a `.saga-datepicker__month` label ("October 2026")
+  in `--text-sm` semibold, centred, with small quiet chevron buttons in
+  `--color-primary` on either side.
+- `.saga-datepicker__grid`: seven 32px columns. The weekday row
+  (`.saga-datepicker__weekday`) is `--text-xs` semibold
+  `--color-text-secondary`, Su through Sa.
+- Day cells are `button.saga-datepicker__day`, 32px squares, `--text-sm`,
+  `--radius-md`, hover `--color-bg-tertiary`. Adjacent-month days are
+  `--muted` (`--color-text-muted`); today is `--today` (bold). The selected
+  day (`aria-selected="true"`) is a `--color-primary` filled square with white
+  text and a 2px `--color-primary-light` ring. Disabled days are
+  `--color-text-muted` with no hover.
 - Keyboard: arrows move by day, PageUp and PageDown by month, Enter selects,
   Esc closes. Focus moves into the grid on open and back to the trigger on
   close.
+
+```html
+<div class="saga-datepicker">
+  <button type="button" class="saga-datepicker__trigger" aria-haspopup="dialog" aria-expanded="true" aria-label="When: 10/12/2026">
+    <span>10/12/2026</span><iconify-icon icon="material-symbols-light:calendar-today-outline-rounded"></iconify-icon>
+  </button>
+  <div class="saga-datepicker__popover" role="dialog" aria-label="Choose a date">
+    <div class="saga-datepicker__nav">
+      <button class="saga-btn saga-btn--quiet saga-btn--icon saga-btn--sm" aria-label="Previous month"><iconify-icon icon="material-symbols-light:chevron-left-rounded"></iconify-icon></button>
+      <span class="saga-datepicker__month">October 2026</span>
+      <button class="saga-btn saga-btn--quiet saga-btn--icon saga-btn--sm" aria-label="Next month"><iconify-icon icon="material-symbols-light:chevron-right-rounded"></iconify-icon></button>
+    </div>
+    <div class="saga-datepicker__grid" role="grid">
+      <span class="saga-datepicker__weekday">Su</span> … <span class="saga-datepicker__weekday">Sa</span>
+      <button class="saga-datepicker__day saga-datepicker__day--muted">27</button> …
+      <button class="saga-datepicker__day" aria-selected="true">12</button> …
+    </div>
+  </div>
+</div>
+```
 
 Dates are entered by picking, never by typing a native date control.
 
@@ -209,10 +273,10 @@ sessions search in `calendar_view.png`):
 
 ## Layout
 
-- Single column by default. Modal forms are 560px wide; a two-column row is
+- Single column by default. Modal forms are 640px wide; a two-column row is
   for short related fields (start and end, first and last name).
-- Control widths follow content: a time is 6em, a date 12ch, a ratio select
-  the full column. Do not stretch a short control to the column width to make
+- Control widths follow content: a time is 6em, a date picker its value, a
+  ratio select the full column (or `.saga-select--inline` in a toolbar). Do not stretch a short control to the column width to make
   the grid look even.
 - Labels never sit to the left of controls; the top-label layout is what
   lets fields line up in rows.

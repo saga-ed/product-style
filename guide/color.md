@@ -89,7 +89,8 @@ One red, and it is clay. Pink is never a status colour (DS-004).
 | Status | Foreground | Background | Border | Use |
 |---|---|---|---|---|
 | Success | `--color-success` `#20912d` | `--color-success-bg` `#eaf5ec` | `--color-success-border` | Saved, complete, healthy |
-| Warning | `--color-warning` `#d97706` | `--color-warning-bg` `#fff8e1` | `--color-warning-border` | Something to check before continuing |
+| Warning | `--color-warning` `#d97706` | `--color-warning-bg` `#fff8e1` | `--color-warning-border` | Something to check before continuing; icon, edge and border only |
+| Warning, filled | `--color-warning-strong` `#b45309` (white text on it) | | | The one amber a filled control may use: the caution confirm button, a status-filled attendance mark (DS-112) |
 | Danger | `--color-danger` `#991a21` | `--color-danger-bg` `#fdecea` | `--color-danger-border` | Errors, destructive confirms |
 | Notice | `--color-notice` (blue) | `--color-notice-bg` `#eef4fb` | `--color-notice-border` | Informational; use sparingly |
 | Attention | `--color-attention` `#b45309` | `--color-attention-bg` `#fdf1de` | | Needs action in content (the Groups step's triangle) |
@@ -133,6 +134,7 @@ and control borders. Ratios below are computed from the token values.
 | green `#20912d` | 4.1:1 | Below AA for 15px text; see TOKEN REQUEST in DS-025 |
 | teal `#1ececa` | 1.96:1 | Fails. The teal "Continue" in Configure Period is the bug (DS-003) |
 | amber `#d97706`, pink `#ff595a`, orange `#ffad00` | 1.9 to 3.2:1 | Fails. Dark text on these, or no text |
+| strong amber `#b45309` | 4.6:1 | AA. The amber for white-on-amber fills (`--color-warning-strong`) |
 
 Status text on its tint: danger 7.3:1, notice 5.9:1, positive 5.5:1, teal-ink on
 teal-tint 4.9:1, blue on `--color-primary-light` 5.6:1 all pass. Success on its tint is
@@ -178,8 +180,13 @@ and the strategy timeline uses lime, yellow, navy, clay and gray as categorical 
 
 - A single-series chart may use magenta on its own (the AI Insights convention) or
   blue; a stat card number is blue.
-- Reference lines (averages, targets) are `--chart-average`; gridlines
-  `--chart-grid`; alternating period bands `--chart-band`.
+- Averages are `--chart-average` (gray-400); gridlines `--chart-grid`;
+  alternating period bands `--chart-band`. The remainder of a bar or ring
+  ("not yet") is `--chart-neutral` (`#d9d9d9`). A reference mark or line (a
+  target, a threshold) is `--chart-reference` (gray-700, `#374151`): it has
+  to stay at least 3:1 over `--chart-neutral` and the gray bands, which
+  `--chart-average` does not (about 1.6:1), so the two are not
+  interchangeable (DS-111).
 - Green, clay and amber in a chart mean good, bad and warning. Do not use them as
   ordinary series colours, and do not use brand colours to mean a status.
 - Every series also gets a shape, pattern or direct label; colour is never the only

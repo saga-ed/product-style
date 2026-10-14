@@ -5,9 +5,11 @@
    semantic token (Tier 2); the only literal lengths are 1px hairlines and 0.
    Focus rings come from base.css (DS-006) and are never overridden here.
    Ledger: guide/decisions.md DS-100+ (guide/_ledger-components.md).
-   Sections: icons · buttons · segmented · cards · forms · tabs · tables · chips
-   & badges · notices · modal & steps · toasts · popover & tooltip · skeleton &
-   progress · shell (nav, topbar, page) · calendar · avatar.
+   Sections: icons · buttons · segmented · cards · layout (grid, list rows,
+   empty state) · forms (inputs, select, choice controls, date picker) · tabs ·
+   tables · charts · chips & badges · notices · modal & steps · toasts ·
+   popover & tooltip · skeleton & progress · shell (nav, topbar, page) ·
+   calendar · avatar.
    ============================================================================= */
 
 /* ── Icons ─────────────────────────────────────────────────────────────────── */
@@ -45,16 +47,35 @@ iconify-icon { display: inline-block; vertical-align: -0.125em; }
 .saga-btn:not(:disabled, [aria-disabled="true"]):hover { background: var(--_bg-hover); filter: var(--_hover-filter); }
 .saga-btn:not(:disabled, [aria-disabled="true"]):active { filter: brightness(0.86); }
 
+.saga-btn--primary { --_bg: var(--btn-surface-primary); --_bg-hover: var(--btn-surface-primary-hover); --_fg: var(--btn-text-primary); --_border: transparent; } /* explicit alias of the default */
 .saga-btn--secondary { --_bg: var(--btn-surface-secondary); --_bg-hover: var(--color-bg-secondary); --_fg: var(--btn-text-secondary); --_border: var(--btn-border-secondary); }
 .saga-btn--quiet { --_bg: transparent; --_bg-hover: var(--btn-surface-quiet-hover); --_fg: var(--color-primary); }
 .saga-btn--danger { --_bg: var(--btn-surface-danger); --_bg-hover: var(--btn-surface-danger); --_hover-filter: brightness(0.92); }
 .saga-btn--affirmative { --_bg: var(--btn-surface-affirmative); --_bg-hover: var(--btn-surface-affirmative); --_hover-filter: brightness(0.92); }
+/* Caution confirm ("allowed, but this has consequences"): the one amber fill, legible under white (DS-112). */
+.saga-btn--caution { --_bg: var(--color-warning-strong); --_bg-hover: var(--color-warning-strong); --_hover-filter: brightness(0.92); }
 
-.saga-btn--sm { padding: calc(var(--btn-padding-y) * 0.6) calc(var(--btn-padding-x) * 0.6); font-size: var(--text-sm); }
 .saga-btn--block { display: flex; width: 100%; }
 .saga-btn--icon { padding: var(--btn-padding-y); aspect-ratio: 1; }
 .saga-btn--icon.saga-btn--quiet { --_fg: var(--color-text-secondary); --_bg-hover: var(--color-bg-tertiary); }
 .saga-btn--icon.saga-btn--quiet:not(:disabled):hover { color: var(--color-text); }
+/* --sm comes after --icon so a small icon button takes the small padding (28px square). */
+.saga-btn--sm { padding: calc(var(--btn-padding-y) * 0.6) calc(var(--btn-padding-x) * 0.6); font-size: var(--text-sm); }
+.saga-btn--icon.saga-btn--sm { padding: var(--space-xs); font-size: var(--text-base); } /* 28px square at the 15px root */
+
+/* Mode toggle ("Show Bulk Actions"): while the mode is on the button sits in the
+   quiet-hover wash with blue semibold text and aria-pressed="true" (DS-113). */
+.saga-btn[aria-pressed="true"] { --_bg: var(--btn-surface-quiet-hover); --_bg-hover: var(--btn-surface-quiet-hover); --_fg: var(--color-primary); --_border: transparent; font-weight: var(--weight-semibold); }
+/* Status-filled toggle (attendance marks): outlined at rest; pressed fills with
+   the meaning set on --_status (inline or by a parent), default primary (DS-113). */
+.saga-btn--status { --_bg: var(--btn-surface-secondary); --_bg-hover: var(--color-bg-secondary); --_fg: var(--btn-text-secondary); --_border: var(--btn-border-secondary); }
+.saga-btn--status[aria-pressed="true"] { --_bg: var(--_status, var(--color-primary)); --_bg-hover: var(--_status, var(--color-primary)); --_fg: var(--color-primary-contrast); --_border: transparent; --_hover-filter: brightness(0.92); }
+
+/* Link-styled button: an action inside a table cell or sentence that must be a
+   <button> but read as a link. */
+.saga-link { appearance: none; display: inline; margin: 0; padding: 0; border: 0; background: none; font: inherit; color: var(--color-primary); text-decoration: none; cursor: pointer; }
+.saga-link:hover { color: var(--color-primary-hover); text-decoration: underline; text-underline-offset: 0.15em; }
+.saga-link:disabled { color: var(--color-text-disabled); cursor: not-allowed; text-decoration: none; }
 
 /* "Add X": quiet button whose leading mark is a filled blue circle. */
 .saga-btn--add { --_bg: transparent; --_bg-hover: var(--btn-surface-quiet-hover); --_fg: var(--color-primary); }
@@ -105,7 +126,7 @@ iconify-icon { display: inline-block; vertical-align: -0.125em; }
 	transition: background var(--motion-fast) var(--ease-out), color var(--motion-fast) var(--ease-out);
 }
 .saga-segmented > button:hover { background: var(--color-bg); }
-.saga-segmented > button[aria-pressed="true"] { background: var(--color-primary); color: var(--color-primary-contrast); }
+.saga-segmented > button:is([aria-pressed="true"], [aria-checked="true"]) { background: var(--color-primary); color: var(--color-primary-contrast); }
 
 /* ── Cards (DS-015) ────────────────────────────────────────────────────────── */
 .saga-card {
@@ -121,10 +142,46 @@ iconify-icon { display: inline-block; vertical-align: -0.125em; }
 .saga-card--interactive { cursor: pointer; }
 .saga-card--interactive:hover { box-shadow: var(--shadow-md); border-color: var(--color-border-hover); }
 .saga-card--selected { border-color: var(--color-primary); background: var(--color-notice-bg); }
-.saga-card--stat { border-top: 2px solid var(--color-primary); padding: var(--space-md); display: grid; gap: var(--space-2xs); }
+.saga-card--stat { border-top: var(--border-width-emphasis) solid var(--color-primary); padding: var(--space-md); display: grid; gap: var(--space-2xs); }
 .saga-card__value { font-size: var(--text-2xl); font-weight: var(--weight-semibold); color: var(--color-primary); line-height: var(--leading-tight); }
 .saga-card__label { font-weight: var(--weight-semibold); }
 .saga-card__caption { font-size: var(--text-sm); color: var(--color-text-secondary); }
+/* Title row inside a plain card: heading left, a control or meta right. */
+.saga-card__title-row { display: flex; align-items: center; justify-content: space-between; gap: var(--space-sm); margin-bottom: var(--space-sm); }
+.saga-card__title-row > :is(h2, h3, h4, .saga-card__title) { margin: 0; }
+/* Placeholder slot ("Add Day Type"): dashed, on the well surface, no shadow. */
+.saga-card--empty { border: var(--border-width-emphasis) dashed var(--color-border-hover); background: var(--color-bg-secondary); box-shadow: none; text-align: center; color: var(--color-text-secondary); }
+
+/* ── Layout: grid, list rows, empty state ──────────────────────────────────── */
+.saga-grid { display: grid; gap: var(--space-md); grid-template-columns: minmax(0, 1fr); }
+.saga-grid--2 { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+.saga-grid--3 { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+.saga-grid--4 { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+.saga-grid--stats, .stat-grid { display: grid; gap: var(--space-md); grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); }
+.saga-grid--lg { gap: var(--space-lg); }
+
+/* Bordered row stack: a list of editable things that is not quite a table (All
+   Periods). Hairline between rows; --edge paints a 3px meaning edge from --_edge;
+   --ghost dims a row by colour and surface, never opacity. */
+.saga-list { margin: 0; padding: 0; list-style: none; border: 1px solid var(--color-border); border-radius: var(--radius-md); background: var(--color-bg); }
+.saga-list__row { display: flex; align-items: center; gap: var(--space-sm); padding: var(--space-sm) var(--space-md); border-top: 1px solid var(--color-border); }
+.saga-list__row:first-child { border-top: 0; border-radius: var(--radius-md) var(--radius-md) 0 0; }
+.saga-list__row:last-child { border-radius: 0 0 var(--radius-md) var(--radius-md); }
+.saga-list__row:only-child { border-radius: var(--radius-md); }
+.saga-list__row--edge { box-shadow: inset 3px 0 0 var(--_edge, var(--color-primary)); }
+.saga-list__row--ghost { color: var(--color-text-muted); background: var(--color-bg-secondary); }
+.saga-list__row[aria-selected="true"] { background: var(--color-primary-light); }
+.saga-list--interactive > .saga-list__row:hover { background: var(--color-bg-secondary); }
+.saga-list__main { flex: 1; min-width: 0; }
+.saga-list__title { font-weight: var(--weight-semibold); }
+.saga-list__meta { font-size: var(--text-sm); color: var(--color-text-secondary); }
+.saga-list__end { margin-left: auto; display: flex; align-items: center; gap: var(--space-xs); flex-shrink: 0; }
+.saga-list__handle { display: inline-flex; color: var(--color-text-muted); cursor: grab; font-size: 1.2em; }
+
+/* Non-table empty state: centred, dashed, says what is empty and the one action that fills it. */
+.saga-empty { display: grid; justify-items: center; gap: var(--space-sm); padding: var(--space-xl); text-align: center; color: var(--color-text-secondary); border: 1px dashed var(--color-border); border-radius: var(--radius-lg); background: var(--color-bg); }
+.saga-empty__icon { display: inline-flex; font-size: 2em; color: var(--color-text-muted); }
+.saga-empty__title { font-weight: var(--weight-semibold); color: var(--color-text); }
 
 /* ── Forms (DS-016) ────────────────────────────────────────────────────────── */
 .saga-field { display: grid; gap: var(--space-xs); align-content: start; }
@@ -174,11 +231,17 @@ iconify-icon { display: inline-block; vertical-align: -0.125em; }
 }
 .saga-select__menu[hidden] { display: none; }
 .saga-select__search { padding: var(--space-xs) var(--space-sm); border-bottom: 1px solid var(--color-border); margin-bottom: var(--space-xs); }
-.saga-select__option { display: flex; align-items: center; gap: var(--space-sm); padding: var(--space-sm) var(--space-md); cursor: pointer; white-space: nowrap; }
-.saga-select__option:hover { background: var(--color-bg-tertiary); }
+/* The option may be the <li> itself or a <button role="option"> inside it; both get the same look. */
+.saga-select__option { display: flex; align-items: center; gap: var(--space-sm); width: 100%; padding: var(--space-sm) var(--space-md); margin: 0; border: 0; background: none; color: inherit; font: inherit; text-align: left; cursor: pointer; white-space: nowrap; }
+.saga-select__option:hover, .saga-select__option[data-active], .saga-select__option:focus-visible { background: var(--color-bg-tertiary); }
 .saga-select__option[aria-selected="true"] { background: var(--color-primary-light); color: var(--color-primary); font-weight: var(--weight-semibold); }
 .saga-select__option[aria-disabled="true"] { color: var(--color-text-disabled); cursor: not-allowed; }
 .saga-select__footer { border-top: 1px solid var(--color-border); margin-top: var(--space-xs); padding: var(--space-xs) var(--space-sm) 0; }
+.saga-select__trigger.is-placeholder > span { color: var(--input-color-placeholder); font-style: italic; }
+.saga-select--inline { display: inline-block; width: auto; }
+.saga-select--inline > select, .saga-select--inline > .saga-select__trigger { display: inline-flex; width: auto; }
+.saga-select--sm > select, .saga-select--sm > .saga-select__trigger { min-height: calc(var(--input-height) * 0.8); font-size: var(--text-sm); }
+.saga-select--sm::after { right: var(--space-sm); }
 
 /* Choice controls — drawn with appearance:none so they take tokens. Sized by
    --space-md (16px) so they scale with the text-size preference. */
@@ -219,6 +282,48 @@ iconify-icon { display: inline-block; vertical-align: -0.125em; }
 .saga-toggle:checked::after { transform: translateX(var(--space-md)); }
 .saga-toggle:disabled { background: var(--color-bg-tertiary); cursor: not-allowed; }
 .saga-toggle:disabled::after { background: var(--color-gray-lighter); }
+
+/* Date picker: an input-shaped trigger with a trailing calendar glyph, and a
+   264px popover holding month nav and a 7 × 32px day grid (date_picker.png).
+   Never a native date input. */
+.saga-datepicker { position: relative; display: inline-block; }
+.saga-datepicker__trigger {
+	display: inline-flex; align-items: center; gap: var(--space-sm); width: auto; min-width: 9em; min-height: var(--input-height);
+	padding: var(--input-padding); background: var(--input-bg); color: var(--color-text);
+	border: 1px solid var(--input-border-color); border-radius: var(--input-radius);
+	font: inherit; line-height: var(--leading-normal); font-variant-numeric: tabular-nums; text-align: left; cursor: pointer;
+	transition: border-color var(--motion-fast) var(--ease-out), background var(--motion-fast) var(--ease-out);
+}
+.saga-datepicker__trigger > span { flex: 1; }
+.saga-datepicker__trigger > iconify-icon, .saga-datepicker__trigger > svg, .saga-datepicker__icon { font-size: 1.2em; width: 1em; height: 1em; flex-shrink: 0; color: var(--color-text-secondary); }
+.saga-datepicker__trigger:hover { border-color: var(--input-border-color-hover); }
+.saga-datepicker__trigger:focus, .saga-datepicker__trigger[aria-expanded="true"] { border-color: var(--input-border-color-focus); }
+.saga-datepicker__trigger[aria-invalid="true"] { border-color: var(--input-border-color-invalid); }
+.saga-datepicker__trigger:disabled { background: var(--input-bg-disabled); color: var(--input-color-disabled); border-color: var(--input-border-color-readonly); cursor: not-allowed; }
+.saga-datepicker__trigger.is-placeholder > span { color: var(--input-color-placeholder); font-style: italic; }
+.saga-datepicker__popover {
+	position: absolute; left: 0; top: calc(100% + var(--space-xs)); width: 264px; padding: var(--space-md);
+	background: var(--color-bg); color: var(--color-text); border: 1px solid var(--color-border); border-radius: var(--radius-lg);
+	box-shadow: var(--shadow-popover); z-index: var(--z-dropdown);
+}
+.saga-datepicker__popover[hidden] { display: none; }
+.saga-datepicker__popover--static { position: static; display: inline-block; }
+.saga-datepicker__nav { display: flex; align-items: center; justify-content: space-between; gap: var(--space-sm); margin-bottom: var(--space-sm); }
+.saga-datepicker__nav > .saga-btn { --_fg: var(--color-primary); }
+.saga-datepicker__month { flex: 1; text-align: center; font-size: var(--text-sm); font-weight: var(--weight-semibold); }
+.saga-datepicker__grid { display: grid; grid-template-columns: repeat(7, var(--space-xl)); justify-content: space-between; row-gap: var(--space-2xs); font-size: var(--text-sm); text-align: center; }
+.saga-datepicker__weekday { font-size: var(--text-xs); font-weight: var(--weight-semibold); color: var(--color-text-secondary); line-height: var(--space-lg); }
+.saga-datepicker__day {
+	appearance: none; display: inline-flex; align-items: center; justify-content: center; margin: 0; padding: 0;
+	width: var(--space-xl); height: var(--space-xl); border: 0; border-radius: var(--radius-md);
+	background: transparent; color: var(--color-text); font: inherit; font-size: var(--text-sm); font-variant-numeric: tabular-nums; cursor: pointer;
+	transition: background var(--motion-instant) var(--ease-out);
+}
+.saga-datepicker__day:hover { background: var(--color-bg-tertiary); }
+.saga-datepicker__day--muted { color: var(--color-text-muted); }
+.saga-datepicker__day--today { font-weight: var(--weight-bold); }
+.saga-datepicker__day[aria-selected="true"] { background: var(--color-primary); color: var(--color-primary-contrast); font-weight: var(--weight-semibold); box-shadow: 0 0 0 var(--border-width-emphasis) var(--color-primary-light); }
+.saga-datepicker__day:disabled { color: var(--color-text-muted); background: transparent; cursor: not-allowed; }
 
 /* Search: pill input with a leading icon slot; italic placeholder from base. */
 .saga-search { position: relative; display: block; }
@@ -269,12 +374,28 @@ iconify-icon { display: inline-block; vertical-align: -0.125em; }
 .saga-table th[aria-sort="descending"]::after { border-bottom: 0; border-top-color: var(--color-text); }
 .saga-table th[aria-sort="none"]::after { border-top: 0; border-bottom-color: var(--color-text-muted); }
 .saga-table__empty { text-align: center; color: var(--color-text-secondary); padding: var(--space-xl) var(--space-md); }
+.saga-table tfoot td, .saga-table tfoot th { font-weight: var(--weight-semibold); background: var(--color-bg-secondary); border-top: 1px solid var(--color-border-strong); border-bottom: 0; }
 
 .saga-kv { display: grid; grid-template-columns: max-content 1fr; gap: var(--space-xs) var(--space-lg); margin: 0; }
 .saga-kv > dt { font-size: var(--text-sm); font-weight: var(--weight-semibold); color: var(--color-text-secondary); }
 .saga-kv > dd { margin: 0; min-width: 0; }
 .saga-kv--stacked { grid-template-columns: 1fr; gap: var(--space-2xs); }
 .saga-kv--stacked > dd + dt { margin-top: var(--space-sm); }
+
+/* ── Charts (DS-024/111/119): the few primitives a dashboard needs without a
+   chart library. Set --_c on a fill or swatch to pick the series colour; the
+   remainder is --chart-neutral, a target mark is --chart-reference. ──────── */
+.saga-bar { position: relative; display: flex; height: calc(var(--space-sm) + var(--space-xs) + var(--space-2xs)); border-radius: var(--radius-xs); background: var(--chart-neutral); overflow: hidden; }
+.saga-bar__fill { height: 100%; width: var(--value, 0%); flex-shrink: 0; background: var(--_c, var(--chart-1)); transition: width var(--motion-base) var(--ease-out); }
+.saga-bar--stacked > .saga-bar__fill { flex: 0 0 var(--value, 0%); width: auto; }
+.saga-bar--stacked > .saga-bar__fill + .saga-bar__fill { box-shadow: inset 1px 0 0 var(--color-bg); }
+.saga-bar--lg { height: var(--space-lg); }
+.saga-bar__mark { position: absolute; top: 0; bottom: 0; left: var(--value, 0%); width: var(--border-width-emphasis); margin-left: calc(var(--border-width-emphasis) / -2); background: var(--chart-reference); }
+.saga-axis { display: flex; justify-content: space-between; gap: var(--space-sm); margin-top: var(--space-xs); font-size: var(--text-xs); color: var(--color-text-secondary); font-variant-numeric: tabular-nums; }
+.saga-legend { display: inline-flex; flex-wrap: wrap; gap: var(--space-xs) var(--space-md); margin: 0; padding: 0; list-style: none; font-size: var(--text-xs); color: var(--color-text-secondary); }
+.saga-legend__item { display: inline-flex; align-items: center; gap: var(--space-xs); }
+.saga-legend__swatch { width: calc(var(--space-sm) + var(--space-2xs)); height: calc(var(--space-sm) + var(--space-2xs)); flex-shrink: 0; border-radius: var(--radius-xs); background: var(--_c, var(--color-text-muted)); }
+.saga-legend__swatch--line { height: var(--border-width-emphasis); border-radius: 0; }
 
 /* ── Chips & badges (DS-019) ───────────────────────────────────────────────── */
 .saga-chip {
@@ -314,6 +435,7 @@ iconify-icon { display: inline-block; vertical-align: -0.125em; }
 .saga-notice--warning { --_accent: var(--color-warning); --_bg: var(--color-warning-bg); --_border: var(--color-warning-border); }
 .saga-notice--danger { --_accent: var(--color-danger); --_bg: var(--color-danger-bg); --_border: var(--color-danger-border); }
 .saga-notice--success { --_accent: var(--color-success); --_bg: var(--color-success-bg); --_border: var(--color-success-border); }
+.saga-notice--notice { --_accent: var(--color-notice); --_bg: var(--color-notice-bg); --_border: var(--color-notice-border); } /* explicit alias of the bare level */
 .saga-notice--attention { --_accent: var(--color-attention); --_bg: var(--color-attention-bg); --_border: var(--color-warning-border); }
 .saga-notice__icon { display: inline-flex; flex-shrink: 0; font-size: 1.3em; color: var(--_accent); margin-top: 0.05em; }
 .saga-notice__body { flex: 1; min-width: 0; }
@@ -332,6 +454,10 @@ iconify-icon { display: inline-block; vertical-align: -0.125em; }
 	background: var(--card-bg); color: var(--color-text);
 	border-radius: var(--radius-lg); box-shadow: var(--shadow-modal); z-index: var(--z-modal);
 }
+/* Local scrim: covers the nearest positioned ancestor (a framed shell, a modal card) instead of the viewport (DS-118). */
+.saga-scrim--local { position: absolute; }
+.saga-scrim--strong { background: var(--modal-scrim-strong); }
+.saga-modal--confirm { width: min(440px, 100%); }
 .saga-modal--large { width: min(960px, 100%); }
 .saga-modal--fullscreen { width: 100vw; height: 100vh; max-height: 100vh; border-radius: 0; }
 .saga-modal--fullscreen .saga-modal__footer { border-radius: 0; }
@@ -349,6 +475,8 @@ dialog.saga-modal::backdrop { background: var(--modal-scrim); }
 	border-radius: 0 0 var(--radius-lg) var(--radius-lg);
 }
 .saga-modal__footer-end { margin-left: auto; display: flex; align-items: center; gap: var(--space-sm); }
+/* DS-054: Delete sits after Save, isolated by a wider gap */
+.saga-modal__footer-end > .saga-btn--danger { margin-left: var(--space-md); }
 
 .saga-steps { display: flex; margin: 0; padding: 0; list-style: none; border-bottom: 1px solid var(--color-border); counter-reset: saga-step; }
 .saga-step {
@@ -375,6 +503,7 @@ dialog.saga-modal::backdrop { background: var(--modal-scrim); }
 	display: flex; flex-direction: column; gap: var(--space-sm); align-items: flex-end;
 	width: min(26rem, calc(100vw - var(--space-lg) * 2)); pointer-events: none;
 }
+.saga-toast-stack--local { position: absolute; }
 .saga-toast {
 	--_edge: var(--color-accent);
 	pointer-events: auto; display: flex; align-items: center; gap: var(--space-sm); width: 100%;
@@ -425,11 +554,17 @@ dialog.saga-modal::backdrop { background: var(--modal-scrim); }
 .saga-popover__item[data-danger] > iconify-icon { color: inherit; }
 .saga-popover__divider { height: 1px; margin: var(--space-xs) 0; background: var(--color-border); border: 0; }
 .saga-popover__heading { padding: var(--space-xs) var(--space-md); font-size: var(--text-xs); font-weight: var(--weight-semibold); text-transform: uppercase; letter-spacing: 0.04em; color: var(--color-text-muted); }
+/* Tooltip (DS-057/120): white with a strong hairline, as dash's core-ui Tooltip
+   renders; --filled is the primary-blue variant for the info-icon trigger. */
 .saga-tooltip {
-	position: absolute; z-index: var(--z-tooltip); max-width: 16rem; padding: var(--space-xs) var(--space-sm);
-	background: var(--color-surface-inverse); color: var(--color-text-inverse); border-radius: var(--radius-sm); box-shadow: var(--shadow-md);
-	font-size: var(--text-xs); font-weight: var(--weight-medium); line-height: var(--leading-normal); pointer-events: none;
+	position: absolute; z-index: var(--z-tooltip); max-width: 16rem; padding: var(--space-sm) calc(var(--space-sm) + var(--space-2xs));
+	background: var(--color-bg); color: var(--color-text); border: 1px solid var(--color-border-strong); border-radius: var(--radius-lg); box-shadow: var(--shadow-md);
+	font-size: var(--text-sm); font-weight: var(--weight-regular); line-height: var(--leading-normal); pointer-events: none;
+	animation: saga-fade-in var(--motion-fade) var(--ease-out) both;
 }
+.saga-tooltip--filled { background: var(--color-primary); color: var(--color-primary-contrast); border-color: var(--color-primary); }
+.saga-tooltip--rich { text-align: left; max-width: 20rem; }
+.saga-tooltip__title { display: block; font-weight: var(--weight-semibold); margin-bottom: var(--space-2xs); }
 .saga-tooltip--static { position: static; display: inline-block; }
 
 /* ── Skeleton & progress ───────────────────────────────────────────────────── */
@@ -454,6 +589,9 @@ dialog.saga-modal::backdrop { background: var(--modal-scrim); }
 
 /* ── Shell: nav, top bar, page (DS-007) ────────────────────────────────────── */
 .saga-shell { display: grid; grid-template-columns: var(--nav-width) minmax(0, 1fr); height: 100vh; }
+/* Framed: the shell fills a positioned frame (a decision-board scene, an iframe-less
+   preview) instead of the viewport; pair with .saga-scrim--local / .saga-toast-stack--local (DS-118). */
+.saga-shell--framed { height: 100%; min-height: 0; position: relative; overflow: hidden; }
 .saga-shell__main { display: flex; flex-direction: column; min-width: 0; min-height: 0; background: var(--color-bg); }
 .saga-page { flex: 1; min-height: 0; overflow: auto; padding: var(--space-lg); }
 .saga-page__toolbar { display: flex; align-items: center; gap: var(--space-sm); flex-wrap: wrap; margin-bottom: var(--space-md); }

@@ -17,14 +17,15 @@ The roster grid (`dashboard_rosters_page.png`) is the reference table.
 | Part | Treatment |
 |---|---|
 | Container | 1px `--color-border` on all sides, `--radius-md`, white |
-| Header row | `--color-bg-tertiary` (`#f3f4f6`) fill, `--text-sm` `--weight-semibold` `--color-text-dark`, sticky to the top of the scroll container (`--z-sticky`) |
+| Header row | `--color-bg-secondary` (`#f9fafb`) fill, `--text-sm` `--weight-semibold` `--color-text`, sticky to the top of the scroll container with `.saga-table--sticky` |
 | Cells | `--text-sm` `--color-text`, padding `--space-sm` `--space-md`, 1px `--color-border` between rows and columns |
 | Row height | about 36px; dense tables may drop to 32px, never below |
 | Row hover | `--color-bg-secondary` wash; selected row `--color-primary-light` |
 | Sort | the sorted column shows a small up or down triangle after its label in `--color-text`; unsorted columns show nothing until hovered. Click toggles direction. |
 | Actions column | first column, fixed width, icon-only quiet buttons: a pencil (edit) and a lock (locked or read-only), 16px glyphs in `--color-text-dark` |
 | Overflow | the table scrolls horizontally inside its container with a visible bottom scrollbar; the first column and header stay put |
-| Numbers | right-aligned, tabular figures; text left-aligned |
+| Numbers | right-aligned, tabular figures (`.num`); text left-aligned |
+| Totals row | `tfoot`: semibold on `--color-bg-secondary` with a `--color-border-strong` rule above |
 
 ```html
 <table class="saga-table">
@@ -49,40 +50,74 @@ The roster grid (`dashboard_rosters_page.png`) is the reference table.
 ```
 
 **Empty state.** A table with no rows keeps its header and shows one centred
-message row in `--color-text-secondary`: what is empty and the one action that
-fills it ("No students yet. Add a student or upload a roster."). Never an
-illustration, never a blank box. See [voice-writing](voice-writing.md#empty-states).
+message row (`td.saga-table__empty`) in `--color-text-secondary`: what is
+empty and the one action that fills it ("No students yet. Add a student or
+upload a roster."). Never an illustration, never a blank box. Outside a table
+(an empty card, a page with nothing scheduled yet) the same message sits in a
+`.saga-empty` box: centred, `--color-text-secondary`, a 1px dashed
+`--color-border` edge, `--space-xl` padding, with an optional
+`.saga-empty__title` line and the action as a quiet or secondary button. See
+[voice-writing](voice-writing.md#empty-states).
+
+```html
+<div class="saga-empty">
+  <span class="saga-empty__title">No sessions scheduled</span>
+  Add a session or pick another day.
+  <button class="saga-btn saga-btn--secondary saga-btn--sm">Add session</button>
+</div>
+```
 
 **Loading.** First load shows a skeleton with the real column count (below).
 A re-sort or filter keeps the old rows visible and dims them; it does not
 flash a skeleton.
 
 **List rows.** A list of editable things that is not quite a table (the All
-Periods list in `dashboard_schedule.png`) is a stack of 1px-bordered rows
-sharing one container: a drag handle at the left in `--color-text-muted`, the
-name in `--text-base` with a quiet pencil beside it, inline detail chips, and
-a trash icon pushed to the right.
+Periods list in `dashboard_schedule.png`) is a `.saga-list`: a stack of
+`.saga-list__row`s sharing one bordered container with a hairline between
+rows and `--space-sm --space-md` padding. Left to right: a drag handle
+(`.saga-list__handle`, `--color-text-muted`), the name in `--text-base`
+(`.saga-list__title` inside `.saga-list__main`) with a quiet pencil beside it,
+inline detail chips, and a trash icon in `.saga-list__end`. A row that carries
+a meaning takes `.saga-list__row--edge`, a 3px left edge in `--_edge`
+(default `--color-primary`); a row that is present but not in play (a period
+with no sessions, an archived group) takes `.saga-list__row--ghost`, which
+dims by `--color-text-muted` text on `--color-bg-secondary`, never by opacity.
+
+```html
+<ul class="saga-list">
+  <li class="saga-list__row saga-list__row--edge" style="--_edge: var(--chip-regular)">
+    <span class="saga-list__handle"><iconify-icon icon="material-symbols-light:drag-indicator"></iconify-icon></span>
+    <div class="saga-list__main"><span class="saga-list__title">Period 1</span> <span class="saga-list__meta">8:01 AM – 9:26 AM</span></div>
+    <div class="saga-list__end"><button class="saga-btn saga-btn--quiet saga-btn--icon saga-btn--sm" aria-label="Delete Period 1"><iconify-icon icon="material-symbols-light:delete-outline-rounded"></iconify-icon></button></div>
+  </li>
+</ul>
+```
 
 ## Stat cards
 
-A stat card is a `.saga-card` with a `--stat` modifier and three lines:
+A stat card is a `.saga-card` with a `--stat` modifier and three lines, value
+first:
 
-1. The number: `--text-2xl`, `--weight-semibold`, `--color-primary`. A
-   percentage keeps its sign in the same size ("0%").
-2. The label: `--text-base`, `--weight-semibold`, `--color-text` ("Completion").
-3. The caption: `--text-xs`, `--color-text-secondary`, one line
-   ("0 of 55 students").
+1. The number (`.saga-card__value`): `--text-2xl`, `--weight-semibold`,
+   `--color-primary`. A percentage keeps its sign in the same size ("0%").
+2. The label (`.saga-card__label`): inherits the card's size,
+   `--weight-semibold`, `--color-text` ("Completion").
+3. The caption (`.saga-card__caption`): `--text-sm`,
+   `--color-text-secondary`, one line ("0 of 55 students").
 
-The card has the standard hairline border and `--shadow-sm`, plus a 2px
-`--color-primary` top edge that marks it as a stat rather than a content
-card. Stat cards sit in a grid of equal widths with `--space-md` gaps,
-three or four across.
+The card has the standard hairline border and `--shadow-sm`, plus a
+`--border-width-emphasis` (2px) `--color-primary` top edge that marks it as
+a stat rather than a content card. Stat cards sit in a `.saga-grid--stats`
+(`auto-fit`, 220px minimum, `--space-md` gaps), three or four across; see
+[spacing-layout](spacing-layout.md#cards).
 
 ```html
-<div class="saga-card saga-card--stat">
-  <strong>55</strong>
-  <h3>Submissions</h3>
-  <small class="text-secondary">Responses received</small>
+<div class="saga-grid saga-grid--stats">
+  <div class="saga-card saga-card--stat">
+    <span class="saga-card__value">55</span>
+    <span class="saga-card__label">Submissions</span>
+    <span class="saga-card__caption">Responses received</span>
+  </div>
 </div>
 ```
 
@@ -144,9 +179,10 @@ alone is not enough. In a result list (the Questions card in
 `dashboard_reports_surveys.png`) an unanswered row shows an empty grey track
 and a dash where the number would be.
 
-A **skeleton** (`.saga-skeleton`) is a `--color-gray-light` bar with
-`--radius-sm` corners that pulses between 42% and 85% opacity over 1.15s
-(static at 60% under reduced motion; never a sliding shimmer). Match the
+A **skeleton** (`.saga-skeleton`) is a `--color-bg-tertiary` bar with
+`--radius-sm` corners and a slow left-to-right shimmer (a `--color-border`
+band moving over `calc(--motion-slow * 5)`; a static `--color-bg-tertiary`
+fill under reduced motion, DS-121). Match the
 shape of the content it stands in for: the same number of rows, the same
 column widths, a card grid for cards. Group the bars in a container with
 `role="status"` and a visually hidden "Loading students" label; the bars
@@ -174,15 +210,44 @@ Charts follow the AI Insights screens (`ai_insights_*.png`):
 - **Group bands**: adjacent groups (Period 1, Period 2) alternate white and
   `--chart-band` backgrounds, each with a header giving the group name
   and its summary ("Average: 11.5") in `--text-xs` semibold.
-- **Average line**: a 1px `--chart-average` horizontal rule per band.
+- **Average line**: a 1px `--chart-average` horizontal rule per band. A
+  **reference** mark (a target, a threshold, the district figure) is
+  `--chart-reference`, which is darker because it must stay 3:1 over a
+  `--chart-neutral` track and over the grey bands; `--chart-average` on
+  the same gray is about 1.6:1 and reads only against white.
+- **Remainder**: the "not yet" part of a bar or ring (students not yet
+  surveyed, sessions not yet held) is `--chart-neutral`, never a pale tint of
+  the series colour.
 - **Marks**: 8px filled circles. Series take `--chart-1` through `--chart-8`
   in order (blue, magenta, teal, orange, pink, navy, lime, coral; DS-024). A
   chart that is about one named thing may pick its series colour, which is
   why the shipped AI Insights scatter is magenta. Hover enlarges the mark and
   shows a tooltip; a click opens the thing the mark stands for.
 - **Timelines**: event ticks are 2px by 10px bars in the series colour on a
-  hairline track; a legend at the left pairs a 10px square swatch with the
-  label. Glow and grow markers use the brand heart and leaf glyphs.
+  hairline track; a legend (`.saga-legend`) at the left pairs a 10px square
+  swatch (`.saga-legend__swatch`, coloured by `--_c`) with the label in
+  `--text-xs` `--color-text-secondary`. Glow and grow markers use the brand
+  heart and leaf glyphs.
+- **Bars without a chart library**: `.saga-bar` is a 14px `--chart-neutral`
+  track with `--radius-xs`; `.saga-bar__fill` takes its width from `--value`
+  and its colour from `--_c` (default `--chart-1`); `.saga-bar--stacked`
+  lays several fills side by side; `.saga-bar__mark` is a
+  `--chart-reference` tick at `--value`; `.saga-axis` is the `--text-xs`
+  secondary label row beneath. Put the number in text next to the bar; the
+  bar alone is not enough.
+
+```html
+<div class="saga-bar" role="img" aria-label="62% complete, target 80%">
+  <div class="saga-bar__fill" style="--value: 62%"></div>
+  <div class="saga-bar__mark" style="--value: 80%"></div>
+</div>
+<div class="saga-axis"><span>0%</span><span>100%</span></div>
+<ul class="saga-legend">
+  <li class="saga-legend__item"><span class="saga-legend__swatch" style="--_c: var(--chart-1)"></span> Surveyed</li>
+  <li class="saga-legend__item"><span class="saga-legend__swatch" style="--_c: var(--chart-neutral)"></span> Not yet</li>
+  <li class="saga-legend__item"><span class="saga-legend__swatch saga-legend__swatch--line" style="--_c: var(--chart-reference)"></span> Target</li>
+</ul>
+```
 - Never red versus green for good versus bad; use the chip and notice colours
   (`--color-success`, `--color-warning`) only when the chart is about status.
 

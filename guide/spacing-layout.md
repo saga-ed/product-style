@@ -55,18 +55,26 @@ The shell is three fixed regions and one scrolling one (DS-007):
 | Tab strip | sits at the top of the content, full width, underline rule | `--tab-font-size` |
 
 ```html
-<nav class="saga-nav">…</nav>
-<header class="saga-topbar"><h1>Demo Program 08/17</h1>…</header>
-<main class="content">
-  <div class="saga-tabs" role="tablist">…</div>
-  <div class="actions">…</div>
-  <div class="saga-card">…</div>
-</main>
+<div class="saga-shell">
+  <nav class="saga-nav">…</nav>
+  <div class="saga-shell__main">
+    <header class="saga-topbar"><h1 class="saga-topbar__title">Demo Program 08/17</h1>…</header>
+    <main class="saga-page">
+      <div class="saga-tabs" role="tablist">…</div>
+      <div class="saga-page__toolbar">…</div>
+      <div class="saga-card">…</div>
+    </main>
+  </div>
+</div>
 ```
 
-```css
-.content { padding: var(--space-lg); display: flex; flex-direction: column; gap: var(--space-lg); }
-```
+`.saga-shell` is a `100vh` grid of `--nav-width` plus the rest; `.saga-page`
+is the padded scroll region. When the shell has to live inside something else
+(a decision-board scene, a preview panel, a tutorial frame) add
+`.saga-shell--framed`: it fills its positioned parent's height instead of the
+viewport, and overlays inside it use `.saga-scrim--local` and
+`.saga-toast-stack--local` so they stay in the frame (DS-118). The full markup
+is in [shell-navigation](shell-navigation.md#html-skeleton).
 
 Content width (DS-026):
 - Data pages (rosters, schedules, reports) are fluid. A table uses the whole width and
@@ -83,18 +91,21 @@ them. It never holds page actions; those go in the content's action row.
 ## Cards
 
 Cards are the unit of layout (see [Elevation and surfaces](elevation-surfaces.md#cards)
-for their look). Grids of cards use auto-fill so they reflow without breakpoints:
+for their look). `.saga-grid` is the grid: `--space-md` gaps, one column by
+default, `--2` / `--3` / `--4` for fixed columns, `--stats` (alias
+`.stat-grid`) for an `auto-fit` row of stat cards that reflows without
+breakpoints, `--lg` to widen the gap to `--space-lg` for content cards:
 
-```css
-.card-grid { display: grid; gap: var(--space-lg); grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); }
-.stat-grid { display: grid; gap: var(--space-md); grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); }
+```html
+<div class="saga-grid saga-grid--stats">…three .saga-card--stat…</div>
+<div class="saga-grid saga-grid--2 saga-grid--lg">…two content cards…</div>
 ```
 
 | Grid | Min column | Gap | Example |
 |---|---|---|---|
-| Stat cards | `240px`, `auto-fit` so three cards fill the row | `--space-md` | Surveys report: Completion / Submissions / Launches |
-| Content cards | `280px` | `--space-lg` | Day-type cards on Schedule |
-| Option cards (radio-as-card) | `220px` | `--space-md` | Rotation Pattern in Configure Period |
+| Stat cards (`.saga-grid--stats`) | `220px`, `auto-fit` so three cards fill the row | `--space-md` | Surveys report: Completion / Submissions / Launches |
+| Content cards (`.saga-grid--2`/`--3` with `--lg`) | half or a third of the row | `--space-lg` | Day-type cards on Schedule |
+| Option cards (radio-as-card, `.saga-grid--4`) | a quarter of the row | `--space-md` | Rotation Pattern in Configure Period |
 | Full-width card | one column | `--space-lg` between stacked cards | "All Periods", "Questions" |
 
 Inside a card: heading, then `--space-md` steps (the rhythm rule), with the card's
@@ -110,7 +121,7 @@ Two densities, chosen per surface, never mixed inside one table (DS-027):
 
 | | Comfortable (default) | Dense |
 |---|---|---|
-| Table row height | `48px` (cell padding `--space-sm` `--space-md`, `--text-base`) | `37px` (cell padding `--space-xs` `--space-md`, `--text-sm`, `--color-text-dark`) |
+| Table row height | about `40px` (`.saga-table`: cell padding `--space-sm` `--space-md`, `--text-sm`) | about `32px` (`.saga-table--dense`: cell padding `--space-xs` `--space-sm`) |
 | List row | `--space-md` vertical padding | `--space-sm` |
 | Card grid gap | `--space-lg` | `--space-md` |
 | Button | default `.saga-btn` | `.saga-btn--sm` |
@@ -149,7 +160,7 @@ window still works.
 @media (max-width: 1023px) {
   .saga-nav { position: fixed; inset: 0 auto 0 0; transform: translateX(-100%); z-index: var(--z-overlay); }
   .saga-nav[data-open] { transform: none; }
-  .content { padding: var(--space-md); }
+  .saga-page { padding: var(--space-md); }
 }
 ```
 

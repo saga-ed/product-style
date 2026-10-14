@@ -27,19 +27,22 @@ next by a 1px `--nav-border` rule (white at 38%).
 1. **Logo band.** The same height as the top bar (`--topbar-height`) so the
    white Saga logotype sits on the top bar's line. Logo height 34px, left
    padding `--space-md`. It links home.
-2. **Program selector.** A small label, "Current Program", in `--text-sm`
-   medium weight at `--color-gray-light`, then a white select (see
+2. **Program selector** (`.saga-nav__group`). A small label
+   (`.saga-nav__label`), "Current Program", in `--text-sm` medium weight,
+   white (`--nav-text-active`), then the painted select
+   (`.saga-select > .saga-select__trigger`, see
    [forms-inputs](forms-inputs.md#select)). The select is the one white
    control on the navy surface, which is what makes it findable. Below it an
-   underlined "Configure program" link with a small wrench icon, same muted
-   grey, white on hover.
-3. **Section links.** One per top-level area, in this canonical order:
-   Dashboard, Sessions, Rosters, Surveys, Reports. Each is an icon (20px,
-   70% opacity) plus a label in `--text-base`, with `--space-sm` between them
-   and `--space-sm` / `--space-md` padding.
+   underlined "Configure program" link (`.saga-nav__link`) with a small
+   settings icon, `--nav-text` grey, white on hover.
+3. **Section links** (`.saga-nav__items > li > .saga-nav__item`). One per
+   top-level area, in this canonical order: Dashboard, Sessions, Rosters,
+   Surveys, Reports. Each is an icon (`--text-xl`, 70% opacity) plus a label
+   in `--text-base`, with `--space-sm` between them and `--space-sm` /
+   `--space-md` padding.
 4. **Empty flex space** that pushes the footer down.
-5. **District footer.** The label "District" and the district name, both in
-   `--nav-text`.
+5. **District footer** (`.saga-nav__footer`). A `.saga-nav__label`
+   "District" and the district name in `--nav-text`.
 
 | Token | Value | Used for |
 |---|---|---|
@@ -107,10 +110,12 @@ A single 64px row, white, with a 1px `--topbar-border` rule and a soft
   4px padding, `--radius-sm`. Hover is `--color-bg-tertiary` with
   `--color-text`. Each has an `aria-label` and a tooltip (the search one also
   shows its keyboard shortcut in the tooltip).
-- The notification bell, same treatment, with a count badge pinned to its
-  top-right corner: `--color-attention-strong` (`#d14600`) fill, white
-  11px bold tabular digits, `--radius-full`, 18px tall. The badge shows the
-  number of things that need attention; it never shows "0".
+- The notification bell, same treatment, with a count badge
+  (`.saga-badge-anchor > .saga-badge`) pinned to its top-right corner: clay
+  fill by default, `.saga-badge--attention` for the dark-orange
+  `--color-attention-strong` (`#d14600`) variant, white `--text-xs` semibold
+  tabular digits, `--radius-full`, 1.25rem tall. The badge shows the number
+  of things that need attention; it never shows "0".
 
 | Token | Value |
 |---|---|
@@ -121,22 +126,23 @@ A single 64px row, white, with a 1px `--topbar-border` rule and a soft
 
 ## Content area and page tabs
 
-The content area is a scroll container padded `--space-lg`. Pages start with
-either a tab strip or a card.
+The content area (`.saga-page`) is a scroll container padded `--space-lg`.
+Pages start with either a tab strip or a card.
 
-**Page tabs** sit directly under the top bar, on a 2px `--color-border`
-baseline that runs the full content width.
+**Page tabs** (`.saga-tabs > .saga-tab`) sit directly under the top bar, on a
+1px `--color-border` baseline that runs the full content width.
 
 - Label: `--tab-font-size` (`15px`), `--tab-text` (`#444444`), padding
   `8px 16px 9px`, no background.
-- Active: `--tab-text-active` blue, `--weight-semibold`, and a 3px
-  `--color-primary` underline that overlaps the baseline.
+- Active (`aria-selected="true"`): `--tab-text-active` blue,
+  `--weight-semibold`, and a 2px `--color-primary` underline that overlaps
+  the baseline.
 - Hover: `--color-text` with a `--color-bg-secondary` wash.
 - Count badges follow the label with `--space-sm` gap: `--color-bg-tertiary`
   pill, `--radius-full`, `--text-xs` semibold, `--color-text-secondary`. The
   active tab's badge takes `--color-primary-light` fill and blue text.
-- A right-aligned control may share the tab row (for example the
-  "Show Entire District" toggle on Rosters).
+- A right-aligned control may share the tab row in `.saga-tabs__end` (for
+  example the "Show Entire District" toggle on Rosters).
 
 Below the tabs, an action row (Add, Upload, Download, then a search box at the
 far right) and then the table or cards. See [tables-data](tables-data.md).
@@ -159,56 +165,54 @@ the frame.
 
 ## HTML skeleton
 
+This is the markup of the [shell showcase](/showcase/shell/) and of the
+starter; the class names are the contract. `.saga-shell` is a two-column grid
+(`--nav-width` + the rest) at `100vh`; `.saga-shell__main` is a column that
+holds the top bar and the scrolling `.saga-page`. A shell that must sit inside
+a page frame instead of the viewport adds `.saga-shell--framed` (see
+[spacing-layout](spacing-layout.md#page-layout)).
+
 ```html
-<div style="display: flex; height: 100vh">
+<div class="saga-shell">
   <nav class="saga-nav" aria-label="Main">
-    <a class="saga-nav__logo" href="/"><img src="saga-logo-white.png" alt="Saga Education"></a>
-
-    <div class="saga-nav__section">
-      <span class="saga-label">Current Program</span>
-      <button class="saga-select" aria-haspopup="listbox">Demo Program 08/17</button>
-      <a href="/config">Configure program</a>
+    <div class="saga-nav__logo"><a href="/" aria-label="Saga home"><img src="/assets/brand/saga-logo-white.png" alt="Saga Education"></a></div>
+    <div class="saga-nav__group">
+      <span class="saga-nav__label" id="prog-label">Current Program</span>
+      <div class="saga-select">
+        <button type="button" class="saga-select__trigger" aria-haspopup="listbox" aria-expanded="false" aria-labelledby="prog-label"><span>Demo Program 08/17</span></button>
+      </div>
+      <a class="saga-nav__link" href="#"><iconify-icon icon="material-symbols-light:settings-outline-rounded"></iconify-icon> Configure program</a>
     </div>
-
-    <ul class="saga-nav__section">
-      <li><a class="saga-nav__item" href="/dashboard"><iconify-icon icon="material-symbols-light:dashboard-outline-rounded"></iconify-icon> Dashboard</a></li>
-      <li><a class="saga-nav__item" href="/sessions"><iconify-icon icon="material-symbols-light:calendar-month-outline-rounded"></iconify-icon> Sessions</a></li>
-      <li><a class="saga-nav__item" href="/roster" aria-current="page"><iconify-icon icon="material-symbols-light:group-outline-rounded"></iconify-icon> Rosters</a></li>
-      <li><a class="saga-nav__item" href="/surveys"><iconify-icon icon="material-symbols-light:assignment-turned-in-outline-rounded"></iconify-icon> Surveys</a></li>
-      <li><a class="saga-nav__item" href="/reports"><iconify-icon icon="material-symbols-light:bar-chart-rounded"></iconify-icon> Reports</a></li>
+    <ul class="saga-nav__items">
+      <li><a class="saga-nav__item" href="#"><iconify-icon icon="material-symbols-light:dashboard-outline-rounded"></iconify-icon> Dashboard</a></li>
+      <li><a class="saga-nav__item" href="#"><iconify-icon icon="material-symbols-light:calendar-month-outline-rounded"></iconify-icon> Sessions</a></li>
+      <li><a class="saga-nav__item" href="#" aria-current="page"><iconify-icon icon="material-symbols-light:group-outline-rounded"></iconify-icon> Rosters</a></li>
+      <li><a class="saga-nav__item" href="#"><iconify-icon icon="material-symbols-light:checklist-rounded"></iconify-icon> Surveys</a></li>
+      <li><a class="saga-nav__item" href="#"><iconify-icon icon="material-symbols-light:bar-chart-rounded"></iconify-icon> Reports</a></li>
     </ul>
-
     <div class="saga-nav__footer">
-      <span class="saga-label">District</span>
-      Saga SC Sandbox 28
+      <span class="saga-nav__label">District</span>
+      <span>Saga SC Sandbox 28</span>
     </div>
   </nav>
-
-  <div style="flex: 1; display: flex; flex-direction: column; min-width: 0">
+  <div class="saga-shell__main">
     <header class="saga-topbar">
       <h1 class="saga-topbar__title">Demo Program 08/17</h1>
       <div class="saga-topbar__actions">
-        <span class="text-secondary">8:34 PM</span>
-        <button class="saga-btn saga-btn--quiet saga-btn--icon" aria-label="Search pages">
-          <iconify-icon icon="material-symbols-light:search-rounded"></iconify-icon>
-        </button>
-        <button class="saga-btn saga-btn--quiet saga-btn--icon" aria-label="Notifications, 2 need attention">
-          <iconify-icon icon="material-symbols-light:notifications-outline-rounded"></iconify-icon>
-          <span class="saga-badge">2</span>
-        </button>
-        <button class="saga-btn saga-btn--quiet saga-btn--icon" aria-label="Menu">
-          <iconify-icon icon="material-symbols-light:menu-rounded"></iconify-icon>
-        </button>
+        <span class="saga-topbar__meta">8:34 PM</span>
+        <button class="saga-btn saga-btn--quiet saga-btn--icon" aria-label="Search this page"><iconify-icon icon="material-symbols-light:document-search-outline-rounded" class="saga-icon saga-icon--lg"></iconify-icon></button>
+        <button class="saga-btn saga-btn--quiet saga-btn--icon" aria-label="Notifications, 2 unread"><span class="saga-badge-anchor"><iconify-icon icon="material-symbols-light:notifications-outline-rounded" class="saga-icon saga-icon--lg"></iconify-icon><span class="saga-badge">2</span></span></button>
+        <button class="saga-btn saga-btn--quiet saga-btn--icon" aria-label="Menu"><iconify-icon icon="material-symbols-light:menu-rounded" class="saga-icon saga-icon--lg"></iconify-icon></button>
       </div>
     </header>
-
-    <main id="main-content" tabindex="-1">
-      <nav class="saga-tabs" aria-label="Roster views">
-        <button class="saga-tab" aria-selected="true">Students <span class="saga-tab__count">55</span></button>
-        <button class="saga-tab" aria-selected="false">Tutors <span class="saga-tab__count">8</span></button>
-        <button class="saga-tab" aria-selected="false">Admins <span class="saga-tab__count">1</span></button>
-      </nav>
-      <!-- page content -->
+    <main class="saga-page saga-scrollbar" id="main-content" tabindex="-1">
+      <div class="saga-tabs" role="tablist" aria-label="Roster">
+        <button class="saga-tab" role="tab" aria-selected="true">Students <span class="saga-tab__count">55</span></button>
+        <button class="saga-tab" role="tab" aria-selected="false">Tutors <span class="saga-tab__count">8</span></button>
+        <button class="saga-tab" role="tab" aria-selected="false">Admins <span class="saga-tab__count">1</span></button>
+        <div class="saga-tabs__end"><label class="saga-check"><input type="checkbox" class="saga-toggle" role="switch"> Show Entire District</label></div>
+      </div>
+      <!-- page content: .saga-page__toolbar, then the table or cards -->
     </main>
   </div>
 </div>

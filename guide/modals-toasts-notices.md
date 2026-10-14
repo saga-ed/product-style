@@ -19,12 +19,12 @@ closed. The host decides when; the modal only reports a close request.
 | Part | Treatment |
 |---|---|
 | Scrim | `--modal-scrim` (navy at 40%), full viewport, `--z-overlay`; fades in over `--motion-fade` |
-| Card | white, `--radius-lg` (8px), `--shadow-modal`, `--z-modal`; pops in from 96% scale over `--motion-base` `--ease-emphasized`, fade only under reduced motion |
-| Sizes | default `560px`; large `900px`; fullscreen fills the viewport with no radius. All cap at `100%` width and `92vh` height |
-| Position | top-aligned with a `4vh` gap, not vertically centred, so a modal that grows does not jump |
-| Header | title in `--text-lg` `--weight-semibold` `--color-text`, a quiet ✕ icon button at the right, `16px 22px 12px` padding, 1px `--color-border` rule below |
-| Body | `14px 22px 18px` padding, scrolls on its own when tall |
-| Footer | right-aligned buttons, `--space-sm` apart, `12px 22px` padding, `--color-bg-secondary` fill with a hairline above (see [buttons](buttons.md#groups-and-modal-footers)) |
+| Card | `.saga-modal`: white, `--radius-lg` (8px), `--shadow-modal`, `--z-modal`; enters with `.overlay-in` (98% scale and an 8px rise over `--motion-base`), fade only under reduced motion |
+| Sizes | default `640px`; `.saga-modal--confirm` `440px`; `.saga-modal--large` `960px`; `.saga-modal--fullscreen` fills the viewport with no radius. All cap at `100%` width and `92vh` height |
+| Position | vertically and horizontally centred in the scrim (`margin: auto`); the body scrolls inside the card so a modal that grows past `92vh` does not jump |
+| Header | `.saga-modal__header`: `.saga-modal__title` in `--text-lg` `--weight-semibold` `--color-text`, a quiet ✕ icon button (`.saga-modal__close`) at the right, `--space-md --space-lg` padding, 1px `--color-border` rule below |
+| Body | `.saga-modal__body`: `--space-lg` padding, scrolls on its own when tall |
+| Footer | `.saga-modal__footer`: `--space-md --space-lg` padding, `--color-bg-secondary` fill with a hairline above; buttons `--space-sm` apart, right-aligned inside `.saga-modal__footer-end` (see [buttons](buttons.md#groups-and-modal-footers)) |
 
 Behaviour, all of it required:
 
@@ -40,70 +40,99 @@ Behaviour, all of it required:
 - One modal at a time. A confirm dialog may sit over a modal (below).
 
 **Multi-step modals** (`dashboard_configure_period.png`) put the step strip
-directly under the header, full width: each step is a numbered 24px circle
-and a label. The current step has a `--color-primary` filled circle with
-white digit and a 3px blue underline across its whole segment; completed
-steps show a check in a blue-ringed circle; future steps are grey on a
-`--color-bg-tertiary` band. The title row reads "Period 2 | Configure Period"
-with the subject in blue and the task in `--color-text`. The footer holds
-Cancel and Continue; the last step's primary says what it does.
+(`.saga-steps > .saga-step`) directly under the header, full width: each step
+is a numbered `--space-lg` circle (`.saga-step__num`, counted by CSS when
+left empty) and a label. The current step (`aria-current="step"`) has a
+`--color-primary` filled circle with a white digit and a 2px blue underline
+across its whole segment; completed steps (`data-complete`) show a check in a
+`--color-success` circle; future steps are grey on a `--color-bg-secondary`
+band (DS-109). The title row reads "Period 2 | Configure Period" with the
+subject in blue (`<em>` inside `.saga-modal__title`) and the task in
+`--color-text`. The footer holds Cancel and Continue; the last step's primary
+says what it does.
+
+Prefer a native `<dialog class="saga-modal">`: `showModal()` gives the scrim
+through `::backdrop`, focus trapping and Esc for free. The same classes work on
+a `div` inside `.saga-scrim` when the dialog must stay in the page's stacking
+context (a framed shell, a prototype scene); then `.saga-scrim--local` covers
+the nearest positioned ancestor instead of the viewport.
 
 ```html
-<div class="saga-scrim"></div>
-<div class="saga-modal" role="dialog" aria-modal="true" aria-labelledby="m1">
-  <header class="saga-modal__header">
-    <h2 id="m1">Edit Session</h2>
-    <button class="saga-btn saga-btn--quiet saga-btn--icon" aria-label="Close">
-      <iconify-icon icon="material-symbols-light:close-rounded"></iconify-icon>
-    </button>
-  </header>
-  <div class="saga-modal__body">...</div>
-  <footer class="saga-modal__footer">
-    <button class="saga-btn saga-btn--secondary">Cancel</button>
-    <button class="saga-btn saga-btn--primary">Save</button>
-  </footer>
-</div>
+<dialog class="saga-modal" id="edit-session" aria-labelledby="m1">
+  <form method="dialog" style="display: contents">
+    <div class="saga-modal__header">
+      <h2 class="saga-modal__title" id="m1">Edit Session</h2>
+      <button class="saga-btn saga-btn--quiet saga-btn--icon saga-modal__close" aria-label="Close" value="cancel">
+        <iconify-icon icon="material-symbols-light:close-rounded"></iconify-icon>
+      </button>
+    </div>
+    <div class="saga-modal__body">...</div>
+    <div class="saga-modal__footer">
+      <div class="saga-modal__footer-end">
+        <button class="saga-btn saga-btn--secondary" value="cancel">Cancel</button>
+        <button class="saga-btn saga-btn--primary" value="save">Save</button>
+      </div>
+    </div>
+  </form>
+</dialog>
 ```
 
 ## Confirm dialog
 
-A confirm is a small modal (440px) with a question for a title, one short
-paragraph in `--color-text-secondary`, and two buttons. It uses
-`role="alertdialog"`. The safe button (Cancel, Never mind) is focused on open,
-not the confirming one.
+A confirm is a small modal (`.saga-modal.saga-modal--confirm`, 440px) with a
+question for a title, one short paragraph in `--color-text-secondary`, and
+two buttons. It uses `role="alertdialog"`. The safe button (Cancel, Never
+mind) is focused on open, not the confirming one.
 
 | Variant | Confirm button | Extra |
 |---|---|---|
 | Danger | `.saga-btn--danger`, labelled with the verb and noun: "Delete session", "Yes, cancel this session" | default |
 | Neutral | `.saga-btn--primary` | for a non-destructive but weighty step |
-| Caution | an amber button in `--color-warning` with white text | a 4px `--color-warning-border` top edge on the card; "allowed, but this has consequences" |
+| Caution | `.saga-btn--caution`: `--color-warning-strong` amber with white text (`--color-warning` itself is 3.2:1 under white, DS-112) | a `--space-xs` `--color-warning-border` top edge on the card; "allowed, but this has consequences" |
 
 When the confirm is about losing things, the body is a **loss ledger**: a
 bulleted list naming each thing that will be removed ("Pods in Group 202:
 3"), so the admin reads exactly what goes. A confirm mounted inside another
-modal scrims only that modal's card, not the whole page.
+modal scrims only that modal's card, not the whole page: a
+`.saga-scrim.saga-scrim--local.saga-scrim--strong` inside the positioned
+modal card.
+
+```html
+<div class="saga-modal saga-modal--confirm" role="alertdialog" aria-modal="true" aria-labelledby="c1" aria-describedby="c1-body">
+  <div class="saga-modal__header"><h2 class="saga-modal__title" id="c1">Delete this session?</h2></div>
+  <div class="saga-modal__body"><p class="text-secondary" id="c1-body">Students will lose their place in Pod 6. This cannot be undone.</p></div>
+  <div class="saga-modal__footer">
+    <div class="saga-modal__footer-end">
+      <button class="saga-btn saga-btn--secondary" autofocus>Cancel</button>
+      <button class="saga-btn saga-btn--danger">Delete session</button>
+    </div>
+  </div>
+</div>
+```
 
 ## Toasts
 
-A toast is a short, non-blocking message at the bottom centre of the window.
+A toast is a short, non-blocking message in a stack at the bottom-right of
+the window (`.saga-toast-stack`, `--space-lg` from both edges; DS-115).
 It is for things that happened elsewhere or already happened: "Roster
 uploaded", "2 students are waiting in Pod 6". It is never a form error and
 never a question that needs an answer.
 
 Look:
 
-- Navy `--saga-navy` card, white text at `--text-sm` `--weight-semibold`,
-  `--radius-lg`, `--shadow-toast`, up to 32em wide.
-- A 2px border in `--color-accent` teal thickened to 8px on the left edge.
-  The border is fixed pixels so it does not grow with the text-size setting.
-  Variants recolour only this accent: `--success` to `--color-success`,
-  `--warning` to `--nav-attention-bg` amber, `--danger` to `--color-danger`.
-  The fill stays navy so the stack reads as one family.
-- A ✕ pinned in the top-right corner of every toast.
-- Optional action buttons under the message, right-aligned, pill-shaped:
-  outlined white, with the one primary action filled white with navy text.
-- Enters with a 12px rise over `--motion-fast`, leaves by fading over
-  `--motion-fade`.
+- `.saga-toast`: a navy `--color-surface-inverse` card, white text at
+  `--text-sm` `--weight-medium`, `--radius-md`, `--shadow-toast`, the stack
+  up to 26rem wide.
+- A 4px (`--space-xs`) coloured left edge and no outer border. Variants
+  recolour only this edge and the icon: `--success` to `--color-success`,
+  `--warning` to `--color-warning`, `--danger` to `--color-danger`; the
+  default edge is `--color-accent` teal. The fill stays navy so the stack
+  reads as one family (DS-102).
+- One row: an optional `.saga-toast__icon` in the edge colour, the
+  `.saga-toast__msg`, an optional pill `.saga-toast__action` (outlined white),
+  then the `.saga-toast__close` ✕ at the end.
+- Enters with a `--space-sm` rise over `--motion-base` plus a `--motion-fade`
+  fade; leaves (`.is-leaving`) by fading over `--motion-fade`.
 
 Behaviour:
 
@@ -120,12 +149,17 @@ Behaviour:
 ```html
 <div class="saga-toast-stack" role="status" aria-live="polite">
   <div class="saga-toast saga-toast--success">
-    Roster uploaded. 55 students added.
-    <button class="saga-btn saga-btn--sm">View roster</button>
-    <button aria-label="Dismiss">✕</button>
+    <span class="saga-toast__icon"><iconify-icon icon="material-symbols-light:check-circle-outline-rounded"></iconify-icon></span>
+    <span class="saga-toast__msg">Roster uploaded. 55 students added.</span>
+    <button class="saga-toast__action">View roster</button>
+    <button class="saga-toast__close" aria-label="Dismiss"><iconify-icon icon="material-symbols-light:close-rounded"></iconify-icon></button>
   </div>
 </div>
 ```
+
+Inside a framed shell or a prototype scene the stack is
+`.saga-toast-stack--local`, pinned to the frame's corner instead of the
+window's.
 
 ## Notices, warnings and confirmations
 
@@ -136,7 +170,7 @@ situation picks the level, not the kind of collision.
 
 | Level | Ask | Looks like | Interrupts | a11y |
 |---|---|---|---|---|
-| Notice | allowed, usually worth avoiding | `.saga-notice--notice`: `--color-notice-bg` fill, 1px `--color-notice-border`, text `--color-text`, blue family | passive, dismissible | `role="status"`, polite |
+| Notice | allowed, usually worth avoiding | bare `.saga-notice` (`--notice` is an accepted alias): `--color-notice-bg` fill, 1px `--color-notice-border`, text `--color-text`, blue family | passive, dismissible | `role="status"`, polite |
 | Warning | a real collision they probably did not intend | `.saga-notice--warning`: `--color-warning-bg`, `--color-warning-border`, amber family | prominent, non-blocking, offers a fix | `role="status"`, polite |
 | Confirmation | destructive or irreversible | the danger confirm dialog above, in `--color-danger` | blocks until answered | `role="alertdialog"`, focus trapped |
 
@@ -144,10 +178,13 @@ Ask in order: destructive? then confirmation. A collision they did not mean?
 then warning. Allowed but avoidable? then notice. When unsure pick the lower
 level; escalate only for destruction.
 
-Inline notices are anchored next to the thing that was just touched, not in a
-global corner: `--radius-md`, `8px 12px` padding, `--text-sm`,
-`--shadow-toast`, up to 560px wide, with a ✕ at the right. They carry their
-response as inline links in `--color-primary` semibold underline:
+The levels are the modifier: bare (notice), `--warning`, `--danger`,
+`--success`, plus `--attention` for a standing problem (below). Inline
+notices are anchored next to the thing that was just touched, not in a global
+corner: `--radius-md`, `--space-sm --space-md` padding, `--text-sm`, flat (no
+shadow; the tint and border are the surface), up to 560px wide, with a ✕
+(`.saga-notice__dismiss`) at the right. They carry their response as inline
+links (`.saga-notice__action`) in `--color-primary` semibold underline:
 
 - **Remediate in place**: "Maya Ellis is also in another pod this period.
   Remove from Rotation 2?" The scope word is the link.
@@ -160,8 +197,9 @@ collapse into one summary line with a "Review" expander.
 
 ```html
 <div class="saga-notice saga-notice--warning" role="status">
-  Maya Ellis is also in another pod this period. <a href="#">Remove from Rotation 2?</a>
-  <button aria-label="Dismiss">✕</button>
+  <span class="saga-notice__icon"><iconify-icon icon="material-symbols-light:warning-outline-rounded"></iconify-icon></span>
+  <div class="saga-notice__body">Maya Ellis is also in another pod this period. <button class="saga-notice__action">Remove from Rotation 2?</button></div>
+  <button class="saga-btn saga-btn--quiet saga-btn--icon saga-btn--sm saga-notice__dismiss" aria-label="Dismiss"><iconify-icon icon="material-symbols-light:close-rounded"></iconify-icon></button>
 </div>
 ```
 
@@ -172,12 +210,13 @@ glow on the affected rows.
 
 ## Popover menus
 
-A kebab or caret opens an anchored menu: white, 1px `--color-border`,
-`--radius-lg`, `--shadow-popover`, `--z-dropdown`, 180 to 320px wide,
-`--space-xs` vertical padding. Items are 36px rows with an optional 20px icon,
-`--text-sm`, hover `--color-bg-tertiary`; a danger item is `--color-danger`
-text with a faint danger wash on hover; a divider is a 1px `--color-border`
-rule. The menu prefers bottom-end placement and flips when it would overflow.
+A kebab or caret opens an anchored menu (`.saga-popover`): white, 1px
+`--color-border`, `--radius-md`, `--shadow-popover`, `--z-dropdown`, 12 to
+20rem wide, `--space-xs` vertical padding. Items (`.saga-popover__item`) are
+2.25rem rows with an optional 1.2em icon, `--text-sm`, hover
+`--color-bg-tertiary`; a danger item (`data-danger`) is `--color-danger` text
+with a faint danger wash on hover; a divider (`.saga-popover__divider`) is a
+1px `--color-border` rule. The menu prefers bottom-end placement and flips when it would overflow.
 
 Keyboard: focus lands on the menu container (nothing pre-selected), arrows
 move, Enter or Space picks, Esc and outside click close, Tab wraps. A
@@ -190,10 +229,14 @@ Tooltips are painted DOM, never native `title=`. A native tooltip is composited
 outside the tab and vanishes in a tab share, has no keyboard path, and its
 timing cannot be controlled.
 
-- Panel: white, 1px `--color-border-strong`, `--radius-lg`, `8px 10px`
-  padding, `--text-sm`, `--shadow-md`, `--z-tooltip`, fades in over
-  `--motion-fade`. A `filled` variant uses `--color-primary` fill with white
-  text for the info-icon case.
+- Panel (`.saga-tooltip`): white, 1px `--color-border-strong`,
+  `--radius-lg`, `--space-sm` by 10px padding, `--text-sm`, `--shadow-md`,
+  `--z-tooltip`, fades in over `--motion-fade`; this is dash's core-ui
+  Tooltip (DS-057, DS-120). `.saga-tooltip--filled` uses `--color-primary`
+  fill with white text for the info-icon case. `.saga-tooltip--rich` is
+  left-aligned and a little wider (20rem) for a two-line hint whose first line
+  is a `.saga-tooltip__title` in semibold (a student's full name over their
+  pod and period).
 - Trigger: hover and keyboard focus both open it; Esc, blur and outside tap
   close it without moving focus. The panel gets `role="tooltip"` and the
   trigger `aria-describedby` while open.

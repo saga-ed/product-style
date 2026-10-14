@@ -27,7 +27,6 @@
 	.demo-row--tall { min-height: 14rem; position: relative; }
 	.demo-snippet { margin: 0 0 var(--space-lg); padding: var(--space-md); overflow: auto; background: var(--color-bg-tertiary); border: 1px solid var(--color-border); border-top: 0; border-radius: 0 0 var(--radius-lg) var(--radius-lg); font-size: var(--text-xs); line-height: var(--leading-relaxed); color: var(--color-text-dark); }
 	.demo-snippet code { font-size: inherit; }
-	.demo-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(14rem, 1fr)); gap: var(--space-md); width: 100%; }
 </style>
 </head>
 <body>
@@ -89,15 +88,41 @@
 	&lt;div class=&quot;saga-card__footer&quot;&gt;&lt;span class=&quot;text-secondary&quot;&gt;5 questions&lt;/span&gt;&lt;span style=&quot;margin-left:auto&quot;&gt;&lt;button class=&quot;saga-btn saga-btn--secondary saga-btn--sm&quot;&gt;Export&lt;/button&gt;&lt;/span&gt;&lt;/div&gt;
 &lt;/div&gt;</code></pre>
 
-	<h3>Stat cards</h3>
+	<h3>Title row and empty slot</h3>
+	<p><code>.saga-card__title-row</code> puts a heading and a control on one line; <code>.saga-card--empty</code> is the dashed placeholder slot ("Add Day Type"). Both sit in a two-column <code>.saga-grid--2 --lg</code>.</p>
 	<div class="demo-row demo-row--tint">
-		<div class="demo-grid">
+		<div class="saga-grid saga-grid--2 saga-grid--lg" style="width:100%">
+			<div class="saga-card">
+				<div class="saga-card__title-row"><h3>All Periods</h3><button class="saga-btn saga-btn--add saga-btn--sm"><span class="saga-btn__plus"><iconify-icon icon="material-symbols-light:add-rounded"></iconify-icon></span> Add period</button></div>
+				<p class="text-secondary">A plain card whose heading shares a row with one control.</p>
+			</div>
+			<div class="saga-card saga-card--empty">
+				<iconify-icon icon="material-symbols-light:add-rounded" class="saga-icon saga-icon--lg"></iconify-icon>
+				<div>Add Day Type</div>
+			</div>
+		</div>
+	</div>
+<pre class="demo-snippet"><code>&lt;div class=&quot;saga-grid saga-grid--2 saga-grid--lg&quot; style=&quot;width:100%&quot;&gt;
+	&lt;div class=&quot;saga-card&quot;&gt;
+		&lt;div class=&quot;saga-card__title-row&quot;&gt;&lt;h3&gt;All Periods&lt;/h3&gt;&lt;button class=&quot;saga-btn saga-btn--add saga-btn--sm&quot;&gt;&lt;span class=&quot;saga-btn__plus&quot;&gt;&lt;iconify-icon icon=&quot;material-symbols-light:add-rounded&quot;&gt;&lt;/iconify-icon&gt;&lt;/span&gt; Add period&lt;/button&gt;&lt;/div&gt;
+		&lt;p class=&quot;text-secondary&quot;&gt;A plain card whose heading shares a row with one control.&lt;/p&gt;
+	&lt;/div&gt;
+	&lt;div class=&quot;saga-card saga-card--empty&quot;&gt;
+		&lt;iconify-icon icon=&quot;material-symbols-light:add-rounded&quot; class=&quot;saga-icon saga-icon--lg&quot;&gt;&lt;/iconify-icon&gt;
+		&lt;div&gt;Add Day Type&lt;/div&gt;
+	&lt;/div&gt;
+&lt;/div&gt;</code></pre>
+
+	<h3>Stat cards</h3>
+	<p>Value first, then label, then caption, in a <code>.saga-grid--stats</code> (auto-fit, 220px minimum; <code>.stat-grid</code> is an alias).</p>
+	<div class="demo-row demo-row--tint">
+		<div class="saga-grid saga-grid--stats" style="width:100%">
 			<div class="saga-card saga-card--stat"><span class="saga-card__value">0%</span><span class="saga-card__label">Completion</span><span class="saga-card__caption">0 of 55 students</span></div>
 			<div class="saga-card saga-card--stat"><span class="saga-card__value">0</span><span class="saga-card__label">Submissions</span><span class="saga-card__caption">Responses received</span></div>
 			<div class="saga-card saga-card--stat"><span class="saga-card__value">1</span><span class="saga-card__label">Launches</span><span class="saga-card__caption">Sessions the survey was launched in</span></div>
 		</div>
 	</div>
-<pre class="demo-snippet"><code>&lt;div class=&quot;demo-grid&quot;&gt;
+<pre class="demo-snippet"><code>&lt;div class=&quot;saga-grid saga-grid--stats&quot;&gt;
 	&lt;div class=&quot;saga-card saga-card--stat&quot;&gt;&lt;span class=&quot;saga-card__value&quot;&gt;0%&lt;/span&gt;&lt;span class=&quot;saga-card__label&quot;&gt;Completion&lt;/span&gt;&lt;span class=&quot;saga-card__caption&quot;&gt;0 of 55 students&lt;/span&gt;&lt;/div&gt;
 	&lt;div class=&quot;saga-card saga-card--stat&quot;&gt;&lt;span class=&quot;saga-card__value&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;saga-card__label&quot;&gt;Submissions&lt;/span&gt;&lt;span class=&quot;saga-card__caption&quot;&gt;Responses received&lt;/span&gt;&lt;/div&gt;
 	&lt;div class=&quot;saga-card saga-card--stat&quot;&gt;&lt;span class=&quot;saga-card__value&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;saga-card__label&quot;&gt;Launches&lt;/span&gt;&lt;span class=&quot;saga-card__caption&quot;&gt;Sessions the survey was launched in&lt;/span&gt;&lt;/div&gt;
@@ -163,7 +188,7 @@
 	&lt;/table&gt;
 &lt;/div&gt;</code></pre>
 
-	<h3>Dense, grid lines</h3>
+	<h3>Dense, grid lines, totals row</h3>
 	<div class="demo-row demo-row--stack">
 		<table class="saga-table saga-table--dense saga-table--grid">
 			<thead><tr><th>Day Types</th><th>Time</th><th class="num">Duration</th></tr></thead>
@@ -171,6 +196,7 @@
 				<tr><td><span class="saga-chip saga-chip--regular">Regular</span></td><td>9:00 AM – 9:50 AM</td><td class="num">50m</td></tr>
 				<tr><td><span class="saga-chip saga-chip--advisory">Advisory</span></td><td>8:50 AM – 9:30 AM</td><td class="num">40m</td></tr>
 			</tbody>
+			<tfoot><tr><td colspan="2">Total this week</td><td class="num">4h 10m</td></tr></tfoot>
 		</table>
 	</div>
 <pre class="demo-snippet"><code>&lt;table class=&quot;saga-table saga-table--dense saga-table--grid&quot;&gt;
@@ -179,6 +205,7 @@
 		&lt;tr&gt;&lt;td&gt;&lt;span class=&quot;saga-chip saga-chip--regular&quot;&gt;Regular&lt;/span&gt;&lt;/td&gt;&lt;td&gt;9:00 AM – 9:50 AM&lt;/td&gt;&lt;td class=&quot;num&quot;&gt;50m&lt;/td&gt;&lt;/tr&gt;
 		&lt;tr&gt;&lt;td&gt;&lt;span class=&quot;saga-chip saga-chip--advisory&quot;&gt;Advisory&lt;/span&gt;&lt;/td&gt;&lt;td&gt;8:50 AM – 9:30 AM&lt;/td&gt;&lt;td class=&quot;num&quot;&gt;40m&lt;/td&gt;&lt;/tr&gt;
 	&lt;/tbody&gt;
+	&lt;tfoot&gt;&lt;tr&gt;&lt;td colspan=&quot;2&quot;&gt;Total this week&lt;/td&gt;&lt;td class=&quot;num&quot;&gt;4h 10m&lt;/td&gt;&lt;/tr&gt;&lt;/tfoot&gt;
 &lt;/table&gt;</code></pre>
 
 	<h3>Empty state</h3>
@@ -192,6 +219,121 @@
 	&lt;thead&gt;&lt;tr&gt;&lt;th&gt;Tutor&lt;/th&gt;&lt;th&gt;Students&lt;/th&gt;&lt;th&gt;Status&lt;/th&gt;&lt;/tr&gt;&lt;/thead&gt;
 	&lt;tbody&gt;&lt;tr&gt;&lt;td colspan=&quot;3&quot; class=&quot;saga-table__empty&quot;&gt;No sessions scheduled for this day.&lt;/td&gt;&lt;/tr&gt;&lt;/tbody&gt;
 &lt;/table&gt;</code></pre>
+	<p>Outside a table the same message is a <code>.saga-empty</code> box: centred, dashed, with the one action that fills it.</p>
+	<div class="demo-row demo-row--stack">
+		<div class="saga-empty">
+			<span class="saga-empty__icon"><iconify-icon icon="material-symbols-light:event-busy-outline-rounded"></iconify-icon></span>
+			<span class="saga-empty__title">No sessions scheduled</span>
+			Add a session or pick another day.
+			<button class="saga-btn saga-btn--secondary saga-btn--sm"><span class="saga-btn__plus"><iconify-icon icon="material-symbols-light:add-rounded"></iconify-icon></span> Add session</button>
+		</div>
+	</div>
+<pre class="demo-snippet"><code>&lt;div class=&quot;saga-empty&quot;&gt;
+	&lt;span class=&quot;saga-empty__icon&quot;&gt;&lt;iconify-icon icon=&quot;material-symbols-light:event-busy-outline-rounded&quot;&gt;&lt;/iconify-icon&gt;&lt;/span&gt;
+	&lt;span class=&quot;saga-empty__title&quot;&gt;No sessions scheduled&lt;/span&gt;
+	Add a session or pick another day.
+	&lt;button class=&quot;saga-btn saga-btn--secondary saga-btn--sm&quot;&gt;&lt;span class=&quot;saga-btn__plus&quot;&gt;&lt;iconify-icon icon=&quot;material-symbols-light:add-rounded&quot;&gt;&lt;/iconify-icon&gt;&lt;/span&gt; Add session&lt;/button&gt;
+&lt;/div&gt;</code></pre>
+</section>
+
+<section class="demo-section">
+	<h2>List rows</h2>
+	<p>A bordered row stack for editable things that are not quite a table (All Periods). <code>--edge</code> paints a 3px meaning edge from <code>--_edge</code>; <code>--ghost</code> dims by colour and surface, never opacity.</p>
+	<div class="demo-row demo-row--stack">
+		<ul class="saga-list saga-list--interactive" style="width:100%">
+			<li class="saga-list__row saga-list__row--edge" style="--_edge: var(--chip-regular)">
+				<span class="saga-list__handle"><iconify-icon icon="material-symbols-light:drag-indicator"></iconify-icon></span>
+				<div class="saga-list__main"><span class="saga-list__title">Period 1</span> <span class="saga-list__meta">8:01 AM – 9:26 AM · Rm 409</span></div>
+				<span class="saga-chip saga-chip--regular saga-chip--square">Regular</span>
+				<div class="saga-list__end"><button class="saga-btn saga-btn--quiet saga-btn--icon saga-btn--sm" aria-label="Edit Period 1"><iconify-icon icon="material-symbols-light:edit-outline-rounded"></iconify-icon></button><button class="saga-btn saga-btn--quiet saga-btn--icon saga-btn--sm" aria-label="Delete Period 1"><iconify-icon icon="material-symbols-light:delete-outline-rounded"></iconify-icon></button></div>
+			</li>
+			<li class="saga-list__row saga-list__row--edge" style="--_edge: var(--chip-advisory)">
+				<span class="saga-list__handle"><iconify-icon icon="material-symbols-light:drag-indicator"></iconify-icon></span>
+				<div class="saga-list__main"><span class="saga-list__title">Period 2</span> <span class="saga-list__meta">9:30 AM – 10:20 AM</span></div>
+				<span class="saga-chip saga-chip--advisory saga-chip--square">Advisory</span>
+				<div class="saga-list__end"><button class="saga-btn saga-btn--quiet saga-btn--icon saga-btn--sm" aria-label="Edit Period 2"><iconify-icon icon="material-symbols-light:edit-outline-rounded"></iconify-icon></button><button class="saga-btn saga-btn--quiet saga-btn--icon saga-btn--sm" aria-label="Delete Period 2"><iconify-icon icon="material-symbols-light:delete-outline-rounded"></iconify-icon></button></div>
+			</li>
+			<li class="saga-list__row" aria-selected="true">
+				<span class="saga-list__handle"><iconify-icon icon="material-symbols-light:drag-indicator"></iconify-icon></span>
+				<div class="saga-list__main"><span class="saga-list__title">Period 3</span> <span class="saga-list__meta">Selected row</span></div>
+				<div class="saga-list__end"><button class="saga-btn saga-btn--quiet saga-btn--icon saga-btn--sm" aria-label="Edit Period 3"><iconify-icon icon="material-symbols-light:edit-outline-rounded"></iconify-icon></button></div>
+			</li>
+			<li class="saga-list__row saga-list__row--ghost">
+				<span class="saga-list__handle"><iconify-icon icon="material-symbols-light:drag-indicator"></iconify-icon></span>
+				<div class="saga-list__main"><span class="saga-list__title">Period 4</span> <span class="saga-list__meta">No sessions this week</span></div>
+				<div class="saga-list__end"><button class="saga-btn saga-btn--quiet saga-btn--icon saga-btn--sm" aria-label="Edit Period 4"><iconify-icon icon="material-symbols-light:edit-outline-rounded"></iconify-icon></button></div>
+			</li>
+		</ul>
+	</div>
+<pre class="demo-snippet"><code>&lt;ul class=&quot;saga-list saga-list--interactive&quot; style=&quot;width:100%&quot;&gt;
+	&lt;li class=&quot;saga-list__row saga-list__row--edge&quot; style=&quot;--_edge: var(--chip-regular)&quot;&gt;
+		&lt;span class=&quot;saga-list__handle&quot;&gt;&lt;iconify-icon icon=&quot;material-symbols-light:drag-indicator&quot;&gt;&lt;/iconify-icon&gt;&lt;/span&gt;
+		&lt;div class=&quot;saga-list__main&quot;&gt;&lt;span class=&quot;saga-list__title&quot;&gt;Period 1&lt;/span&gt; &lt;span class=&quot;saga-list__meta&quot;&gt;8:01 AM – 9:26 AM · Rm 409&lt;/span&gt;&lt;/div&gt;
+		&lt;span class=&quot;saga-chip saga-chip--regular saga-chip--square&quot;&gt;Regular&lt;/span&gt;
+		&lt;div class=&quot;saga-list__end&quot;&gt;&lt;button class=&quot;saga-btn saga-btn--quiet saga-btn--icon saga-btn--sm&quot; aria-label=&quot;Edit Period 1&quot;&gt;&lt;iconify-icon icon=&quot;material-symbols-light:edit-outline-rounded&quot;&gt;&lt;/iconify-icon&gt;&lt;/button&gt;&lt;button class=&quot;saga-btn saga-btn--quiet saga-btn--icon saga-btn--sm&quot; aria-label=&quot;Delete Period 1&quot;&gt;&lt;iconify-icon icon=&quot;material-symbols-light:delete-outline-rounded&quot;&gt;&lt;/iconify-icon&gt;&lt;/button&gt;&lt;/div&gt;
+	&lt;/li&gt;
+	&lt;li class=&quot;saga-list__row saga-list__row--edge&quot; style=&quot;--_edge: var(--chip-advisory)&quot;&gt;
+		&lt;span class=&quot;saga-list__handle&quot;&gt;&lt;iconify-icon icon=&quot;material-symbols-light:drag-indicator&quot;&gt;&lt;/iconify-icon&gt;&lt;/span&gt;
+		&lt;div class=&quot;saga-list__main&quot;&gt;&lt;span class=&quot;saga-list__title&quot;&gt;Period 2&lt;/span&gt; &lt;span class=&quot;saga-list__meta&quot;&gt;9:30 AM – 10:20 AM&lt;/span&gt;&lt;/div&gt;
+		&lt;span class=&quot;saga-chip saga-chip--advisory saga-chip--square&quot;&gt;Advisory&lt;/span&gt;
+		&lt;div class=&quot;saga-list__end&quot;&gt;&lt;button class=&quot;saga-btn saga-btn--quiet saga-btn--icon saga-btn--sm&quot; aria-label=&quot;Edit Period 2&quot;&gt;&lt;iconify-icon icon=&quot;material-symbols-light:edit-outline-rounded&quot;&gt;&lt;/iconify-icon&gt;&lt;/button&gt;&lt;button class=&quot;saga-btn saga-btn--quiet saga-btn--icon saga-btn--sm&quot; aria-label=&quot;Delete Period 2&quot;&gt;&lt;iconify-icon icon=&quot;material-symbols-light:delete-outline-rounded&quot;&gt;&lt;/iconify-icon&gt;&lt;/button&gt;&lt;/div&gt;
+	&lt;/li&gt;
+	&lt;li class=&quot;saga-list__row&quot; aria-selected=&quot;true&quot;&gt;
+		&lt;span class=&quot;saga-list__handle&quot;&gt;&lt;iconify-icon icon=&quot;material-symbols-light:drag-indicator&quot;&gt;&lt;/iconify-icon&gt;&lt;/span&gt;
+		&lt;div class=&quot;saga-list__main&quot;&gt;&lt;span class=&quot;saga-list__title&quot;&gt;Period 3&lt;/span&gt; &lt;span class=&quot;saga-list__meta&quot;&gt;Selected row&lt;/span&gt;&lt;/div&gt;
+		&lt;div class=&quot;saga-list__end&quot;&gt;&lt;button class=&quot;saga-btn saga-btn--quiet saga-btn--icon saga-btn--sm&quot; aria-label=&quot;Edit Period 3&quot;&gt;&lt;iconify-icon icon=&quot;material-symbols-light:edit-outline-rounded&quot;&gt;&lt;/iconify-icon&gt;&lt;/button&gt;&lt;/div&gt;
+	&lt;/li&gt;
+	&lt;li class=&quot;saga-list__row saga-list__row--ghost&quot;&gt;
+		&lt;span class=&quot;saga-list__handle&quot;&gt;&lt;iconify-icon icon=&quot;material-symbols-light:drag-indicator&quot;&gt;&lt;/iconify-icon&gt;&lt;/span&gt;
+		&lt;div class=&quot;saga-list__main&quot;&gt;&lt;span class=&quot;saga-list__title&quot;&gt;Period 4&lt;/span&gt; &lt;span class=&quot;saga-list__meta&quot;&gt;No sessions this week&lt;/span&gt;&lt;/div&gt;
+		&lt;div class=&quot;saga-list__end&quot;&gt;&lt;button class=&quot;saga-btn saga-btn--quiet saga-btn--icon saga-btn--sm&quot; aria-label=&quot;Edit Period 4&quot;&gt;&lt;iconify-icon icon=&quot;material-symbols-light:edit-outline-rounded&quot;&gt;&lt;/iconify-icon&gt;&lt;/button&gt;&lt;/div&gt;
+	&lt;/li&gt;
+&lt;/ul&gt;</code></pre>
+</section>
+
+<section class="demo-section">
+	<h2>Charts</h2>
+	<p>Bars without a chart library (DS-119): a <code>--chart-neutral</code> track, fills coloured by <code>--_c</code> and sized by <code>--value</code>, a <code>--chart-reference</code> mark, an axis row and a legend. Averages stay <code>--chart-average</code>; a reference mark is darker because it must hold 3:1 over the gray track.</p>
+	<div class="demo-row demo-row--stack">
+		<div style="width:100%;display:grid;gap:var(--space-md)">
+			<div>
+				<div class="saga-card__title-row"><span class="saga-card__label">Survey completion</span><span class="text-secondary">34 of 55 · target 44</span></div>
+				<div class="saga-bar" role="img" aria-label="62% complete, target 80%"><div class="saga-bar__fill" style="--value:62%"></div><div class="saga-bar__mark" style="--value:80%"></div></div>
+				<div class="saga-axis"><span>0%</span><span>50%</span><span>100%</span></div>
+			</div>
+			<div>
+				<div class="saga-card__title-row"><span class="saga-card__label">Attendance this week</span><span class="text-secondary">212 marks</span></div>
+				<div class="saga-bar saga-bar--stacked saga-bar--lg" role="img" aria-label="71% present, 12% tardy, 9% absent, 8% not yet marked"><div class="saga-bar__fill" style="--value:71%;--_c:var(--chart-1)"></div><div class="saga-bar__fill" style="--value:12%;--_c:var(--chart-4)"></div><div class="saga-bar__fill" style="--value:9%;--_c:var(--chart-6)"></div></div>
+			</div>
+			<ul class="saga-legend">
+				<li class="saga-legend__item"><span class="saga-legend__swatch" style="--_c:var(--chart-1)"></span> Present</li>
+				<li class="saga-legend__item"><span class="saga-legend__swatch" style="--_c:var(--chart-4)"></span> Tardy</li>
+				<li class="saga-legend__item"><span class="saga-legend__swatch" style="--_c:var(--chart-6)"></span> Absent</li>
+				<li class="saga-legend__item"><span class="saga-legend__swatch" style="--_c:var(--chart-neutral)"></span> Not yet marked</li>
+				<li class="saga-legend__item"><span class="saga-legend__swatch saga-legend__swatch--line" style="--_c:var(--chart-reference)"></span> Target</li>
+				<li class="saga-legend__item"><span class="saga-legend__swatch saga-legend__swatch--line" style="--_c:var(--chart-average)"></span> Average</li>
+			</ul>
+		</div>
+	</div>
+<pre class="demo-snippet"><code>&lt;div style=&quot;width:100%;display:grid;gap:var(--space-md)&quot;&gt;
+	&lt;div&gt;
+		&lt;div class=&quot;saga-card__title-row&quot;&gt;&lt;span class=&quot;saga-card__label&quot;&gt;Survey completion&lt;/span&gt;&lt;span class=&quot;text-secondary&quot;&gt;34 of 55 · target 44&lt;/span&gt;&lt;/div&gt;
+		&lt;div class=&quot;saga-bar&quot; role=&quot;img&quot; aria-label=&quot;62% complete, target 80%&quot;&gt;&lt;div class=&quot;saga-bar__fill&quot; style=&quot;--value:62%&quot;&gt;&lt;/div&gt;&lt;div class=&quot;saga-bar__mark&quot; style=&quot;--value:80%&quot;&gt;&lt;/div&gt;&lt;/div&gt;
+		&lt;div class=&quot;saga-axis&quot;&gt;&lt;span&gt;0%&lt;/span&gt;&lt;span&gt;50%&lt;/span&gt;&lt;span&gt;100%&lt;/span&gt;&lt;/div&gt;
+	&lt;/div&gt;
+	&lt;div&gt;
+		&lt;div class=&quot;saga-card__title-row&quot;&gt;&lt;span class=&quot;saga-card__label&quot;&gt;Attendance this week&lt;/span&gt;&lt;span class=&quot;text-secondary&quot;&gt;212 marks&lt;/span&gt;&lt;/div&gt;
+		&lt;div class=&quot;saga-bar saga-bar--stacked saga-bar--lg&quot; role=&quot;img&quot; aria-label=&quot;71% present, 12% tardy, 9% absent, 8% not yet marked&quot;&gt;&lt;div class=&quot;saga-bar__fill&quot; style=&quot;--value:71%;--_c:var(--chart-1)&quot;&gt;&lt;/div&gt;&lt;div class=&quot;saga-bar__fill&quot; style=&quot;--value:12%;--_c:var(--chart-4)&quot;&gt;&lt;/div&gt;&lt;div class=&quot;saga-bar__fill&quot; style=&quot;--value:9%;--_c:var(--chart-6)&quot;&gt;&lt;/div&gt;&lt;/div&gt;
+	&lt;/div&gt;
+	&lt;ul class=&quot;saga-legend&quot;&gt;
+		&lt;li class=&quot;saga-legend__item&quot;&gt;&lt;span class=&quot;saga-legend__swatch&quot; style=&quot;--_c:var(--chart-1)&quot;&gt;&lt;/span&gt; Present&lt;/li&gt;
+		&lt;li class=&quot;saga-legend__item&quot;&gt;&lt;span class=&quot;saga-legend__swatch&quot; style=&quot;--_c:var(--chart-4)&quot;&gt;&lt;/span&gt; Tardy&lt;/li&gt;
+		&lt;li class=&quot;saga-legend__item&quot;&gt;&lt;span class=&quot;saga-legend__swatch&quot; style=&quot;--_c:var(--chart-6)&quot;&gt;&lt;/span&gt; Absent&lt;/li&gt;
+		&lt;li class=&quot;saga-legend__item&quot;&gt;&lt;span class=&quot;saga-legend__swatch&quot; style=&quot;--_c:var(--chart-neutral)&quot;&gt;&lt;/span&gt; Not yet marked&lt;/li&gt;
+		&lt;li class=&quot;saga-legend__item&quot;&gt;&lt;span class=&quot;saga-legend__swatch saga-legend__swatch--line&quot; style=&quot;--_c:var(--chart-reference)&quot;&gt;&lt;/span&gt; Target&lt;/li&gt;
+		&lt;li class=&quot;saga-legend__item&quot;&gt;&lt;span class=&quot;saga-legend__swatch saga-legend__swatch--line&quot; style=&quot;--_c:var(--chart-average)&quot;&gt;&lt;/span&gt; Average&lt;/li&gt;
+	&lt;/ul&gt;
+&lt;/div&gt;</code></pre>
 </section>
 
 <section class="demo-section">

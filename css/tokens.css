@@ -75,6 +75,7 @@
 	--color-success-bg: #eaf5ec;
 	--color-success-border: #b7dcbb;
 	--color-warning: #d97706;
+	--color-warning-strong: #b45309;             /* 4.6:1 under white: the amber a filled button or badge may use (DS-112) */
 	--color-warning-text: #8a6d00;               /* caution text/buttons on light surfaces */
 	--color-warning-bg: #fff8e1;
 	--color-warning-border: #f0c14b;
@@ -265,7 +266,10 @@
 	--scrollbar-thumb-bg: var(--saga-navy);
 	--scrollbar-thumb-outline: 1px solid var(--color-gray);
 
-	/* Charts (DS-024): series order for categorical data; averages are neutral */
+	/* Charts (DS-024): series order for categorical data; averages are neutral.
+	   DS-111: --chart-neutral is the remainder / "not yet" segment behind a
+	   bar; --chart-reference is a target or reference mark that must stay 3:1
+	   over that gray (gray-400 averages do not). */
 	--chart-1: var(--saga-blue);
 	--chart-2: var(--saga-magenta);
 	--chart-3: var(--saga-teal-ink);
@@ -275,6 +279,8 @@
 	--chart-7: var(--saga-lime);
 	--chart-8: var(--saga-coral);
 	--chart-average: var(--gray-400);
+	--chart-neutral: var(--gray-legacy-light);
+	--chart-reference: var(--gray-700);
 	--chart-band: var(--gray-100);
 	--chart-grid: var(--gray-200);
 
