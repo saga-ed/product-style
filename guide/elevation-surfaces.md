@@ -94,8 +94,8 @@ Variants:
   blue border and tint.
 - Option card (a radio rendered as a card): `--color-border`; when selected, border
   `--color-primary` and background `--color-primary-light`. The radio itself stays
-  visible; the colour is not the only signal.
-- Day-type card: a `12px` colour band across the top (`--chip-regular` or
+  visible; the color is not the only signal.
+- Day-type card: a `12px` color band across the top (`--chip-regular` or
   `--chip-advisory`) above the white body. The band is the only non-white fill a card
   ever has.
 - Placeholder slot ("Add Day Type"): `.saga-card--empty`, `--color-bg-secondary`,

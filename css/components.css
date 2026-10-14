@@ -1,7 +1,7 @@
 /* =============================================================================
    Saga product style — vanilla component layer
    Requires tokens.css then base.css. Framework-free: <link> this after both and
-   use the classes below from any HTML. Every colour, size and duration is a
+   use the classes below from any HTML. Every color, size and duration is a
    semantic token (Tier 2); the only literal lengths are 1px hairlines and 0.
    Focus rings come from base.css (DS-006) and are never overridden here.
    Ledger: guide/decisions.md DS-100+ (guide/_ledger-components.md).
@@ -162,7 +162,7 @@ iconify-icon { display: inline-block; vertical-align: -0.125em; }
 
 /* Bordered row stack: a list of editable things that is not quite a table (All
    Periods). Hairline between rows; --edge paints a 3px meaning edge from --_edge;
-   --ghost dims a row by colour and surface, never opacity. */
+   --ghost dims a row by color and surface, never opacity. */
 .saga-list { margin: 0; padding: 0; list-style: none; border: 1px solid var(--color-border); border-radius: var(--radius-md); background: var(--color-bg); }
 .saga-list__row { display: flex; align-items: center; gap: var(--space-sm); padding: var(--space-sm) var(--space-md); border-top: 1px solid var(--color-border); }
 .saga-list__row:first-child { border-top: 0; border-radius: var(--radius-md) var(--radius-md) 0 0; }
@@ -383,7 +383,7 @@ iconify-icon { display: inline-block; vertical-align: -0.125em; }
 .saga-kv--stacked > dd + dt { margin-top: var(--space-sm); }
 
 /* ── Charts (DS-024/111/119): the few primitives a dashboard needs without a
-   chart library. Set --_c on a fill or swatch to pick the series colour; the
+   chart library. Set --_c on a fill or swatch to pick the series color; the
    remainder is --chart-neutral, a target mark is --chart-reference. ──────── */
 .saga-bar { position: relative; display: flex; height: calc(var(--space-sm) + var(--space-xs) + var(--space-2xs)); border-radius: var(--radius-xs); background: var(--chart-neutral); overflow: hidden; }
 .saga-bar__fill { height: 100%; width: var(--value, 0%); flex-shrink: 0; background: var(--_c, var(--chart-1)); transition: width var(--motion-base) var(--ease-out); }

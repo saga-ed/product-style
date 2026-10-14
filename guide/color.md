@@ -1,13 +1,13 @@
 ---
-title: Colour
+title: Color
 order: 10
-summary: The Saga palette, what each colour is for, which pairs pass WCAG, and how to pick a colour without guessing.
+summary: The Saga palette, what each color is for, which pairs pass WCAG, and how to pick a color without guessing.
 ---
 
 Saga products are mostly white and navy: white content on a navy left nav, with one
 blue for everything you can click. The rest of the palette is loud (teal, pink, lime,
 magenta) and is kept for the brand mark, chips and data marks. If a screen looks
-colourful, something has gone wrong.
+colorful, something has gone wrong.
 
 Every value on this page is a token in `css/tokens.css`. Components reference the
 semantic tier (`--color-*`) and never a primitive (`--saga-*`) or a hex. The reason is
@@ -16,7 +16,7 @@ tier, and a hardcoded hex silently opts out.
 
 ## Primitives
 
-Tier 1. Named by what the colour is, not what it does (see DS-001 for the naming
+Tier 1. Named by what the color is, not what it does (see DS-001 for the naming
 history: Figma called pink "red" and blue "teal").
 
 | Token | Hex | Role | Not for |
@@ -71,7 +71,7 @@ Brand roles (DS-003):
 
 | Token | Resolves to | Meaning |
 |---|---|---|
-| `--color-primary` | blue | The one action colour: primary buttons, links, active tab, active nav pill, focus ring |
+| `--color-primary` | blue | The one action color: primary buttons, links, active tab, active nav pill, focus ring |
 | `--color-primary-hover` | blue-dark | Hover and pressed |
 | `--color-primary-light` | blue-tint | Selected and quiet-hover surfaces |
 | `--color-accent` | teal | Decorative only |
@@ -84,7 +84,7 @@ is gray-100 with `--chip-neutral-text`. A teal chip carries navy or dark text
 
 ## Status
 
-One red, and it is clay. Pink is never a status colour (DS-004).
+One red, and it is clay. Pink is never a status color (DS-004).
 
 | Status | Foreground | Background | Border | Use |
 |---|---|---|---|---|
@@ -96,7 +96,7 @@ One red, and it is clay. Pink is never a status colour (DS-004).
 | Attention | `--color-attention` `#b45309` | `--color-attention-bg` `#fdf1de` | | Needs action in content (the Groups step's triangle) |
 | Positive | `--color-positive-fg` `#2c6e49` | `--color-positive-bg` `#eef4ec` | `--color-positive-border` | Calm good-news surfaces (not a confirmation) |
 
-Inside a notice, toast or banner, the status colour goes on the icon, the left edge and
+Inside a notice, toast or banner, the status color goes on the icon, the left edge and
 the badge. The body copy stays `--color-text` (DS-025): amber `#d97706` on white is
 3.2:1, which is enough for an icon or a border but not for a sentence. Amber text
 uses `--color-attention` (5.0:1).
@@ -143,7 +143,7 @@ teal-tint 4.9:1, blue on `--color-primary-light` 5.6:1 all pass. Success on its 
 Nav text is white at 70% on navy (about 7.8:1). The 45% muted nav text is roughly
 4.0:1 and is reserved for the small uppercase group labels.
 
-## How to pick a colour
+## How to pick a color
 
 Work down the list and stop at the first match.
 
@@ -156,14 +156,14 @@ Work down the list and stop at the first match.
    `--chip-neutral-*`.
 5. Is it chrome (nav, scrim, header strip)? `--saga-navy` through the `--nav-*` tokens.
 6. Is it data? See the chart palette below.
-7. Is it the brand mark or a favicon? The four-colour S uses blue, teal, pink and lime
+7. Is it the brand mark or a favicon? The four-color S uses blue, teal, pink and lime
    unmodified; nothing else borrows them.
 8. Everything else is a neutral.
 
-## Data and chart colours
+## Data and chart colors
 
 Chart marks are the one place the loud primitives belong. The AI Insights screens set
-the convention: a single-series view colours its marks and the series label in magenta,
+the convention: a single-series view colors its marks and the series label in magenta,
 and the strategy timeline uses lime, yellow, navy, clay and gray as categorical tracks
 (DS-024).
 
@@ -188,11 +188,11 @@ and the strategy timeline uses lime, yellow, navy, clay and gray as categorical 
   `--chart-average` does not (about 1.6:1), so the two are not
   interchangeable (DS-111).
 - Green, clay and amber in a chart mean good, bad and warning. Do not use them as
-  ordinary series colours, and do not use brand colours to mean a status.
-- Every series also gets a shape, pattern or direct label; colour is never the only
+  ordinary series colors, and do not use brand colors to mean a status.
+- Every series also gets a shape, pattern or direct label; color is never the only
   difference (see [Accessibility](accessibility.md)).
 - Text on a chart (labels, axis values) is `--color-text-secondary` or darker, never the
-  series colour unless it passes 4.5:1 (blue and magenta do; teal, orange and pink do not).
+  series color unless it passes 4.5:1 (blue and magenta do; teal, orange and pink do not).
 
 ## Never
 
@@ -201,8 +201,8 @@ and the strategy timeline uses lime, yellow, navy, clay and gray as categorical 
 - Never yellow `#f9e547` for a warning; warnings are amber `#d97706`.
 - Never a hex literal or a `--saga-*` primitive in component CSS. Semantic tokens only.
 - Never a second blue. `#1C77C3`, `#0d7d7d` and friends from old prototypes are not
-  Saga colours.
+  Saga colors.
 - Never fade a disabled control with `opacity`; use `--btn-surface-disabled` and
   `--color-text-disabled`.
-- Never add a colour to one screen by editing `tokens.css`. Add a Tier 3 alias in the
+- Never add a color to one screen by editing `tokens.css`. Add a Tier 3 alias in the
   app and log it in the ledger.

@@ -1,7 +1,7 @@
 ---
 title: Accessibility
 order: 60
-summary: WCAG 2.1 AA, one focus ring, the text-size and high-contrast root attributes, reduced motion, semantics, tooltips, and colour as never the only signal.
+summary: WCAG 2.1 AA, one focus ring, the text-size and high-contrast root attributes, reduced motion, semantics, tooltips, and color as never the only signal.
 ---
 
 Saga products target **WCAG 2.1 AA**. School districts procure against it, and
@@ -32,7 +32,7 @@ Don't:
   design has a border change".
 - Replace the ring with a `box-shadow`. Shadows do not survive high contrast and
   forced-colors mode.
-- Invent a second ring colour for dark chrome. On navy the blue ring is 2.2:1 against
+- Invent a second ring color for dark chrome. On navy the blue ring is 2.2:1 against
   navy, which is below the 3:1 UI threshold; the nav therefore sets
   `--focus-ring-color: var(--white)` locally (DS-033), a token override, not a new ring.
 
@@ -89,7 +89,7 @@ from a pair that cannot converge: `--color-bg` with `--color-text`,
 `--color-primary` with `--color-primary-contrast`. Test every new surface with the
 attribute set.
 
-Default-theme contrast numbers are in [Colour](color.md#contrast). The short version:
+Default-theme contrast numbers are in [Color](color.md#contrast). The short version:
 `--color-text-muted` fails for essential text, teal fails for everything, amber and
 green fail for small text on white.
 
@@ -138,18 +138,23 @@ accessible name (2.5.3), so a button that shows "Save" is not named "Submit form
 
 ## Tooltips
 
-No native `title` attribute (DS-032). Dash enforces this in CI
-(`scripts/ensure-no-native-title.js`): `title` is invisible to keyboard and touch
-users, cannot be styled, and appears on a delay nobody controls. Use the tooltip
-component: shown on hover and on focus, dismissed on Escape, `role="tooltip"` linked by
-`aria-describedby`, positioned at `--z-tooltip`, popping in on `--motion-fast`.
+`title` is never the only mechanism (DS-123). Browsers use it as an accessible-name
+fallback only when nothing else names the element, screen readers announce it
+inconsistently, and it is invisible to keyboard and touch users and in a shared tab.
+So an icon-only control gets an `aria-label`, and supplementary description is a
+painted tooltip: shown on hover and on focus, dismissed on Escape, `role="tooltip"`
+linked by `aria-describedby`, positioned at `--z-tooltip`, popping in on
+`--motion-fast`. Adding `title` on top is a harmless extra; it is acceptable as the
+whole tooltip only in a prototype or where no tooltip component exists. Dash bans it
+outright in CI (`scripts/ensure-no-native-title.js`); that is dash's own ratchet, not
+this guide's rule.
 
 A tooltip adds information; it never carries the only copy of something essential.
 If the user must know it, put it on the page.
 
-## Colour is never the only signal
+## Color is never the only signal
 
-Every meaning carried by colour is also carried by something else:
+Every meaning carried by color is also carried by something else:
 
 - Status: an icon (check, triangle, circle-x) and a word, not just a tint.
 - Day types: the chip has the label "Regular" or "Advisory" in it.
@@ -181,8 +186,8 @@ hand; dash's `<Time>` is the model.
 
 - Tab through it once; every control reachable, ring visible, no trap.
 - Set `data-text-size="larger"`; nothing clips.
-- Set `data-contrast="high"`; no dark-on-dark surface, no colour that stayed the same.
+- Set `data-contrast="high"`; no dark-on-dark surface, no color that stayed the same.
 - Set the OS to reduce motion; nothing loops, nothing fails to appear.
-- Turn off CSS colour (grayscale); every status and selection still reads.
+- Turn off CSS color (grayscale); every status and selection still reads.
 - Every icon-only control has a name; every image has `alt` or is hidden.
 - Loading shows a labelled skeleton, never a false empty state.

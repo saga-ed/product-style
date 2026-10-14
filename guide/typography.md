@@ -101,7 +101,7 @@ size: if you need a smaller h2, you need an h3.
 
 | Level | Size | Weight | Notes |
 |---|---|---|---|
-| h1 | `--text-2xl` | 600 | One per page. In the shell it is the page title in the top bar, coloured `--color-primary` |
+| h1 | `--text-2xl` | 600 | One per page. In the shell it is the page title in the top bar, colored `--color-primary` |
 | h2 | `--text-xl` | 400 | Section headings. Regular weight is deliberate; the size carries it |
 | h3 | `--text-base` | 600 | Card titles, form groups ("Define Tutoring Patterns", "Questions") |
 | h4 | `--text-sm` | 600 | Uppercase, `letter-spacing: 0.04em`, `--color-text-secondary`. Field labels, nav group labels ("CONFIGURE"), "DURATION" |
@@ -114,7 +114,7 @@ size: if you need a smaller h2, you need an h3.
 ```
 
 Headings are `--color-text`, except the h1 page title (blue) and headings on navy
-chrome (white). Never colour a heading to decorate it.
+chrome (white). Never color a heading to decorate it.
 
 ## Rhythm
 

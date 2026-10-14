@@ -233,7 +233,7 @@ Do
 
 Don't
 
-- Don't add a second brand colour to the nav (no teal pills, no coloured
+- Don't add a second brand color to the nav (no teal pills, no colored
   icons). The nav is navy, white, and one blue pill.
 - Don't put page actions (Save, Add) in the top bar; they belong in the
   content area next to what they act on.

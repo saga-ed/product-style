@@ -5,10 +5,13 @@ summary: Field anatomy, text and select inputs, checkboxes and toggles, the date
 ---
 
 Saga forms are quiet: a label above, a bordered white box, a blue focus,
-clay for errors. The one hard rule, enforced by CI in the dashboard, is that
-nothing opens a native popup. Native `<select>`, `<input type="date">` and
-`title=` tooltips render outside the browser's paint surface and are invisible
-during a tab share, and every tutoring session runs inside a tab share.
+clay for errors. Native controls are welcome where they fit: a short plain
+`<select>` or a single `<input type="date">` is accessible by default and
+handles keyboard, touch and viewport edges for free. Reach for the painted
+`.saga-select` listbox and `.saga-datepicker` when the control needs search,
+groups, annotations, a range, or one look across browsers (see "Native or
+painted?" under Select). One caveat to weigh: a native popup paints outside
+the tab, so it is missing from a tab share.
 
 ## Field anatomy
 
@@ -61,9 +64,11 @@ format ("Search whole name, Student ID, school"), not the label.
 
 ## Select
 
-Product UI never renders a native `<select>` (dash enforces it in CI). The
-select is a painted trigger that looks like an input with a blue caret at the
-right, and it opens a painted listbox (DS-101, DS-117):
+Both kinds of select share one box: `.saga-select` wraps either a native
+`<select>` or a painted trigger, and both get the input border with a blue
+caret at the right (DS-101, DS-124). The painted select is a trigger that
+looks like an input and opens a painted listbox; it is the one to use when
+the list needs search, groups, multi-select or rich rows:
 
 - **Trigger**: `.saga-select > button.saga-select__trigger`, the text-input
   box with a CSS-drawn down caret in `--color-primary` at the right. Shows the
@@ -108,12 +113,21 @@ the mark.
 </div>
 ```
 
-**Prototype exception.** A native `<select>` wrapped in `.saga-select` takes
-the same box and caret (`appearance: none`), so a prototype whose point is not
-the dropdown's behaviour may use it to get a working control in one line. It
-is a stand-in, not the design: the open list will look native, will not show
-in a tab share, and an engineer replaces it with `SelectMenu`. Never ship it
-in product UI.
+**Native or painted?** A native `<select>` wrapped in `.saga-select` takes
+the same box and caret (`appearance: none`) and is the right control when the
+shoe fits (DS-124):
+
+- **Native** for a short plain list: roughly a dozen options or fewer, text
+  only, single choice. Also for a form inside a modal, where a custom popover
+  fights the dialog's stacking and viewport, and on mobile, where the
+  platform picker beats anything painted. It is accessible by default and
+  handles keyboard, viewport edges and touch for free.
+- **Painted** (`.saga-select__trigger` + `.saga-select__menu`) when the list
+  needs search, groups, multi-select or rich option content, or when a dense
+  toolbar wants a consistent painted look. Dash's program selector, with
+  dozens of entries and a search row, is the canonical case.
+- Dash's own CI bans the native element outright. That is a repo-level
+  ratchet dash chose for itself, not this guide's rule.
 
 ```html
 <div class="saga-select"><select aria-label="Ratio"><option>1:1</option><option selected>1:3</option></select></div>
@@ -155,8 +169,12 @@ sentence of explanation; use plain radios when the labels are enough.
 
 ## Date picker
 
-The date field is `.saga-datepicker`: a `.saga-datepicker__trigger` that looks
-like an input with a calendar glyph in `--color-text-secondary` at the right
+A single plain date in a form is a native `<input type="date">` carrying the
+`.saga-input` class; it is accessible, localized and touch-friendly for free
+(DS-125). Use `.saga-datepicker` when the day grid needs annotations (sessions
+on a day, disabled days), a range, quick options, or the picker must look the
+same in every browser. It is a `.saga-datepicker__trigger` that looks like an
+input with a calendar glyph in `--color-text-secondary` at the right
 ("10/12/2026"), sized to its content rather than the column. Clicking opens a
 `.saga-datepicker__popover` (`date_picker.png`):
 
@@ -198,7 +216,8 @@ like an input with a calendar glyph in `--color-text-secondary` at the right
 </div>
 ```
 
-Dates are entered by picking, never by typing a native date control.
+In the painted picker, dates are entered by picking; the native date input
+also accepts typing, which is fine for a plain single date.
 
 ## Time picker
 
@@ -262,7 +281,7 @@ sessions search in `calendar_view.png`):
   instead: "(optional)" after the label in `--color-text-secondary`. If a form
   is mostly optional, flip it and mark required with an asterisk, but never
   mix both schemes on one screen.
-- **Read-only** keeps the text colour and shows `--input-border-color-readonly`
+- **Read-only** keeps the text color and shows `--input-border-color-readonly`
   (`#f9f9f9`, nearly invisible) so the value reads as text, not as a control.
 - **Disabled** is `--input-bg-disabled` (`#f9f9f9`) fill with
   `--input-color-disabled` (`#444444`) text and `cursor: not-allowed`. Not
@@ -289,11 +308,14 @@ Do
 
 - Label every control, above it, in Title Case.
 - Keep placeholders italic and beige; they are hints, not labels.
-- Use the painted select, date and time pickers everywhere.
+- Choose native or painted by what the list or date needs, not by habit;
+  see "Native or painted?" under Select.
 
 Don't
 
-- Don't use native `<select>`, `<input type="date">` or `title=`.
+- Don't let `title=` be a control's only name or only tooltip; `aria-label`
+  names it and a painted tooltip describes it.
+- Don't paint a select or date picker the native control already handles.
 - Don't fade disabled controls; fill them.
 - Don't mark required fields when they are the majority.
 - Don't validate while the user is still typing.

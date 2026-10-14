@@ -32,6 +32,18 @@ renderer.heading = function ({ text, depth, tokens }) {
 };
 marked.use({ renderer, gfm: true });
 
+// <code>#rrggbb</code> → a swatch: background is the color, text is white or black by contrast.
+function swatchify(html) {
+	return html.replace(/<code>(#(?:[0-9a-f]{6}|[0-9a-f]{3}))<\/code>/gi, (_, hex) => {
+		let h = hex.slice(1); if (h.length === 3) h = [...h].map((c) => c + c).join("");
+		const lin = (v) => { v /= 255; return v <= 0.03928 ? v / 12.92 : ((v + 0.055) / 1.055) ** 2.4; };
+		const [r, g, b] = [0, 2, 4].map((i) => lin(parseInt(h.slice(i, i + 2), 16)));
+		const L = 0.2126 * r + 0.7152 * g + 0.0722 * b;
+		const fg = (L + 0.05) / 0.05 >= 1.05 / (L + 0.05) ? "#000000" : "#ffffff";
+		return `<code class="hex" style="--c:${hex};--fg:${fg}">${hex}</code>`;
+	});
+}
+
 async function loadGuide() {
 	const dir = path.join(ROOT, "guide");
 	const files = (await readdir(dir)).filter((f) => f.endsWith(".md") && !f.startsWith("_"));
@@ -45,7 +57,7 @@ async function loadGuide() {
 			title: meta.title || name,
 			order: Number(meta.order ?? 999),
 			summary: meta.summary || "",
-			html: marked.parse(body),
+			html: swatchify(marked.parse(body)),
 		});
 	}
 	pages.sort((a, b) => a.order - b.order || a.name.localeCompare(b.name));
@@ -120,15 +132,28 @@ async function main() {
 	const [tokens, base, components] = await Promise.all(
 		["tokens.css", "base.css", "components.css"].map((f) => readFile(path.join(ROOT, "css", f), "utf8").catch(() => ""))
 	);
-	const starterTpl = await readFile(path.join(ROOT, "starter", "saga-starter.template.html"), "utf8");
-	const starter = starterTpl
-		.replace("/*__TOKENS__*/", tokens.trim())
-		.replace("/*__BASE__*/", base.trim())
-		.replace("/*__COMPONENTS__*/", components.trim())
-		.replace("{{buildInfo}}", buildInfo);
-	await writeFile(path.join(ROOT, "starter", "saga-starter.html"), starter);
+	const starterTpl = (await readFile(path.join(ROOT, "starter", "saga-starter.template.html"), "utf8")).replaceAll("{{buildInfo}}", buildInfo);
+	const linked = starterTpl.replace("<!--__CSS__-->", [
+		"<!-- The system's CSS, served from the style site. In a product repo the same",
+		"     three files come from the package, not from here. For a copy that opens",
+		"     with no network, use saga-starter-offline.html instead. -->",
+		'<link rel="stylesheet" href="https://style.wootdev.com/css/tokens.css">',
+		'<link rel="stylesheet" href="https://style.wootdev.com/css/base.css">',
+		'<link rel="stylesheet" href="https://style.wootdev.com/css/components.css">',
+	].join("\n"));
+	const offline = starterTpl.replace("<!--__CSS__-->", [
+		"<!-- Offline copy: tokens.css, base.css and components.css inlined verbatim so the",
+		"     file opens with no network. Do not edit these blocks; regenerate from",
+		"     https://style.wootdev.com/starter/saga-starter-offline.html -->",
+		`<style id="saga-tokens">\n${tokens.trim()}\n</style>`,
+		`<style id="saga-base">\n${base.trim()}\n</style>`,
+		`<style id="saga-components">\n${components.trim()}\n</style>`,
+	].join("\n"));
+	await writeFile(path.join(ROOT, "starter", "saga-starter.html"), linked);
+	await writeFile(path.join(ROOT, "starter", "saga-starter-offline.html"), offline);
 	await mkdir(path.join(DIST, "starter"), { recursive: true });
-	await writeFile(path.join(DIST, "starter", "saga-starter.html"), starter);
+	await writeFile(path.join(DIST, "starter", "saga-starter.html"), linked);
+	await writeFile(path.join(DIST, "starter", "saga-starter-offline.html"), offline);
 
 	// Soft-404 target
 	await writeFile(path.join(DIST, "404.html"), await layout({ title: "Not found", summary: "", nav, content: "<p>That page does not exist. <a href=\"/\">Back to the guide.</a></p>", path: "", buildInfo }));

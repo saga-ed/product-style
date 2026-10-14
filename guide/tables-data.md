@@ -7,7 +7,7 @@ summary: Data tables, stat cards, key-value lists, chips and badges, progress an
 Most of a Saga dashboard is data: rosters, schedules, survey results, session
 counts. This chapter is the look of that data at rest. The rule underneath all
 of it is that structure comes from hairlines and grey fills, never from heavy
-borders or coloured backgrounds, and colour is spent only on meaning (day type,
+borders or colored backgrounds, and color is spent only on meaning (day type,
 status, selection).
 
 ## Data tables
@@ -141,16 +141,16 @@ A chip is a small rounded label. Four kinds, one height (`--text-xs`,
 | Day type, Regular | `.saga-chip--regular` | `--chip-regular` (clay) fill, white text, `--radius-sm` | "Regular" on every weekday cell |
 | Day type, Advisory | `.saga-chip--advisory` | `--chip-advisory` (teal) fill, white text, `--radius-sm` | "Advisory" on Fridays |
 | Neutral tag | `.saga-chip--neutral` | `--chip-neutral-bg` fill, `--chip-neutral-text`, `--radius-full` | "Math" next to a survey question |
-| Status pill | `.saga-chip--outline` | 1px border and text in the status colour, white fill, `--radius-full` | "Not Started", "In Progress", skill levels |
+| Status pill | `.saga-chip--outline` | 1px border and text in the status color, white fill, `--radius-full` | "Not Started", "In Progress", skill levels |
 
 Day-type chips are the two filled exceptions; they come straight from the
-Schedule and Calendar screens and a chip filled with any other colour is wrong.
+Schedule and Calendar screens and a chip filled with any other color is wrong.
 A day-type reference inside running text (the All Periods list) is a 8px dot
-in the chip colour followed by the name in semibold, not a filled chip.
+in the chip color followed by the name in semibold, not a filled chip.
 
 Status pills follow the newer Figma direction (`past_session_figma_comp.png`):
 outlined, not filled, so a row of them reads as labels rather than buttons.
-The selected one in a filter row inverts to a navy fill with white text. Colour
+The selected one in a filter row inverts to a navy fill with white text. Color
 the outline by meaning: `--color-primary` for an active or current state,
 `--color-success` for done, `--color-warning` for attention, `--color-teal`
 for the teal rail tiers, `--color-text-secondary` for not started.
@@ -217,20 +217,20 @@ Charts follow the AI Insights screens (`ai_insights_*.png`):
   the same gray is about 1.6:1 and reads only against white.
 - **Remainder**: the "not yet" part of a bar or ring (students not yet
   surveyed, sessions not yet held) is `--chart-neutral`, never a pale tint of
-  the series colour.
+  the series color.
 - **Marks**: 8px filled circles. Series take `--chart-1` through `--chart-8`
   in order (blue, magenta, teal, orange, pink, navy, lime, coral; DS-024). A
-  chart that is about one named thing may pick its series colour, which is
+  chart that is about one named thing may pick its series color, which is
   why the shipped AI Insights scatter is magenta. Hover enlarges the mark and
   shows a tooltip; a click opens the thing the mark stands for.
-- **Timelines**: event ticks are 2px by 10px bars in the series colour on a
+- **Timelines**: event ticks are 2px by 10px bars in the series color on a
   hairline track; a legend (`.saga-legend`) at the left pairs a 10px square
-  swatch (`.saga-legend__swatch`, coloured by `--_c`) with the label in
+  swatch (`.saga-legend__swatch`, colored by `--_c`) with the label in
   `--text-xs` `--color-text-secondary`. Glow and grow markers use the brand
   heart and leaf glyphs.
 - **Bars without a chart library**: `.saga-bar` is a 14px `--chart-neutral`
   track with `--radius-xs`; `.saga-bar__fill` takes its width from `--value`
-  and its colour from `--_c` (default `--chart-1`); `.saga-bar--stacked`
+  and its color from `--_c` (default `--chart-1`); `.saga-bar--stacked`
   lays several fills side by side; `.saga-bar__mark` is a
   `--chart-reference` tick at `--value`; `.saga-axis` is the `--text-xs`
   secondary label row beneath. Put the number in text next to the bar; the
@@ -248,7 +248,7 @@ Charts follow the AI Insights screens (`ai_insights_*.png`):
   <li class="saga-legend__item"><span class="saga-legend__swatch saga-legend__swatch--line" style="--_c: var(--chart-reference)"></span> Target</li>
 </ul>
 ```
-- Never red versus green for good versus bad; use the chip and notice colours
+- Never red versus green for good versus bad; use the chip and notice colors
   (`--color-success`, `--color-warning`) only when the chart is about status.
 
 ## Calendar cells
@@ -278,6 +278,6 @@ Do
 Don't
 
 - Don't zebra-stripe rows; hover and selection are the only row tints.
-- Don't fill a chip with a colour other than clay (Regular) or teal (Advisory).
+- Don't fill a chip with a color other than clay (Regular) or teal (Advisory).
 - Don't put a filled button in every row; row actions are quiet icons.
 - Don't show "0" in a badge.

@@ -1,7 +1,7 @@
 ---
 title: Iconography
 order: 150
-summary: Material Symbols Light (outlined, rounded) through iconify, the size and colour rules, the brand marks, and a table of the icons Saga uses most.
+summary: Material Symbols Light (outlined, rounded) through iconify, the size and color rules, the brand marks, and a table of the icons Saga uses most.
 ---
 
 Saga icons are thin, outlined and rounded. The set is **Material Symbols
@@ -57,18 +57,18 @@ rather than on the icon itself, so a button's icon and text scale together.
 Stroke weight comes from the set and is never changed; do not fake a bolder
 icon with a CSS stroke.
 
-## Colour
+## Color
 
-Icons take `currentColor` and nothing else. The parent's text colour decides:
+Icons take `currentColor` and nothing else. The parent's text color decides:
 
-- In a button, the icon is the button's text colour (white on primary, blue
+- In a button, the icon is the button's text color (white on primary, blue
   on quiet, `--color-text` on secondary).
 - In the nav, `--nav-text` at 70% opacity, full white on hover and on the
   active pill.
 - In a table row action, `--color-text-dark`.
 - In a date trigger or search box, `--color-text-secondary`: it is an
   affordance, not an action.
-- Status icons use the status colour: `--color-warning` triangle,
+- Status icons use the status color: `--color-warning` triangle,
   `--color-success` check, `--color-danger` for a destructive remove.
 - The one exception is the Add disc, which is always `--color-primary` so it
   reads as the brand's add glyph wherever it appears (see
@@ -80,7 +80,7 @@ an icon as the only carrier of a status (pair it with a label or chip).
 ## Brand marks
 
 Five marks live in `assets/brand/`. They are artwork, not icons: do not
-recolour them with `currentColor`, do not restroke them, and keep their
+recolor them with `currentColor`, do not restroke them, and keep their
 proportions.
 
 | File | What it is | Use |
@@ -158,13 +158,13 @@ MDI glyph has a different stroke and reads as foreign next to these.
 Do
 
 - Load one set, Material Symbols Light, and use the outlined rounded forms.
-- Size with `font-size` on the parent; colour with `color`.
+- Size with `font-size` on the parent; color with `color`.
 - Give every icon-only control an `aria-label` and a tooltip.
 
 Don't
 
 - Don't use filled glyphs except the Add disc and the selected state of a
   toggle icon (a filled heart once marked).
-- Don't recolour the brand marks or use the S as a generic icon.
+- Don't recolor the brand marks or use the S as a generic icon.
 - Don't use emoji as icons; they render differently on every platform.
 - Don't rely on an icon alone to say "error" or "done".

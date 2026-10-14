@@ -11,7 +11,7 @@ chapters; DS-050–099 pattern chapters; DS-100+ vanilla component layer.
 
 ---
 
-### DS-001 — Primitive colour names say what the colour is
+### DS-001 — Primitive color names say what the color is
 Status: proposed · See it: /guide/color#primitives
 
 `--saga-blue` is `#006298`, `--saga-teal` is `#1ececa`, `--saga-pink` is
@@ -33,7 +33,7 @@ for dense tables, tab labels, and input borders. Connect's warm `#dbd6d5`
 border and coach's `#444` body text are app-level aliases, not the default.
 Alternatives: `#444` body text (legacy, coach); warm grays (Connect).
 
-### DS-003 — Blue is the only action colour; teal is decorative
+### DS-003 — Blue is the only action color; teal is decorative
 Status: proposed · See it: /guide/buttons
 
 Primary buttons, links, active nav, focus rings are `--saga-blue`. Teal
@@ -47,7 +47,7 @@ reached the same conclusion).
 Status: proposed · See it: /guide/color#status
 
 `--color-danger` is clay `#991a21` (dash, Figma `error` alias, Nathan's
-board). Pink `#ff595a` is never a status colour (coach's `--color-error` and
+board). Pink `#ff595a` is never a status color (coach's `--color-error` and
 Connect's `--cv3-danger` both use it today; both become app-level
 migrations). Warning is amber `#d97706` rather than Figma's yellow
 `#f9e547`, which is illegible as text. Attention (needs-action) is `#b45309`
@@ -137,7 +137,7 @@ in any current app and the motion prototype used the same numbers.
 Status: proposed · See it: /guide/elevation-surfaces#cards
 
 Matches the dash screenshots (Reports, Program Config cards). Stat cards add
-a 2px top edge in the primary colour by modifier, not by token.
+a 2px top edge in the primary color by modifier, not by token.
 
 ### DS-016 — Input contract follows the legacy SAGA_INPUT mixin via dash
 Status: proposed · See it: /guide/forms-inputs
@@ -196,18 +196,18 @@ Nathan's convention from the prototypes repo (`.ptag`, `.standin`,
 free.
 
 ### DS-024 — Chart series order: blue, magenta, teal, orange, pink, navy, lime, coral
-Status: proposed · See it: /guide/color#data-and-chart-colours
+Status: proposed · See it: /guide/color#data-and-chart-colors
 
-The AI Insights screens colour a single series magenta (`#bb16a3`) and the strategy
+The AI Insights screens color a single series magenta (`#bb16a3`) and the strategy
 timeline uses lime, yellow, navy, clay and gray as categorical tracks; no source
 defined a multi-series order. The guide fixes one, lets a single-series chart use
 magenta or blue, keeps green/clay/amber for good/bad/warning only, and makes
-`--gray-400` the reference-line colour. Brand fills (pink, lime, teal) are allowed
+`--gray-400` the reference-line color. Brand fills (pink, lime, teal) are allowed
 only here and in the mark.
 Alternatives: the timeline's lime/yellow/navy/clay/gray set as the general order
 (three of five fail contrast as labels).
 
-### DS-025 — In a notice, the status colour is on the icon and edge; body text is neutral
+### DS-025 — In a notice, the status color is on the icon and edge; body text is neutral
 Status: proposed · See it: /guide/color#status
 
 Amber `#d97706` on white is 3.2:1 and on `--color-warning-bg` 3.0:1; green `#20912d`
@@ -274,7 +274,7 @@ Alternatives: add `--ease-overshoot` for the one bespoke moment (dropped frames 
 Chromebooks, wrong tone).
 
 ### DS-032 — No native `title`; tooltips are a component linked by `aria-describedby`
-Status: proposed · See it: /guide/accessibility#tooltips
+Status: overturned → DS-123 (`title` is never the only mechanism, not banned) · See it: /guide/accessibility#tooltips
 
 Dash bans `title` in CI; Connect's a11y spec still recommends `title` on icon-only
 buttons alongside `aria-label`. The guide follows dash: `aria-label` names the
@@ -313,7 +313,7 @@ Status: proposed · See it: /guide/color#status
 
 White on `--color-success` (`#20912d`) is 4.08:1, under AA for button text, and
 green text on the success tint is 3.7:1. `--color-success-strong` (`#1a7a25`,
-5.5:1 on white) is the fill for affirmative buttons and the colour for success
+5.5:1 on white) is the fill for affirmative buttons and the color for success
 text; `--color-success` stays for icons, edges and large text.
 
 ### DS-037 — Tokens added on request from the chapters, not invented in CSS
@@ -358,6 +358,8 @@ no keyboard path, and a disabled button fires no events a tooltip could use.
 So: every icon-only control has an `aria-label` and a Tooltip; a disabled
 button's reason is visible text pointed to by `aria-describedby`, or the
 button stays enabled with `aria-disabled` and explains on click.
+Softened by DS-123: `aria-label` required; the tooltip is painted when there
+is one, and `title` alongside it is a harmless extra.
 
 ### DS-053 — Segmented toggle: pressed segment is filled primary on a grey track
 Status: proposed · See it: /guide/buttons#segmented-toggles
@@ -388,11 +390,11 @@ picks `--text-lg` at `--weight-semibold` (700 is "sparingly" per DS-009) and
 `--modal-scrim` (40%) for all overlays, with `--modal-scrim-strong` reserved
 for a page-level modal over a busy screen. No backdrop blur.
 
-### DS-056 — Toast variants recolour the accent edge only; the fill stays navy
+### DS-056 — Toast variants recolor the accent edge only; the fill stays navy
 Status: proposed · See it: /guide/modals-toasts-notices#toasts
 
 Dash and Connect both render a navy toast with a teal left accent, and dash
-adds an amber "attention" tone by swapping the border colour. The brief asks
+adds an amber "attention" tone by swapping the border color. The brief asks
 for success / warning / danger modifiers. Rather than introduce green, amber
 and red toast fills (which would read as alerts, not toasts), the modifiers
 change the accent: `--color-success`, `--nav-attention-bg`, `--color-danger`.
@@ -418,7 +420,7 @@ adopts the outlined form for status and the navy inversion for selection,
 and keeps the filled clay / teal day-type chips (DS-019) as the only filled
 chips.
 
-### DS-059 — Chart series colours: magenta first, then blue, teal, orange; averages grey
+### DS-059 — Chart series colors: magenta first, then blue, teal, orange; averages grey
 Status: **overturned → DS-024** (blue first; both chapters now use the `--chart-1…8` tokens; AI Insights' magenta-first chart is a domain choice, not the default) · See it: /guide/tables-data#charts
 
 The AI Insights scatter uses magenta dots; the Figma comp uses pink dots;
@@ -498,20 +500,20 @@ Status: proposed · See it: /showcase/forms/#select
 on `::after` so it is pure CSS, scales in em and needs no icon font. The
 custom listbox (`__menu`, `__option[aria-selected]`, `__search`, `__footer`)
 is styled now and wired by JS later; it mirrors dash's program picker.
-Alternatives: inline SVG background-image (hardcodes the colour, opts out
+Alternatives: inline SVG background-image (hardcodes the color, opts out
 of high contrast).
 
-### DS-102 — Toast surface is `--nav-bg` navy with a coloured left edge
+### DS-102 — Toast surface is `--nav-bg` navy with a colored left edge
 Status: proposed · See it: /showcase/overlays/#toasts
 
 Dash's toast is navy with a 2px teal border and 8px left accent; Connect's
 is navy-on-navy with a 10px teal rule. The layer keeps navy (the one dark
-chrome colour in the system) with a `--space-xs` left edge whose colour is
+chrome color in the system) with a `--space-xs` left edge whose color is
 the tone (`--color-success|warning|danger`, default `--color-accent`), no
 outer border, `--radius-md`, `--shadow-toast`. Bottom-right stack per the
 brief (dash and Connect both centre bottom). No token names a dark surface
 so the toast reads `--nav-bg`; see the token request below.
-Alternatives: light toast with coloured border (looks like a notice).
+Alternatives: light toast with colored border (looks like a notice).
 
 ### DS-103 — Nav active pill is `--radius-full`, not `--radius-md`
 Status: proposed · See it: /showcase/shell/
@@ -532,7 +534,7 @@ calendar and schedule rows.
 ### DS-105 — Input border is 1px, not dash's 2px
 Status: proposed · See it: /showcase/forms/
 
-DS-016 fixes the colours but not the width. `SagaInput.svelte` uses 2px;
+DS-016 fixes the colors but not the width. `SagaInput.svelte` uses 2px;
 every screenshot (Edit Session, Configure Period, Rosters search) renders a
 hairline. 1px keeps the field quiet next to the 2px focus ring.
 
@@ -551,14 +553,14 @@ Status: proposed · See it: /showcase/buttons/#states
 Disabled is a fill, never opacity (DS-016/017). Filled variants take
 `--btn-surface-disabled`; the outlined variants (`--secondary`, `--dashed`)
 would lose their shape under a gray fill, so they keep `--color-bg` and
-take the disabled colour on the border and text instead.
+take the disabled color on the border and text instead.
 
 ### DS-108 — Loading buttons keep their size and hide the label
 Status: proposed · See it: /showcase/buttons/#states
 
 `[data-loading]` sets the text transparent and draws a 1em ring on
-`::after` in the variant's text colour, so the button neither reflows nor
-changes colour. The spin runs at `calc(--motion-slow * 3)`; under reduced
+`::after` in the variant's text color, so the button neither reflows nor
+changes color. The spin runs at `calc(--motion-slow * 3)`; under reduced
 motion the ring is static but still visible, which is the intent.
 
 ### DS-109 — Steps header numbers from a CSS counter
@@ -659,7 +661,7 @@ thin blue check does not. The toggle is 36 × 20px with a `--space-md` knob
 inset `--space-2xs`. The chapter now matches the CSS.
 
 ### DS-117 — Painted select in product UI; native `<select>` only in prototypes
-Status: proposed · See it: /showcase/forms/#select
+Status: overturned → DS-124 (native `<select>` when the shoe fits) · See it: /showcase/forms/#select
 
 Product UI renders `.saga-select > .saga-select__trigger` with the
 `.saga-select__menu` listbox and never a native `<select>` (the dash CI guard
@@ -682,7 +684,7 @@ that frame. A native `<dialog>` always goes to the top layer, so a framed
 scene uses the `div` modal. Alongside: `.saga-grid` (`--2/--3/--4`,
 `--stats` auto-fit at 220px with `.stat-grid` as an alias, `--lg` gap),
 `.saga-list` row stacks (`--edge` 3px meaning edge from `--_edge`, `--ghost`
-dimmed by colour not opacity), `.saga-empty` and `.saga-card--empty`,
+dimmed by color not opacity), `.saga-empty` and `.saga-card--empty`,
 `.saga-card__title-row`, `.saga-table tfoot`, `.saga-select--inline/--sm`,
 `.saga-notice--notice`, and `.saga-link` — all things the three rebuilt
 prototypes had each written by hand.
@@ -691,7 +693,7 @@ prototypes had each written by hand.
 Status: proposed · See it: /showcase/cards-tables/#charts
 
 `.saga-bar` is a 14px `--chart-neutral` track with `--radius-xs`;
-`.saga-bar__fill` takes `--value` for width and `--_c` for colour (default
+`.saga-bar__fill` takes `--value` for width and `--_c` for color (default
 `--chart-1`); `.saga-bar--stacked` lays fills side by side with a hairline
 between; `.saga-bar__mark` is a `--chart-reference` tick at `--value`;
 `.saga-axis` is the `--text-xs` secondary label row; `.saga-legend` pairs a
@@ -731,3 +733,43 @@ spacing-layout.md all use `--color-bg-secondary` (`#f9fafb`), one step
 lighter, so the header reads as part of the white card rather than a grey
 band, and `--color-text-secondary` keeps 4.5:1 on it (it is 4.4:1 on
 tertiary, color.md). tables-data.md now matches.
+
+### DS-123 — `title` is never the only mechanism (overturns DS-032)
+Status: proposed · See it: /guide/accessibility#tooltips
+
+DS-032 banned `title` outright, inheriting dash's CI guard
+(`ensure-no-native-title.js`). The facts behind the guard still hold:
+browsers use `title` as an accessible-name fallback only when nothing else
+names the element, screen readers announce it inconsistently, and it is
+invisible to keyboard and touch users and in a shared tab. The rule is
+therefore about what else must be present, not a ban. An icon-only control
+gets an `aria-label`; supplementary description is a painted `.saga-tooltip`
+linked by `aria-describedby`; `title` may be added on top as a harmless
+extra, and is acceptable as the whole tooltip only in a prototype or where no
+tooltip component exists. Dash's CI ban is a repo-level ratchet dash chose
+for itself, not this guide's rule. DS-052 is softened to match.
+
+### DS-124 — Native `<select>` when the shoe fits (overturns DS-117)
+Status: proposed · See it: /showcase/forms/#select
+
+DS-117 confined the native `<select>` to prototypes. A native select is
+accessible by default and handles keyboard, viewport edges and touch for
+free, so it is the right control for a short plain list (roughly a dozen
+options or fewer, text only, single choice), for a form inside a modal where
+a custom popover fights the dialog's stacking and viewport, and on mobile.
+`.saga-select` already styles it with the same box and caret (DS-101). The
+painted `.saga-select__trigger` + `.saga-select__menu` listbox is for search,
+groups, multi-select, rich option content, or a consistent painted look in a
+dense toolbar; dash's program selector, with dozens of entries and a search
+row, is the canonical case. Dash's CI still bans the native element; that is
+dash's own ratchet, not the guide's.
+
+### DS-125 — Native date input for a plain single date; `.saga-datepicker` for the rest
+Status: proposed · See it: /showcase/forms/#date-picker
+
+forms-inputs.md had said dates are never entered through a native date
+control. A single plain date in a form is a native `<input type="date">`
+with the `.saga-input` class: localized, keyboard and touch friendly, and
+free. `.saga-datepicker` is for the cases the native control cannot draw:
+a day grid with annotations (sessions on a day, disabled days), a range,
+quick options, or a picker that must look the same in every browser.

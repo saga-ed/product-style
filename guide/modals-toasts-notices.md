@@ -123,12 +123,12 @@ Look:
 - `.saga-toast`: a navy `--color-surface-inverse` card, white text at
   `--text-sm` `--weight-medium`, `--radius-md`, `--shadow-toast`, the stack
   up to 26rem wide.
-- A 4px (`--space-xs`) coloured left edge and no outer border. Variants
-  recolour only this edge and the icon: `--success` to `--color-success`,
+- A 4px (`--space-xs`) colored left edge and no outer border. Variants
+  recolor only this edge and the icon: `--success` to `--color-success`,
   `--warning` to `--color-warning`, `--danger` to `--color-danger`; the
   default edge is `--color-accent` teal. The fill stays navy so the stack
   reads as one family (DS-102).
-- One row: an optional `.saga-toast__icon` in the edge colour, the
+- One row: an optional `.saga-toast__icon` in the edge color, the
   `.saga-toast__msg`, an optional pill `.saga-toast__action` (outlined white),
   then the `.saga-toast__close` ✕ at the end.
 - Enters with a `--space-sm` rise over `--motion-base` plus a `--motion-fade`
@@ -225,9 +225,11 @@ disabled item that the user may still want to understand stays clickable with
 
 ## Tooltips
 
-Tooltips are painted DOM, never native `title=`. A native tooltip is composited
-outside the tab and vanishes in a tab share, has no keyboard path, and its
-timing cannot be controlled.
+Tooltips are painted DOM; `title=` is never the only mechanism (DS-123). A
+native tooltip is composited outside the tab and vanishes in a tab share, has
+no keyboard path, and its timing cannot be controlled, so `title` may ride
+along as a harmless extra but carries the description on its own only in a
+prototype or where no tooltip component exists.
 
 - Panel (`.saga-tooltip`): white, 1px `--color-border-strong`,
   `--radius-lg`, `--space-sm` by 10px padding, `--text-sm`, `--shadow-md`,
@@ -272,4 +274,5 @@ Don't
 - Don't use a toast for an error the user must fix; put it on the field.
 - Don't render every level amber; a notice is blue, a warning amber, a
   confirmation clay.
-- Don't use native `title=` or `alert()`.
+- Don't use `alert()`, and don't let `title=` be a control's only name or
+  only tooltip.

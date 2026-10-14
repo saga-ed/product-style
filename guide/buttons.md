@@ -21,7 +21,7 @@ them into one.
 | shadow | none, ever |
 | hover | `--btn-surface-primary-hover` for filled; `--btn-surface-quiet-hover` wash for the rest |
 | focus | the global ring, `--focus-ring-width` `--focus-ring-color`, offset `--focus-ring-offset` |
-| motion | background and colour transition `--motion-fast` `--ease-out` |
+| motion | background and color transition `--motion-fast` `--ease-out` |
 
 Two sizes only. Default is the size in every modal footer and action row.
 `--sm` is for dense places: inside a table row, a card corner, a chip.
@@ -59,7 +59,7 @@ important, neither is primary.
 ## Icon and label
 
 An icon goes before the label, at `1.2em`, with `--space-sm` between them,
-inheriting the text colour. The action row on Rosters is the reference:
+inheriting the text color. The action row on Rosters is the reference:
 "Upload Roster" with an upload glyph, "Download Roster" with a download glyph,
 both secondary.
 
@@ -72,10 +72,12 @@ both secondary.
 
 ## Icon-only
 
-An icon-only button has no visible text, so it must carry two things:
-an `aria-label` for assistive technology and a tooltip for everyone else
-(see [modals-toasts-notices](modals-toasts-notices.md#tooltips)). Never a
-native `title=`; it is invisible in a shared tab and unreachable by keyboard.
+An icon-only button has no visible text, so it must carry an `aria-label`,
+and when it has a tooltip that tooltip is the painted one, tied to the button
+by `aria-describedby` (see
+[modals-toasts-notices](modals-toasts-notices.md#tooltips)). A native
+`title=` may sit alongside as a harmless extra but never as the only name: it
+is invisible in a shared tab and unreachable by keyboard (DS-123).
 
 - Square hit area: 32px for default, 28px for `--sm`; the glyph is 20 to 24px.
 - Quiet intent is the default (top bar search, bell, menu; table row pencil
@@ -106,7 +108,7 @@ right now would enable it.
 ## Loading
 
 A button that has started something it must wait for (`data-loading`) keeps
-its width and colour, hides its label (the text goes transparent so the box
+its width and color, hides its label (the text goes transparent so the box
 does not reflow) and shows a `1em` ring in its place (DS-108). It is
 `aria-busy="true"` and ignores pointer events while busy. Do not swap the
 label for "Saving..."; the width jump is distracting, and the spinner says
@@ -200,7 +202,7 @@ A **status-filled** toggle (an attendance mark: Present, Absent, Tardy) is
 `.saga-btn--status`. At rest it is the outlined secondary look; pressed, it
 fills with the meaning given by `--_status` (set inline or on the row) and
 white text, so a row of marks reads as what was chosen, not as five blue
-buttons (DS-113). Keep `--_status` to colours that pass 4.5:1 under white:
+buttons (DS-113). Keep `--_status` to colors that pass 4.5:1 under white:
 `--color-primary`, `--color-success-strong`, `--color-warning-strong`,
 `--color-danger`, `--color-teal`.
 
@@ -234,6 +236,6 @@ Don't
   teal "Continue" in the Configure Period modal is the one to fix.
 - No shadows on buttons. Elevation belongs to cards and overlays.
 - No more than one primary per view, and never two primaries side by side.
-- No opacity for disabled, no `title=` for icon-only, no pink or orange
-  surfaces for new work (the magenta, orange and grey `--btn-surface-*`
-  tokens exist only for legacy screens).
+- No opacity for disabled, no `title=` as an icon-only's only name, no pink
+  or orange surfaces for new work (the magenta, orange and grey
+  `--btn-surface-*` tokens exist only for legacy screens).

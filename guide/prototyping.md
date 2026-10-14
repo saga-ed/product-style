@@ -8,7 +8,7 @@ Prototypes are single HTML files in the `prototypes` repo; a push deploys them t
 `prototypes.wootdev.com` and a PR gets `pr-N.prototypes.wootdev.com`. They are how a
 product manager tests an idea in an afternoon and how an engineer later knows what to
 build. A prototype on this system looks like the product because it uses the same
-tokens, not because somebody matched the colours by eye.
+tokens, not because somebody matched the colors by eye.
 
 ## The public-site rule
 
@@ -36,7 +36,7 @@ tokens for anything custom.
 
 Use it for: open questions, "this is where the real thing goes", version notes,
 anything a reviewer must not mistake for a proposal. Do not use violet in the design
-itself; `#6c4fc7` is not a Saga colour, which is the point.
+itself; `#6c4fc7` is not a Saga color, which is the point.
 
 ## Link or inline the tokens
 
@@ -58,7 +58,7 @@ The page tracks the system: when a token changes, every linked prototype changes
 it, which is what you want for something that is only ever viewed live.
 
 Inlined (a Claude artifact, an attachment, a file opened from disk, a page that must
-look the same in a year): paste the contents of `tokens.css`, `base.css` and the parts
+look the same in a year; `starter/saga-starter-offline.html` already is this): paste the contents of `tokens.css`, `base.css` and the parts
 of `components.css` you use into a `<style>` block, in that order, with the first line
 of the block saying which commit they came from:
 
@@ -70,7 +70,7 @@ of the block saying which commit they came from:
 ```
 
 Either way, the prototype's own CSS comes after, references tokens only, and never
-redefines a `--saga-*` or `--color-*` value. A prototype that needs a colour the system
+redefines a `--saga-*` or `--color-*` value. A prototype that needs a color the system
 lacks defines a `--proto-*` or a page-local `--x-*` variable and says so in a `.ptag`.
 
 ## The starter template
@@ -80,13 +80,14 @@ from `starter/saga-starter.template.html`; it ships with the site at
 `/starter/saga-starter.html`). Its shape, top to bottom:
 
 1. A header comment: the build it came from, the public-site and violet rules,
-   and the three `<link>` lines to swap in if you would rather track the live
-   CSS than the inlined copy.
+   and a pointer to the offline copy.
 2. `<head>`: viewport meta, the Google Fonts preconnects and Montserrat link,
-   the `iconify-icon` web component, then three `<style>` blocks
-   (`#saga-tokens`, `#saga-base`, `#saga-components`) holding the full
-   contents of `tokens.css`, `base.css` and `components.css`, and an empty
-   `<style id="prototype-only">` for the prototype's own rules.
+   the `iconify-icon` web component, then three `<link>` lines pulling
+   `tokens.css`, `base.css` and `components.css` from `style.wootdev.com`, and
+   an empty `<style id="prototype-only">` for the prototype's own rules. The
+   offline copy, `starter/saga-starter-offline.html`, is the same page with
+   the three files inlined verbatim in `#saga-tokens`, `#saga-base` and
+   `#saga-components` blocks, for a file that must open with no network.
 3. The shell, exactly the markup of the
    [shell chapter](shell-navigation.md#html-skeleton): `.saga-shell` with a
    `.saga-nav` (logo, "Current Program" `.saga-select` trigger, "Configure
@@ -155,7 +156,7 @@ Rules for a board:
 - Every control maps to one token or one rule, named the way the guide names it, so
   the pasted answer reads as an implementation note.
 - Offer an "existing / proposed" switch so the reviewer sees what changes.
-- Show the WCAG ratio next to any colour control (the button board computes it live).
+- Show the WCAG ratio next to any color control (the button board computes it live).
 - The default state of the board is the recommendation. A reviewer who copies without
   touching anything has approved the proposal.
 
@@ -170,7 +171,7 @@ screenshot.
 |---|---|---|
 | `.saga-btn` | `StandardButton` | `.saga-btn` from components.css |
 | `.saga-card`, `.saga-grid`, `.saga-list` | `SagaCard`, page layout | the classes |
-| `.saga-input`, `.saga-select`, `.saga-datepicker` | `SagaInput`, `SelectMenu`, `DatePicker` | the classes; a native `<select>` in `.saga-select` only while the dropdown is not the point |
+| `.saga-input`, `.saga-select`, `.saga-datepicker` | `SagaInput`, `SelectMenu`, `DatePicker` (dash's CI bans a native `<select>`) | the classes; a native `<select>` in `.saga-select` for a short plain list, the painted trigger and menu when it needs search, groups or multi-select |
 | `.saga-tabs` | `Tabs` | `.saga-tabs` |
 | `.saga-modal` + `.saga-scrim` | `Modal`, `ConfirmDialog` | `util/modal.ts` (`showModal`) |
 | `.saga-toast` | `showToast` from `@saga-ed/dash-core-ui/toast` | `util/toast.ts` |
