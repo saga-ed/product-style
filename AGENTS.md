@@ -41,6 +41,7 @@ how Saga products look. Read this file, then the chapters you need.
 
 - `css/tokens.css` is the canon. Change a value only with a ledger entry.
 - `css/components.css` references tokens only; `npm run check` fails on raw hex or undefined tokens.
-- `npm run build` renders `guide/*.md` to `dist/` and regenerates `starter/saga-starter.html`. Commit the regenerated starter.
+- Generated files are committed: `tokens.json`, `tokens.ts` (JS constants for canvas code; `tokens.d.ts` is hand-written) and `starter/saga-starter*.html`. `npm run build` regenerates them from `css/tokens.css` along with the site in `dist/`; `npm run check` and CI fail when the committed copies are stale, so run the build and commit the result with any token change.
+- The repo publishes as `@saga-ed/product-style` to CodeArtifact (README: *Use it in an app*). Product repos import the CSS from the package; a version bump is a PR, publishing is a manual workflow from `main`.
 - Chapters are Markdown with `title`, `order`, `summary` frontmatter. Heading text becomes the anchor id.
 - Showcase pages in `site/showcase/` are plain HTML that link the real CSS; they are the visual test of the component layer.

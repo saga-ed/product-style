@@ -1,10 +1,44 @@
 {
   "name": "@saga-ed/product-style",
   "version": "0.1.0",
-  "private": true,
   "description": "Saga product style guide: design guide, CSS tokens, and the vanilla component layer.",
+  "license": "UNLICENSED",
+  "homepage": "https://style.wootdev.com",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/saga-ed/product-style.git"
+  },
   "type": "module",
   "engines": { "node": ">=22" },
+  "publishConfig": {
+    "registry": "https://saga-531314149529.d.codeartifact.us-west-2.amazonaws.com/npm/saga_js/",
+    "access": "restricted"
+  },
+  "files": [
+    "css",
+    "tokens.json",
+    "tokens.ts",
+    "tokens.d.ts",
+    "starter/saga-starter.html",
+    "starter/saga-starter-offline.html",
+    "guide/*.md",
+    "CLAUDE.md",
+    "AGENTS.md",
+    "README.md"
+  ],
+  "exports": {
+    ".": {
+      "types": "./tokens.d.ts",
+      "default": "./tokens.ts"
+    },
+    "./css/tokens.css": "./css/tokens.css",
+    "./css/base.css": "./css/base.css",
+    "./css/components.css": "./css/components.css",
+    "./tokens.json": "./tokens.json",
+    "./starter/*": "./starter/*",
+    "./guide/*": "./guide/*"
+  },
+  "sideEffects": ["**/*.css"],
   "scripts": {
     "build": "node scripts/build.mjs",
     "zip": "node scripts/build.mjs --zip",

@@ -34,7 +34,8 @@ for all of it rendered from the real CSS.
 
 Use the highest layer your project can take. A product repo uses the Svelte
 library; a prototype uses the vanilla classes; a comp uses the tokens and the
-guide.
+guide. Product repos get the CSS (and `tokens.ts` for canvas and JS code)
+from the `@saga-ed/product-style` package on CodeArtifact, not from a copy.
 
 ## Start here
 

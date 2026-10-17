@@ -1,0 +1,106 @@
+name: Publish package to CodeArtifact
+
+# Manual publish of @saga-ed/product-style (this repo's root package) to the
+# prod-account `saga_js` CodeArtifact npm registry. Product repos (saga-dash,
+# coach, qboard, staff-admin, analytics) take the CSS and tokens.ts from the
+# package instead of hand-copying tokens.css (adoption-plan.md, P4.2).
+#
+# How a release works:
+#   1. Bump `version` in package.json in a normal PR, run `npm run build` (the
+#      generated tokens.json carries the version) and merge it to main. main is
+#      protected, so CI never bumps; the version published is always the one
+#      already committed on main.
+#   2. Run this workflow from the `main` branch (Actions → Run workflow). Use
+#      `dry_run: true` first to validate the build + tarball without publishing.
+#
+# Auth: assumes the dedicated publish OIDC role (infra/github-oidc/
+# publish-role-template.yaml, prod account) via `vars.AWS_PUBLISH_ROLE_ARN`.
+# That role's trust is pinned to `refs/heads/main`, so a dispatch from any other
+# branch fails at AWS auth — the `if:` below also skips it early for a clean
+# signal. The Amplify deploy role (dev account, `vars.AWS_DEPLOY_ROLE_ARN`) has
+# no CodeArtifact write and is not used here.
+
+on:
+  workflow_dispatch:
+    inputs:
+      dry_run:
+        description: 'Build + pack only (no publish)'
+        required: false
+        default: false
+        type: boolean
+
+permissions:
+  id-token: write
+  contents: read
+
+jobs:
+  publish:
+    name: Publish to CodeArtifact
+    runs-on: ubuntu-latest
+    # Publish only from main — matches the publish role's main-pinned trust.
+    if: github.ref == 'refs/heads/main'
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v6
+
+      # Node + AWS OIDC + CodeArtifact token in ~/.npmrc + `npm ci`. The token
+      # also authenticates `npm publish` below (publishConfig.registry in
+      # package.json points at the same saga_js host).
+      - name: Setup
+        uses: ./.github/actions/setup-node-npm
+        with:
+          aws-role-arn: ${{ vars.AWS_PUBLISH_ROLE_ARN }}
+
+      - name: Resolve package name + version
+        id: pkg
+        run: |
+          NAME=$(jq -r '.name' package.json)
+          VERSION=$(jq -r '.version' package.json)
+          echo "name=$NAME" >> "$GITHUB_OUTPUT"
+          echo "version=$VERSION" >> "$GITHUB_OUTPUT"
+          echo "📦 $NAME@$VERSION"
+
+      - name: Build (site + generated tokens.json / tokens.ts / starter)
+        run: npm run build
+
+      - name: Check (token guards + generated files match css/tokens.css)
+        run: npm run check
+
+      # The tarball ships the committed generated files; refuse to publish if
+      # main's copies are stale relative to css/tokens.css or the version bump.
+      - name: Generated files are committed
+        run: git diff --exit-code -- tokens.json tokens.ts starter/
+
+      - name: Publish
+        run: |
+          if [ "${{ github.event.inputs.dry_run }}" = "true" ]; then
+            echo "🔍 Dry run — building tarball, not publishing"
+            npm pack --dry-run
+            exit 0
+          fi
+
+          # publishConfig (in package.json) supplies the registry and restricted
+          # access; ~/.npmrc (written by the setup action) supplies the token.
+          set +e
+          output=$(npm publish 2>&1)
+          code=$?
+          set -e
+          echo "$output"
+          if [ $code -eq 0 ]; then
+            echo "✅ Published ${{ steps.pkg.outputs.name }}@${{ steps.pkg.outputs.version }}"
+          elif echo "$output" | grep -qiE "(already exists|cannot publish over|EPUBLISHCONFLICT|ConflictException)"; then
+            echo "⏭️ Skipped — ${{ steps.pkg.outputs.name }}@${{ steps.pkg.outputs.version }} already published. Bump the version in a PR first."
+          else
+            echo "❌ Publish failed"
+            exit $code
+          fi
+
+      - name: Summary
+        if: always()
+        run: |
+          {
+            echo "## 📦 Publish ${{ steps.pkg.outputs.name }}@${{ steps.pkg.outputs.version }}"
+            echo ""
+            echo "- **Mode:** ${{ github.event.inputs.dry_run == 'true' && '🔍 dry run (no publish)' || '🚀 publish' }}"
+            echo "- **Registry:** \`saga_js\` (CodeArtifact, prod account)"
+          } >> "$GITHUB_STEP_SUMMARY"

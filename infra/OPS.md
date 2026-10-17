@@ -5,9 +5,11 @@ Amplify-side build: CI builds `dist/`, zips it, uploads it).
 
 - Profiles for local work: `saga-infra-dev` (creates resources), `saga-deploy-dev` (updates only).
 - Stacks: `product-style-github-oidc-dev` (deploy role, SagaProdMax boundary),
-  `product-style-amplify-dev` (app, `main` branch, auto-subdomain role).
+  `product-style-amplify-dev` (app, `main` branch, auto-subdomain role); in the
+  prod account, `product-style-github-publish-role` (package publishing, below).
 - SSM: `/product-style/github-oidc/deploy-role-arn`, `/product-style/amplify/app-id`,
-  `/product-style/amplify/default-domain`, `/product-style/amplify/autosubdomain-role-arn`.
+  `/product-style/amplify/default-domain`, `/product-style/amplify/autosubdomain-role-arn`
+  (dev); `/product-style/github-oidc/publish-role-arn` (prod).
 
 ## One-time setup
 
@@ -27,6 +29,27 @@ aws amplify create-domain-association --app-id "$APP_ID" --domain-name style.woo
 The domain association is created by CLI, not CloudFormation, because CFN
 times out waiting for ACM validation. Expect `PENDING_VERIFICATION` for
 minutes; `aws amplify get-domain-association` shows progress.
+
+## Package publishing (`@saga-ed/product-style`, prod account)
+
+The CSS and generated `tokens.json` / `tokens.ts` are published to the prod
+account's `saga_js` CodeArtifact registry (`publish-package.yml`, manual
+dispatch from `main` only). The Amplify deploy role above is dev-only and has
+no CodeArtifact write, so publishing uses a second role in the **prod**
+account (`531…`), stack `product-style-github-publish-role`, template
+`infra/github-oidc/publish-role-template.yaml`, role `ProductStylePublishRole`
+(trust pinned to `refs/heads/main`, both subject forms). One-time setup:
+
+```bash
+sam deploy --config-file infra/github-oidc/samconfig.yaml --config-env publish --profile saga-infra-prod
+ROLE_ARN=$(aws ssm get-parameter --name /product-style/github-oidc/publish-role-arn --query Parameter.Value --output text --profile saga-prod)
+gh variable set AWS_PUBLISH_ROLE_ARN --body "$ROLE_ARN" --repo saga-ed/product-style
+```
+
+`AWS_PUBLISH_ROLE_ARN` is a repo-level variable (not in the `dev` environment;
+the publish job declares no environment). The workflow's setup action writes
+the CodeArtifact token to `~/.npmrc` on the runner; the tracked `.npmrc` holds
+only the `@saga-ed` registry line. Release steps are in the README.
 
 ## Gotchas met on first setup
 

@@ -4,6 +4,7 @@ import { readFile, writeFile, mkdir, readdir, cp, rm, stat } from "node:fs/promi
 import { createWriteStream } from "node:fs";
 import path from "node:path";
 import { marked } from "marked";
+import { generateTokens } from "./tokens.mjs";
 
 const ROOT = path.resolve(new URL("..", import.meta.url).pathname);
 const DIST = path.join(ROOT, "dist");
@@ -92,6 +93,15 @@ async function main() {
 	await mkdir(DIST, { recursive: true });
 	const buildInfo = await buildInfoLine();
 
+	// Generated token files for JS/canvas consumers (tokens.json, tokens.ts) —
+	// committed at the repo root, shipped in the npm package, served by the site.
+	// check.mjs fails if the committed copies drift from css/tokens.css.
+	const pkg = JSON.parse(await readFile(path.join(ROOT, "package.json"), "utf8"));
+	const gen = generateTokens(await readFile(path.join(ROOT, "css", "tokens.css"), "utf8"), pkg.version);
+	await writeFile(path.join(ROOT, "tokens.json"), gen.json);
+	await writeFile(path.join(ROOT, "tokens.ts"), gen.ts);
+	for (const f of ["tokens.json", "tokens.ts", "tokens.d.ts"]) await cp(path.join(ROOT, f), path.join(DIST, f));
+
 	// Static copies
 	await cp(path.join(ROOT, "css"), path.join(DIST, "css"), { recursive: true });
 	await cp(path.join(ROOT, "assets"), path.join(DIST, "assets"), { recursive: true });
@@ -129,11 +139,13 @@ async function main() {
 		try { await cp(path.join(ROOT, f), path.join(DIST, f)); } catch {}
 	}
 
-	// Starter template: everything inlined so a prototype is one file.
+	// Starter template: everything inlined so a prototype is one file. Stamped
+	// with the package version, not the build time, so the committed copy is
+	// reproducible and CI can `git diff --exit-code starter/`.
 	const [tokens, base, components] = await Promise.all(
 		["tokens.css", "base.css", "components.css"].map((f) => readFile(path.join(ROOT, "css", f), "utf8").catch(() => ""))
 	);
-	const starterTpl = (await readFile(path.join(ROOT, "starter", "saga-starter.template.html"), "utf8")).replaceAll("{{buildInfo}}", buildInfo);
+	const starterTpl = (await readFile(path.join(ROOT, "starter", "saga-starter.template.html"), "utf8")).replaceAll("{{buildInfo}}", `v${pkg.version}`);
 	const linked = starterTpl.replace("<!--__CSS__-->", [
 		"<!-- The system's CSS, served from the style site. In a product repo the same",
 		"     three files come from the package, not from here. For a copy that opens",
@@ -179,6 +191,7 @@ async function main() {
 		`- [tokens.css](${SITE}/css/tokens.css): design tokens, two tiers (--saga-* primitives, semantic --color-*, --space-*, --text-*, --radius-*, --shadow-*, --motion-*)`,
 		`- [base.css](${SITE}/css/base.css): resets, root sizing, type rhythm, focus, scrollbars`,
 		`- [components.css](${SITE}/css/components.css): the .saga-* vanilla component classes`,
+		`- [tokens.json](${SITE}/tokens.json): every :root token with its raw and resolved value; [tokens.ts](${SITE}/tokens.ts) is the same as JS constants`,
 		"",
 		"## Starters and reference",
 		`- [saga-starter.html](${SITE}/starter/saga-starter.html): single-file prototype starter that links the CSS above`,
@@ -205,7 +218,7 @@ async function main() {
 	// Soft-404 target
 	await writeFile(path.join(DIST, "404.html"), await layout({ title: "Not found", summary: "", nav, content: "<p>That page does not exist. <a href=\"/\">Back to the guide.</a></p>", path: "", buildInfo }));
 
-	console.log(`Built ${pages.length} guide pages → ${DIST}`);
+	console.log(`Built ${pages.length} guide pages, ${gen.count} tokens → ${DIST}`);
 	if (ZIP) {
 		const archiver = (await import("archiver")).default;
 		await new Promise((res, rej) => {
