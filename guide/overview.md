@@ -30,7 +30,7 @@ for all of it rendered from the real CSS.
 | Tokens | CSS custom properties: color, type, spacing, radius, elevation, motion. | [`/css/tokens.css`](/css/tokens.css) |
 | Base | Resets, root sizing, type rhythm, focus, scrollbars. | [`/css/base.css`](/css/base.css) |
 | Components (vanilla) | Plain CSS classes (`.saga-btn`, `.saga-card`, `.saga-modal`, …) that any HTML can use with no build. | [`/css/components.css`](/css/components.css), [showcase](/showcase/) |
-| Components (Svelte 5) | `@saga-ed/ui-svelte`, built on the same tokens, for product repos. | private: `saga-ed/product-ui-components` |
+| Components (Svelte 5) | `@saga-ed/ui-svelte`, built on the same tokens, for product repos. | private: `saga-ed/product-ui-components`; [gallery](https://ui.wootdev.com) |
 
 Use the highest layer your project can take. A product repo uses the Svelte
 library; a prototype uses the vanilla classes; a comp uses the tokens and the
