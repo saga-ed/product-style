@@ -41,7 +41,7 @@ account (`531…`), stack `product-style-github-publish-role`, template
 (trust pinned to `refs/heads/main`, both subject forms). One-time setup:
 
 ```bash
-sam deploy --config-file infra/github-oidc/samconfig.yaml --config-env publish --profile saga-infra-prod
+sam deploy --config-file infra/github-oidc/samconfig.yaml --config-env publish --profile saga-admin-prod
 ROLE_ARN=$(aws ssm get-parameter --name /product-style/github-oidc/publish-role-arn --query Parameter.Value --output text --profile saga-prod)
 gh variable set AWS_PUBLISH_ROLE_ARN --body "$ROLE_ARN" --repo saga-ed/product-style
 ```

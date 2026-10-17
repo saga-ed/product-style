@@ -23,7 +23,7 @@ dev:
 
 # Publish role (CodeArtifact write for @saga-ed/product-style) lives in the PROD
 # account because the `saga` CodeArtifact domain does:
-#   sam deploy --config-file infra/github-oidc/samconfig.yaml --config-env publish --profile saga-infra-prod
+#   sam deploy --config-file infra/github-oidc/samconfig.yaml --config-env publish --profile saga-admin-prod
 publish:
   deploy:
     parameters:
