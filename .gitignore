@@ -3,3 +3,4 @@ dist/
 dist.zip
 .claude/
 .DS_Store
+*.tgz

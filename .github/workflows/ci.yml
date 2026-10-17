@@ -1,0 +1,34 @@
+name: CI
+
+# PR checks: token guards, the site builds, and the generated files committed
+# at the root (tokens.json, tokens.ts, starter/*.html) match what
+# `npm run build` produces from css/tokens.css. No AWS; the composite action
+# only installs Node and runs `npm ci` when no role is given.
+
+on:
+  pull_request:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  check:
+    name: Check + build
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+
+      - uses: ./.github/actions/setup-node-npm
+
+      - name: Check
+        run: npm run check
+
+      - name: Build
+        run: npm run build
+
+      - name: Generated files are committed
+        run: git diff --exit-code -- tokens.json tokens.ts starter/

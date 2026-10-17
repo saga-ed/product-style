@@ -1,0 +1,158 @@
+# GitHub Actions OIDC role for publishing @saga-ed/product-style — CodeArtifact
+# WRITE, scoped to @saga-ed npm packages in the `saga_js` repository.
+#
+# Deployed to the PROD account (531) because that is where the CodeArtifact
+# domain lives. Assumed only by .github/workflows/publish-package.yml.
+#
+# Separation of duties: this is a second role, distinct from the Amplify
+# deploy role (template.yaml, dev account). The deploy role is assumed by every
+# PR/branch with wildcard trust and has no CodeArtifact permissions; keeping
+# publish (a prod write) in its own main-pinned role means a PR preview — or
+# any non-main branch — cannot push to the registry.
+#
+# Deploy (prod account):
+#   sam deploy --config-file infra/github-oidc/samconfig.yaml --config-env publish --profile saga-infra-prod
+#
+# After deploy, set the output ARN as a repo-level GitHub variable:
+#   gh variable set AWS_PUBLISH_ROLE_ARN --repo saga-ed/product-style --body "<role-arn>"
+#
+# Copied from saga-dash's infra/github-oidc/publish-role-template.yaml.
+
+AWSTemplateFormatVersion: '2010-09-09'
+Description: product-style GitHub Actions publish role - CodeArtifact write to saga_js (prod account)
+
+Parameters:
+  ProjectName:
+    Type: String
+    Default: product-style
+  GitHubOrg:
+    Type: String
+    Default: saga-ed
+    Description: GitHub organization name
+  GitHubRepo:
+    Type: String
+    Default: product-style
+    Description: GitHub repository name
+  CodeArtifactDomain:
+    Type: String
+    Default: saga
+    Description: CodeArtifact domain hosting saga_js.
+  CodeArtifactRepository:
+    Type: String
+    Default: saga_js
+    Description: CodeArtifact repository to publish into.
+  CodeArtifactNamespace:
+    Type: String
+    Default: saga-ed
+    Description: npm scope (without the leading @) this role may publish.
+
+Resources:
+  # OIDC provider for token.actions.githubusercontent.com is an account-level
+  # singleton owned by the shared-oidc-providers stack. Referenced by ARN,
+  # never declared here.
+  PublishRole:
+    Type: AWS::IAM::Role
+    Properties:
+      RoleName: ProductStylePublishRole
+      Path: /github-actions-role/
+      Description: Publish-only role for product-style - CodeArtifact write to @saga-ed/* in saga_js. No deploy permissions.
+      # SagaProdMax is the prod account's tier permission boundary. Attaching it
+      # is the documented convention for roles created in this account. It does
+      # not narrow this role's grants beyond what its own policies already allow
+      # (CodeArtifact write to one scope); it blocks future drift toward
+      # elevated permissions.
+      PermissionsBoundary: !Sub arn:aws:iam::${AWS::AccountId}:policy/SagaProdMax
+      AssumeRolePolicyDocument:
+        Version: '2012-10-17'
+        Statement:
+          - Effect: Allow
+            Principal:
+              Federated: !Sub arn:aws:iam::${AWS::AccountId}:oidc-provider/token.actions.githubusercontent.com
+            Action: sts:AssumeRoleWithWebIdentity
+            Condition:
+              StringEquals:
+                token.actions.githubusercontent.com:aud: sts.amazonaws.com
+              StringLike:
+                # Publishing is a prod write — trust is pinned to main only, so a
+                # workflow_dispatch from any other branch cannot assume this role.
+                # Two subject forms: the classic one, and the immutable one GitHub
+                # issues for repos created after mid-2026
+                # (repo:<org>@<org-id>/<repo>@<repo-id>:...). This repo has the
+                # immutable form (see infra/OPS.md).
+                token.actions.githubusercontent.com:sub:
+                  - !Sub repo:${GitHubOrg}/${GitHubRepo}:ref:refs/heads/main
+                  - !Sub repo:${GitHubOrg}@*/${GitHubRepo}@*:ref:refs/heads/main
+      Policies:
+        - PolicyName: CodeArtifactPublishSagaEd
+          PolicyDocument:
+            Version: '2012-10-17'
+            Statement:
+              # Auth token — account-wide CodeArtifact bearer, scoped to the domain.
+              - Sid: DomainAuth
+                Effect: Allow
+                Action: codeartifact:GetAuthorizationToken
+                Resource: !Sub arn:aws:codeartifact:${AWS::Region}:${AWS::AccountId}:domain/${CodeArtifactDomain}
+
+              # Repository-level read — `npm publish` checks the existing versions
+              # through this repo's npm endpoint before uploading.
+              - Sid: RepositoryRead
+                Effect: Allow
+                Action:
+                  - codeartifact:GetRepositoryEndpoint
+                  - codeartifact:ReadFromRepository
+                  - codeartifact:DescribeRepository
+                  - codeartifact:ListPackages
+                Resource: !Sub arn:aws:codeartifact:${AWS::Region}:${AWS::AccountId}:repository/${CodeArtifactDomain}/${CodeArtifactRepository}
+
+              # Package-level read — version metadata/assets for any npm package
+              # in the repo.
+              - Sid: PackageRead
+                Effect: Allow
+                Action:
+                  - codeartifact:DescribePackageVersion
+                  - codeartifact:GetPackageVersionAsset
+                  - codeartifact:ListPackageVersions
+                  - codeartifact:ListPackageVersionAssets
+                Resource: !Sub arn:aws:codeartifact:${AWS::Region}:${AWS::AccountId}:package/${CodeArtifactDomain}/${CodeArtifactRepository}/npm/*
+
+              # The only write grant — publish npm package versions, limited to the
+              # @saga-ed scope. Cannot publish to any other namespace, repo, domain,
+              # or package format.
+              - Sid: PackagePublishSagaEdScope
+                Effect: Allow
+                Action: codeartifact:PublishPackageVersion
+                Resource: !Sub arn:aws:codeartifact:${AWS::Region}:${AWS::AccountId}:package/${CodeArtifactDomain}/${CodeArtifactRepository}/npm/${CodeArtifactNamespace}/*
+
+              # Required by codeartifact:GetAuthorizationToken; cannot be
+              # resource-scoped. The service condition limits it to CodeArtifact.
+              - Sid: ServiceBearerForCodeArtifact
+                Effect: Allow
+                Action: sts:GetServiceBearerToken
+                Resource: '*'
+                Condition:
+                  StringEquals:
+                    sts:AWSServiceName: codeartifact.amazonaws.com
+      Tags:
+        - Key: Project
+          Value: !Ref ProjectName
+        - Key: ManagedBy
+          Value: CloudFormation
+        - Key: Role
+          Value: publish
+
+  PublishRoleArnParameter:
+    Type: AWS::SSM::Parameter
+    Properties:
+      Name: !Sub /${ProjectName}/github-oidc/publish-role-arn
+      Type: String
+      Value: !GetAtt PublishRole.Arn
+      Description: GitHub Actions publish role ARN for the product-style package (prod account).
+      Tags:
+        Project: !Ref ProjectName
+
+Outputs:
+  PublishRoleArn:
+    Description: Set this as repo-level GitHub variable AWS_PUBLISH_ROLE_ARN
+    Value: !GetAtt PublishRole.Arn
+    Export:
+      Name: ProductStylePublishRoleArn

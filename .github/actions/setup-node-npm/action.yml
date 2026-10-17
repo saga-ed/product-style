@@ -1,0 +1,54 @@
+name: Setup Node & npm
+description: Install Node.js, optionally authenticate to CodeArtifact, and run npm ci
+
+# Adapted from saga-dash's setup-node-pnpm. This repo is a single npm package at
+# the root, so there is no pnpm and no workspace filter. The CodeArtifact token
+# goes to ~/.npmrc (the user config), never to the repo's tracked .npmrc, which
+# holds only the @saga-ed registry line.
+
+inputs:
+  node-version:
+    description: Node.js version
+    default: '24'
+  aws-role-arn:
+    description: AWS OIDC role ARN for CodeArtifact access (empty = no AWS auth, no token)
+    default: ''
+  skip-install:
+    description: Skip npm ci
+    default: 'false'
+
+runs:
+  using: composite
+  steps:
+    - name: Setup Node.js
+      uses: actions/setup-node@v6
+      with:
+        node-version: ${{ inputs.node-version }}
+        cache: npm
+
+    - name: Configure AWS credentials
+      if: inputs.aws-role-arn != ''
+      uses: aws-actions/configure-aws-credentials@v6
+      with:
+        role-to-assume: ${{ inputs.aws-role-arn }}
+        aws-region: us-west-2
+
+    - name: Configure CodeArtifact
+      if: inputs.aws-role-arn != ''
+      shell: bash
+      run: |
+        TOKEN=$(aws codeartifact get-authorization-token --domain saga --domain-owner 531314149529 --query authorizationToken --output text)
+        # Register the token as a secret so any future step that echoes or
+        # exports it shows `***` in logs instead of the raw JWT.
+        echo "::add-mask::$TOKEN"
+        # User-level config: npm merges it with the repo .npmrc (registry line
+        # only), so the token authenticates `npm publish` without touching a
+        # tracked file.
+        echo "//saga-531314149529.d.codeartifact.us-west-2.amazonaws.com/npm/saga_js/:_authToken=${TOKEN}" >> "$HOME/.npmrc"
+
+    - name: Install dependencies
+      if: inputs.skip-install != 'true'
+      shell: bash
+      run: npm ci
+      env:
+        NODE_ENV: development
