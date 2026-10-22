@@ -773,3 +773,35 @@ with the `.saga-input` class: localized, keyboard and touch friendly, and
 free. `.saga-datepicker` is for the cases the native control cannot draw:
 a day grid with annotations (sessions on a day, disabled days), a range,
 quick options, or a picker that must look the same in every browser.
+
+### DS-126 — Dropdowns sit above dialogs (`--z-dropdown` 200 → 1150)
+Status: proposed · See it: /guide/elevation-surfaces#layering
+
+The wave-1 Svelte components (ui.wootdev.com) portal Select menus, date
+pickers and the time list to `<body>`, as dash's core-ui did, so a popover
+inside a modal's scrolling body is not clipped. Portaled, a menu at 200 opened
+behind the 1000 scrim. core-ui used 1500. The rung moves between modal and
+toast: a menu opened from a dialog opens over it, and a toast still shows
+above both.
+
+### DS-127 — Tooltips are hoverable
+Status: proposed · See it: /showcase/overlays
+
+`.saga-tooltip` no longer sets `pointer-events: none`. WCAG 1.4.13 asks that
+the pointer can move from the trigger onto the tooltip without it closing,
+which dash's core-ui Tooltip supports and the class blocked.
+
+### DS-128 — Wave-1 component states added to the class contract
+Status: proposed · See it: /showcase/overlays, /showcase/forms
+
+States the Svelte ports needed that the vanilla layer lacked, so the
+components do not reach for inline styles: `.saga-modal` is positioned (a
+`.saga-scrim--local` confirm now covers the card, not the viewport);
+`.saga-modal--caution` replaces the showcase's inline amber top edge;
+`.saga-scrim--flush` holds a fullscreen modal edge to edge; `.saga-tabs__list`
+is the `role="tablist"` beside `.saga-tabs__end` (a tablist may own only
+tabs); date-picker days honour `aria-disabled` (disabled days stay focusable
+in a grid), grid rows are `display: contents` so the ARIA grid has rows, and
+`.saga-datepicker__day--in-range` tints the days between a range's ends;
+`.saga-toast__action--primary` is the emphasised toast action.
+

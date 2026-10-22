@@ -157,7 +157,7 @@ export const tokens = {
 	"modal-scrim-strong": "rgba(11, 42, 74, 0.45)",
 	"z-raised": "1",
 	"z-sticky": "100",
-	"z-dropdown": "200",
+	"z-dropdown": "1150",
 	"z-overlay": "1000",
 	"z-modal": "1100",
 	"z-toast": "1200",

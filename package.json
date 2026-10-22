@@ -1,6 +1,6 @@
 {
   "name": "@saga-ed/product-style",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "Saga product style guide: design guide, CSS tokens, and the vanilla component layer.",
   "license": "UNLICENSED",
   "homepage": "https://style.wootdev.com",
@@ -9,7 +9,9 @@
     "url": "git+https://github.com/saga-ed/product-style.git"
   },
   "type": "module",
-  "engines": { "node": ">=22" },
+  "engines": {
+    "node": ">=22"
+  },
   "publishConfig": {
     "registry": "https://saga-531314149529.d.codeartifact.us-west-2.amazonaws.com/npm/saga_js/",
     "access": "restricted"
@@ -38,7 +40,9 @@
     "./starter/*": "./starter/*",
     "./guide/*": "./guide/*"
   },
-  "sideEffects": ["**/*.css"],
+  "sideEffects": [
+    "**/*.css"
+  ],
   "scripts": {
     "build": "node scripts/build.mjs",
     "zip": "node scripts/build.mjs --zip",

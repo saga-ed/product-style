@@ -163,16 +163,20 @@ two rungs.
 |---|---|---|
 | `--z-raised` | `1` | A hovered or dragged card lifting above its siblings |
 | `--z-sticky` | `100` | Sticky table headers, sticky action bars, the top bar |
-| `--z-dropdown` | `200` | Menus, selects, date pickers anchored to a control |
 | `--z-overlay` | `1000` | Scrims, the nav drawer, side panels |
 | `--z-modal` | `1100` | Dialogs |
+| `--z-dropdown` | `1150` | Menus, selects, date pickers anchored to a control (DS-126) |
 | `--z-toast` | `1200` | Toasts (above a dialog, so a save confirmation is seen) |
 | `--z-tooltip` | `1300` | Tooltips (above everything, including a toast's own tooltip) |
 
-Each rung is a stacking context owner. A dropdown opened from inside a modal is still
-`--z-dropdown`, because it is inside the modal's context; it does not need
-`--z-modal + 1`. If you find yourself adding one to a token, the element is in the
-wrong parent.
+Each rung is a stacking context owner. If you find yourself adding one to a token,
+the element is in the wrong parent.
+
+Dropdowns sit above dialogs (DS-126). The Svelte components portal their menus
+and pickers to `<body>`, so they escape a modal's overflow clipping but also
+leave its stacking context; at `--z-dropdown` above `--z-modal`, a select opened
+inside a dialog opens over it. A page-level menu closes on any outside click, so
+it is never left floating over a dialog that opens later.
 
 ## Scrollbars
 

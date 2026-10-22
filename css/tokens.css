@@ -199,7 +199,7 @@
 	/* ── Layering (DS-013) ──────────────────────────────────────────────── */
 	--z-raised: 1;
 	--z-sticky: 100;
-	--z-dropdown: 200;
+	--z-dropdown: 1150;              /* above --z-modal: a menu opened from a modal opens over it (DS-126) */
 	--z-overlay: 1000;
 	--z-modal: 1100;
 	--z-toast: 1200;
