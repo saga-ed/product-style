@@ -235,6 +235,15 @@ iconify-icon { display: inline-block; vertical-align: -0.125em; }
 .saga-select__option:hover, .saga-select__option[data-active], .saga-select__option:focus-visible { background: var(--color-bg-tertiary); }
 .saga-select__option[aria-selected="true"] { background: var(--color-primary-light); color: var(--color-primary); font-weight: var(--weight-semibold); }
 .saga-select__option[aria-disabled="true"] { color: var(--color-text-disabled); cursor: not-allowed; }
+/* States the Svelte Select sets (DS-134): a de-emphasized escape-valve choice ("No Period"),
+   rows the host marks (a search match), and a trigger asking for attention. */
+.saga-select__option[data-muted], .saga-select__trigger [data-muted] { color: var(--color-text-secondary); font-style: italic; }
+.saga-select__option[data-marked] { background: var(--color-primary-light); }
+.saga-select__option[data-marked] [data-option-label]::before {
+	content: ""; display: inline-block; width: 0.4em; height: 0.4em; margin-right: 0.45em;
+	border-radius: var(--radius-full); background: var(--color-primary); vertical-align: middle;
+}
+.saga-select__trigger[data-attention] { border-color: var(--color-primary); box-shadow: 0 0 0 1px var(--color-primary); }
 .saga-select__footer { border-top: 1px solid var(--color-border); margin-top: var(--space-xs); padding: var(--space-xs) var(--space-sm) 0; }
 .saga-select__trigger.is-placeholder > span { color: var(--input-color-placeholder); font-style: italic; }
 .saga-select--inline { display: inline-block; width: auto; }
