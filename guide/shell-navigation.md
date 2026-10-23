@@ -132,7 +132,10 @@ The content area (`.saga-page`) is a scroll container padded `--space-lg`.
 Pages start with either a tab strip or a card.
 
 **Page tabs** (`.saga-tabs > .saga-tab`) sit directly under the top bar, on a
-1px `--color-border` baseline that runs the full content width.
+1px `--color-border` baseline that runs the full content width, with
+`--space-md` between the strip and the content under it. A strip that heads a
+panel (the Svelte `TabContainer`) adds `.saga-tabs--flush` and sits on the
+panel's content directly (DS-135).
 
 - Label: `--tab-font-size` (`15px`), `--tab-text` (`#444444`), padding
   `8px 16px 9px`, no background.

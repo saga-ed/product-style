@@ -210,6 +210,12 @@ iconify-icon { display: inline-block; vertical-align: -0.125em; }
 	background: var(--input-bg-disabled); color: var(--input-color-disabled); border-color: var(--input-border-color-readonly); cursor: not-allowed;
 }
 .saga-input--sm { min-height: calc(var(--input-height) * 0.8); font-size: var(--text-sm); }
+/* DS-139: an input with a trailing adornment inside its right end (a day chip, a glyph). The adornment
+   is decorative and click-through; the input reserves its room (--_adorn) so text never runs under it. */
+.saga-input-adorn { position: relative; display: flex; align-items: center; }
+.saga-input-adorn--end > .saga-input { padding-right: calc(var(--space-xs) * 2 + var(--_adorn, 2.5rem)); }
+.saga-input-adorn__end { position: absolute; right: var(--space-xs); top: 50%; transform: translateY(-50%); display: inline-flex; align-items: center; pointer-events: none; }
+.saga-input-adorn__end > .saga-chip { padding-inline: var(--space-xs); }
 
 /* Select: a native <select> or a button trigger, both with the blue chevron.
    The custom listbox (.saga-select__menu) is styled now, wired by JS later. */
@@ -233,6 +239,10 @@ iconify-icon { display: inline-block; vertical-align: -0.125em; }
 /* The option may be the <li> itself or a <button role="option"> inside it; both get the same look. */
 .saga-select__option { display: flex; align-items: center; gap: var(--space-sm); width: 100%; padding: var(--space-sm) var(--space-md); margin: 0; border: 0; background: none; color: inherit; font: inherit; text-align: left; cursor: pointer; white-space: nowrap; }
 .saga-select__option:hover, .saga-select__option[data-active], .saga-select__option:focus-visible { background: var(--color-bg-tertiary); }
+/* DS-136: the keyboard-active row carries a left accent bar (never an outline, which ran over the scrollbar);
+   a multi-select row's checkbox sits at the right end, after the label. */
+.saga-select__option[data-active] { box-shadow: inset 3px 0 0 var(--color-primary); }
+.saga-select__option > .saga-check { margin-left: auto; }
 .saga-select__option[aria-selected="true"] { background: var(--color-primary-light); color: var(--color-primary); font-weight: var(--weight-semibold); }
 .saga-select__option[aria-disabled="true"] { color: var(--color-text-disabled); cursor: not-allowed; }
 /* States the Svelte Select sets (DS-134): a de-emphasized escape-valve choice ("No Period"),
@@ -329,7 +339,9 @@ iconify-icon { display: inline-block; vertical-align: -0.125em; }
 }
 .saga-datepicker__day:hover { background: var(--color-bg-tertiary); }
 .saga-datepicker__day--muted { color: var(--color-text-muted); }
-.saga-datepicker__day--today { font-weight: var(--weight-bold); }
+/* DS-137: today is a 1px primary ring, not a bold number; the selected fill replaces it. */
+.saga-datepicker__day--today { box-shadow: inset 0 0 0 1px var(--color-primary); }
+.saga-datepicker__day--today.saga-datepicker__day--muted { box-shadow: inset 0 0 0 1px var(--color-primary-light); }
 .saga-datepicker__day[aria-selected="true"] { background: var(--color-primary); color: var(--color-primary-contrast); font-weight: var(--weight-semibold); box-shadow: 0 0 0 var(--border-width-emphasis) var(--color-primary-light); }
 /* Unselectable days read as out of play: lighter than other-month days, no hover fill, no
    pointer cursor (DS-133). Still focusable when aria-disabled, for the roving cursor. */
@@ -352,7 +364,9 @@ iconify-icon { display: inline-block; vertical-align: -0.125em; }
    strip then grows a vertical scrollbar. The strip's hairline is an inset shadow, painted under the
    tabs, so the selected tab's 2px underline sits on it whole instead of hanging 1px over a border the
    clip would cut. The focus ring is inset so the clip never cuts it either (DS-133). */
-.saga-tabs { display: flex; align-items: flex-end; gap: 0; box-shadow: inset 0 -1px 0 var(--color-border); overflow-x: auto; overflow-y: hidden; }
+.saga-tabs { display: flex; align-items: flex-end; gap: 0; margin-bottom: var(--space-md); box-shadow: inset 0 -1px 0 var(--color-border); overflow-x: auto; overflow-y: hidden; }
+/* DS-135: page tabs sit --space-md above their content; a strip that heads a panel (TabContainer) sits flush. */
+.saga-tabs--flush { margin-bottom: 0; }
 .saga-tab {
 	appearance: none; border: 0; background: none; cursor: pointer; white-space: nowrap; text-decoration: none;
 	display: inline-flex; align-items: center; gap: var(--space-sm);
@@ -485,6 +499,10 @@ iconify-icon { display: inline-block; vertical-align: -0.125em; }
 .saga-scrim--strong { background: var(--modal-scrim-strong); }
 .saga-scrim--flush { padding: 0; } /* holds a .saga-modal--fullscreen edge to edge */
 .saga-modal--confirm { width: min(440px, 100%); }
+/* DS-138: a confirm is compact: no rules, no footer band, tighter padding. */
+.saga-modal--confirm .saga-modal__header { border-bottom: 0; padding-bottom: 0; }
+.saga-modal--confirm .saga-modal__body { padding-block: var(--space-sm); }
+.saga-modal--confirm .saga-modal__footer { border-top: 0; background: none; padding-top: var(--space-sm); }
 .saga-modal--large { width: min(960px, 100%); }
 .saga-modal--caution { border-top: var(--space-xs) solid var(--color-warning-border); }
 .saga-modal--fullscreen { width: 100vw; height: 100vh; max-height: 100vh; border-radius: 0; }
