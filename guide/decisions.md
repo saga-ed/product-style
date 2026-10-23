@@ -922,7 +922,7 @@ Status: accepted (dash review 2026-10-23) · See it: /guide/forms-inputs#time-pi
 `.saga-input-adorn` wraps an input and a `.saga-input-adorn__end` span that
 sits inside the input's right end, decorative and click-through. With
 `.saga-input-adorn--end` the input reserves the room (`--_adorn`, default
-2.5rem) so typed text never runs under it. The time field's day-shift chip
+2.25rem) so typed text never runs under it. The time field's day-shift chip
 uses it; beside the input, the chip widened each field enough to push a time
 range onto a second line.
 

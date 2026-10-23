@@ -672,9 +672,9 @@ iconify-icon { display: inline-block; vertical-align: -0.125em; }
 /* DS-139: an input with a trailing adornment inside its right end (a day chip, a glyph). The adornment
    is decorative and click-through; the input reserves its room (--_adorn) so text never runs under it. */
 .saga-input-adorn { position: relative; display: flex; align-items: center; }
-.saga-input-adorn--end > .saga-input { padding-right: calc(var(--space-xs) * 2 + var(--_adorn, 2.5rem)); }
+.saga-input-adorn--end > .saga-input { padding-right: calc(var(--space-xs) * 2 + var(--_adorn, 2.25rem)); }
 .saga-input-adorn__end { position: absolute; right: var(--space-xs); top: 50%; transform: translateY(-50%); display: inline-flex; align-items: center; pointer-events: none; }
-.saga-input-adorn__end > .saga-chip { padding-inline: var(--space-xs); }
+.saga-input-adorn__end > .saga-chip { padding-inline: var(--space-2xs); }
 
 /* Select: a native <select> or a button trigger, both with the blue chevron.
    The custom listbox (.saga-select__menu) is styled now, wired by JS later. */
