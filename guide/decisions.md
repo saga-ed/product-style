@@ -933,3 +933,23 @@ DS-125 made a native `<input type="date">` the default for a single plain
 date. The dash review reversed that: `.saga-datepicker` is the default everywhere,
 and a native date input is an exception its owning team chooses case by case.
 dash keeps its check against new native date inputs.
+
+### DS-142 — A date range with quick options: label trigger, two columns
+Status: proposed (saga-dash review 2026-10-23) · See it: /guide/forms-inputs#date-range-with-quick-options
+
+The range picker's class contract, which this guide described but the
+component layer lacked. The ui-svelte port filled the gap with the input-shaped
+trigger and a 264px single-column popover, which stacked the quick options
+above the month and so hid the month until Custom was chosen. That is not the
+designed control (saga-dash's Past Sessions picker, approved 2026-08-06):
+`.saga-datepicker__trigger--label` is the clickable blue date heading (no
+border, no glyph, a `--color-primary-light` tint on hover and while open), and
+its `[data-seg]` dates underline on hover so each end reads as its own way in.
+`.saga-datepicker__popover--range` sets `.saga-datepicker__presets` beside an
+always-visible `.saga-datepicker__calendar`, with a `.saga-datepicker__hint`
+line under the grid; Custom (`data-custom`) is italic and secondary until
+checked. A soft day (`data-soft`, beyond the range's length cap: clickable,
+but it starts a new range) is `--color-text-secondary` with a dotted
+underline, a cue that survives on an already-muted adjacent-month day.
+Alternatives: keep the stacked popover and widen it (the month still hides
+behind Custom, and the presets push the grid off small screens).

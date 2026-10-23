@@ -265,6 +265,45 @@ grid sets start and end and applies live. The checked quick option is derived
 from the applied range, so "Custom" lights up whenever the dates do not match
 a preset.
 
+The class contract (DS-142):
+
+- The trigger is `.saga-datepicker__trigger.saga-datepicker__trigger--label`:
+  no border or glyph, semibold `--color-primary` text, a `--color-primary-light`
+  tint on hover and while open. It sits centred above the list it filters, where
+  a single-day page puts its own date heading. Each date in it is a
+  `[data-seg="start|end"]` span that underlines on hover; clicking one opens
+  straight into replacing that end. A range inside a form keeps the
+  input-shaped trigger.
+- The popover is `.saga-datepicker__popover.saga-datepicker__popover--range`,
+  two columns. `.saga-datepicker__presets` holds the quick options as
+  `.saga-popover__item` radios; Custom carries `data-custom` and is italic,
+  `--color-text-secondary` until checked. `.saga-datepicker__calendar` holds the
+  usual nav and grid, always visible, with a `.saga-datepicker__hint` line under
+  it saying what the day under the pointer will do ("Sets Sep 3 – 9, 2026").
+- The days between the ends are `.saga-datepicker__day--in-range`. A day beyond
+  the range's length cap carries `data-soft`: still clickable (it starts a new
+  range), `--color-text-secondary` with a dotted underline.
+
+```html
+<div class="saga-datepicker">
+  <button type="button" class="saga-datepicker__trigger saga-datepicker__trigger--label" aria-haspopup="dialog" aria-expanded="true" aria-label="Time period">
+    <span>Past Week (<span data-seg="start">Oct 7</span> – <span data-seg="end">13, 2026</span>)</span>
+  </button>
+  <div class="saga-datepicker__popover saga-datepicker__popover--range" role="dialog" aria-label="Time period">
+    <div class="saga-datepicker__presets" role="radiogroup" aria-label="Quick ranges">
+      <button type="button" class="saga-popover__item" role="radio" aria-checked="true">Past Week</button>
+      <button type="button" class="saga-popover__item" role="radio" aria-checked="false">Past Month</button>
+      <button type="button" class="saga-popover__item" role="radio" aria-checked="false" data-custom>Custom</button>
+    </div>
+    <div class="saga-datepicker__calendar">
+      <div class="saga-datepicker__nav">…</div>
+      <div class="saga-datepicker__grid" role="grid">…</div>
+      <div class="saga-datepicker__hint">Pick a date to change the range</div>
+    </div>
+  </div>
+</div>
+```
+
 ## Faceted search
 
 A search box that grows chips (`dashboard_rosters_page.png` top right, the
