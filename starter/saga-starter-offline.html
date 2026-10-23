@@ -778,17 +778,17 @@ iconify-icon { display: inline-block; vertical-align: -0.125em; }
 .saga-datepicker__trigger[aria-invalid="true"] { border-color: var(--input-border-color-invalid); }
 .saga-datepicker__trigger:disabled { background: var(--input-bg-disabled); color: var(--input-color-disabled); border-color: var(--input-border-color-readonly); cursor: not-allowed; }
 .saga-datepicker__trigger.is-placeholder > span { color: var(--input-color-placeholder); font-style: italic; }
-/* DS-142: the label trigger is a clickable date heading, not a field: no border or glyph,
+/* DS-142: the header trigger (either picker) is a clickable date heading, not a field: no border or glyph,
    semibold --color-primary text with a light primary hover tint. A page's own date header
-   (a reporting range above a list) uses it; a form field keeps the input-shaped trigger. */
-.saga-datepicker__trigger--label {
+   (a single-day list, a reporting range) uses it; a date in a form keeps the field (the default). */
+.saga-datepicker__trigger--header {
 	min-width: 0; min-height: 0; padding: var(--space-2xs) var(--space-xs);
 	background: transparent; color: var(--color-primary); border: 0; border-radius: var(--radius-sm);
 	font-weight: var(--weight-semibold); text-align: center; white-space: nowrap;
 }
-.saga-datepicker__trigger--label:hover, .saga-datepicker__trigger--label[aria-expanded="true"] { background: var(--color-primary-light); }
+.saga-datepicker__trigger--header:hover, .saga-datepicker__trigger--header[aria-expanded="true"] { background: var(--color-primary-light); }
 /* No fill to carry "disabled" here (a field's grey box), so the text itself goes muted. */
-.saga-datepicker__trigger--label:disabled { background: transparent; color: var(--color-text-muted); }
+.saga-datepicker__trigger--header:disabled { background: transparent; color: var(--color-text-muted); }
 /* A date the viewer can aim at on its own (a range's start or end) underlines on hover. */
 .saga-datepicker__trigger [data-seg]:hover { text-decoration: underline; }
 .saga-datepicker__trigger:disabled [data-seg]:hover { text-decoration: none; }

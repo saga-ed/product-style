@@ -205,6 +205,12 @@ input with a calendar glyph in `--color-text-secondary` at the right
 - Keyboard: arrows move by day, PageUp and PageDown by month, Enter selects,
   Esc closes. Focus moves into the grid on open and back to the trigger on
   close.
+- A date that heads the content it filters (a single-day list, a reporting
+  range) uses the header trigger instead of the field (DS-142):
+  `.saga-datepicker__trigger--header`, no border or glyph, semibold
+  `--color-primary` text centred above the list, a `--color-primary-light`
+  tint on hover and while open, muted text when disabled. It is the field's
+  variant, not a replacement: a date inside a form stays a field.
 
 ```html
 <div class="saga-datepicker">
@@ -257,8 +263,9 @@ readout to the right.
 
 ## Date range with quick options
 
-A reporting range ("Oct 9 – Oct 13, 2026") is a clickable blue label, not a
-bordered box. It opens a two-column popover: a list of quick options on the
+A reporting range that heads the list it filters ("Oct 9 – Oct 13, 2026") is a
+clickable blue date heading, not a bordered box; inside a form the range keeps
+the input-shaped trigger. Either way it opens a two-column popover: a list of quick options on the
 left (This week, Last week, Last 30 days, Custom) and a month grid on the
 right. Picking a quick option applies and closes; clicking two days in the
 grid sets start and end and applies live. The checked quick option is derived
@@ -267,13 +274,10 @@ a preset.
 
 The class contract (DS-142):
 
-- The trigger is `.saga-datepicker__trigger.saga-datepicker__trigger--label`:
-  no border or glyph, semibold `--color-primary` text, a `--color-primary-light`
-  tint on hover and while open. It sits centred above the list it filters, where
-  a single-day page puts its own date heading. Each date in it is a
-  `[data-seg="start|end"]` span that underlines on hover; clicking one opens
-  straight into replacing that end. A range inside a form keeps the
-  input-shaped trigger.
+- The heading trigger is `.saga-datepicker__trigger.saga-datepicker__trigger--header`
+  (see *Date picker* above). Each date in it is a `[data-seg="start|end"]` span
+  that underlines on hover; clicking one opens straight into replacing that
+  end. In a form, the plain `.saga-datepicker__trigger` field does the same.
 - The popover is `.saga-datepicker__popover.saga-datepicker__popover--range`,
   two columns. `.saga-datepicker__presets` holds the quick options as
   `.saga-popover__item` radios; Custom carries `data-custom` and is italic,
@@ -286,7 +290,7 @@ The class contract (DS-142):
 
 ```html
 <div class="saga-datepicker">
-  <button type="button" class="saga-datepicker__trigger saga-datepicker__trigger--label" aria-haspopup="dialog" aria-expanded="true" aria-label="Time period">
+  <button type="button" class="saga-datepicker__trigger saga-datepicker__trigger--header" aria-haspopup="dialog" aria-expanded="true" aria-label="Time period">
     <span>Past Week (<span data-seg="start">Oct 7</span> – <span data-seg="end">13, 2026</span>)</span>
   </button>
   <div class="saga-datepicker__popover saga-datepicker__popover--range" role="dialog" aria-label="Time period">

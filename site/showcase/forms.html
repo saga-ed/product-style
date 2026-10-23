@@ -265,10 +265,10 @@
 
 <section class="demo-section">
 	<h2>Date range with quick options</h2>
-	<p>A reporting range is a clickable blue date heading (<code>.saga-datepicker__trigger--label</code>), each date its own way in. It opens two columns: quick options on the left, and the month on the right, always visible, with a hint line under it (DS-142). The applied range is Past Month, so that option is checked and the days between the ends are tinted.</p>
+	<p>A reporting range that heads its list uses the header trigger (<code>.saga-datepicker__trigger--header</code>, either picker can take it; a form keeps the field), each date its own way in. It opens two columns: quick options on the left, and the month on the right, always visible, with a hint line under it (DS-142). The applied range is Past Month, so that option is checked and the days between the ends are tinted.</p>
 	<div class="demo-row" style="align-items:flex-start">
 		<div class="saga-datepicker">
-			<button type="button" class="saga-datepicker__trigger saga-datepicker__trigger--label" aria-haspopup="dialog" aria-expanded="true" aria-label="Time period"><span>Past Month (<span data-seg="start">Sep 14</span> – <span data-seg="end">Oct 13, 2026</span>)</span></button>
+			<button type="button" class="saga-datepicker__trigger saga-datepicker__trigger--header" aria-haspopup="dialog" aria-expanded="true" aria-label="Time period"><span>Past Month (<span data-seg="start">Sep 14</span> – <span data-seg="end">Oct 13, 2026</span>)</span></button>
 			<div class="saga-datepicker__popover saga-datepicker__popover--range saga-datepicker__popover--static" role="dialog" aria-label="Time period" style="margin-top:var(--space-xs)">
 				<div class="saga-datepicker__presets" role="radiogroup" aria-label="Quick ranges">
 					<button type="button" class="saga-popover__item" role="radio" aria-checked="false">Past Week</button>
@@ -297,7 +297,7 @@
 		</div>
 	</div>
 <pre class="demo-snippet"><code>&lt;div class=&quot;saga-datepicker&quot;&gt;
-	&lt;button type=&quot;button&quot; class=&quot;saga-datepicker__trigger saga-datepicker__trigger--label&quot; aria-haspopup=&quot;dialog&quot; aria-expanded=&quot;true&quot; aria-label=&quot;Time period&quot;&gt;&lt;span&gt;Past Month (&lt;span data-seg=&quot;start&quot;&gt;Sep 14&lt;/span&gt; – &lt;span data-seg=&quot;end&quot;&gt;Oct 13, 2026&lt;/span&gt;)&lt;/span&gt;&lt;/button&gt;
+	&lt;button type=&quot;button&quot; class=&quot;saga-datepicker__trigger saga-datepicker__trigger--header&quot; aria-haspopup=&quot;dialog&quot; aria-expanded=&quot;true&quot; aria-label=&quot;Time period&quot;&gt;&lt;span&gt;Past Month (&lt;span data-seg=&quot;start&quot;&gt;Sep 14&lt;/span&gt; – &lt;span data-seg=&quot;end&quot;&gt;Oct 13, 2026&lt;/span&gt;)&lt;/span&gt;&lt;/button&gt;
 	&lt;div class=&quot;saga-datepicker__popover saga-datepicker__popover--range saga-datepicker__popover--static&quot; role=&quot;dialog&quot; aria-label=&quot;Time period&quot; style=&quot;margin-top:var(--space-xs)&quot;&gt;
 		&lt;div class=&quot;saga-datepicker__presets&quot; role=&quot;radiogroup&quot; aria-label=&quot;Quick ranges&quot;&gt;
 			&lt;button type=&quot;button&quot; class=&quot;saga-popover__item&quot; role=&quot;radio&quot; aria-checked=&quot;false&quot;&gt;Past Week&lt;/button&gt;
