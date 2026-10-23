@@ -765,7 +765,7 @@ row, is the canonical case. Dash's CI still bans the native element; that is
 dash's own ratchet, not the guide's.
 
 ### DS-125 — Native date input for a plain single date; `.saga-datepicker` for the rest
-Status: proposed · See it: /showcase/forms/#date-picker
+Status: amended by DS-140 (the painted picker is the default; native is a case-by-case exception) · See it: /showcase/forms/#date-picker
 
 forms-inputs.md had said dates are never entered through a native date
 control. A single plain date in a form is a native `<input type="date">`
@@ -881,3 +881,55 @@ used 55% opacity, which put an enabled option near 2.5:1. A marked row
 (`data-marked`, a school holding a search match) gets the selected tint and a
 small primary dot before its label. A trigger with `data-attention` gets a
 primary border and a 1px ring.
+
+### DS-135 — Page tabs sit `--space-md` above their content
+Status: accepted (dash review 2026-10-23) · See it: /guide/shell-navigation#content-area-and-page-tabs
+
+`.saga-tabs` had no margin, so on dash's Reports page the Download buttons
+sat against the tab rule; dash's own tab strip had a 1rem gap. A page tab strip
+now has a `--space-md` bottom margin. A strip that heads a panel, where the
+panel's body starts at the rule (the Svelte `TabContainer`), adds
+`.saga-tabs--flush`.
+
+### DS-136 — Select: an accent bar on the active row, checkboxes on the right
+Status: accepted (dash review 2026-10-23) · See it: /guide/forms-inputs#select
+
+The keyboard-active `.saga-select__option` (`data-active`) keeps its wash and
+adds a 3px `--color-primary` bar on its left edge, as dash's SelectMenu had;
+an outline ran over the scrollbar. In a multi-select the checkbox follows the
+label at the row's right end (`margin-left: auto`), so the labels line up at
+the left edge.
+
+### DS-137 — Today in a date picker is a 1px ring
+Status: accepted (dash review 2026-10-23) · See it: /guide/forms-inputs#date-picker
+
+`.saga-datepicker__day--today` is a 1px inset `--color-primary` ring with the
+number at its normal weight (bold read as another selection state); on an
+adjacent-month day the ring is `--color-primary-light`. The selected fill
+replaces the ring.
+
+### DS-138 — A confirm dialog is compact
+Status: accepted (dash review 2026-10-23) · See it: /showcase/overlays/#confirm
+
+`.saga-modal--confirm` drops the header rule, the footer rule and the footer's
+grey band, and closes the gaps to `--space-sm`, as dash's ConfirmDialog was. A
+confirm is one question and two buttons; the regions need no separating.
+Larger modals keep their rules and footer band.
+
+### DS-139 — An input can hold a trailing adornment
+Status: accepted (dash review 2026-10-23) · See it: /guide/forms-inputs#time-picker
+
+`.saga-input-adorn` wraps an input and a `.saga-input-adorn__end` span that
+sits inside the input's right end, decorative and click-through. With
+`.saga-input-adorn--end` the input reserves the room (`--_adorn`, default
+2.25rem) so typed text never runs under it. The time field's day-shift chip
+uses it; beside the input, the chip widened each field enough to push a time
+range onto a second line.
+
+### DS-140 — Dates are entered through the painted date picker
+Status: accepted (dash review 2026-10-23); amends DS-125 · See it: /guide/forms-inputs#date-picker
+
+DS-125 made a native `<input type="date">` the default for a single plain
+date. The dash review reversed that: `.saga-datepicker` is the default everywhere,
+and a native date input is an exception its owning team chooses case by case.
+dash keeps its check against new native date inputs.

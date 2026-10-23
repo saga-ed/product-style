@@ -83,7 +83,10 @@ the list needs search, groups, multi-select or rich rows:
   "Search..." input, hairline rule below.
 - **Rows**: `.saga-select__option`, either the `<li role="option">` itself or
   a `<button role="option">` inside it; `--space-sm --space-md` padding.
-  Hover and the keyboard-active row (`data-active`) take `--color-bg-tertiary`.
+  Hover and the keyboard-active row (`data-active`) take `--color-bg-tertiary`;
+  the active row also carries a 3px `--color-primary` bar on its left edge
+  (DS-136). In a multi-select every row has a `.saga-check` checkbox at its
+  right end, after the label.
   The selected row (`aria-selected="true"`) is `--color-primary-light` fill
   with `--color-primary` semibold text (the "Demo Program 08/17" row in
   `program_dropdown.png`). A row that cannot be chosen is
@@ -174,11 +177,11 @@ sentence of explanation; use plain radios when the labels are enough.
 
 ## Date picker
 
-A single plain date in a form is a native `<input type="date">` carrying the
-`.saga-input` class; it is accessible, localized and touch-friendly for free
-(DS-125). Use `.saga-datepicker` when the day grid needs annotations (sessions
-on a day, disabled days), a range, quick options, or the picker must look the
-same in every browser. It is a `.saga-datepicker__trigger` that looks like an
+Dates are entered through `.saga-datepicker` (DS-140). A native
+`<input type="date">` with the `.saga-input` class is an exception the owning
+team chooses case by case, for a single plain date where the browser's own
+control is good enough; it does not draw annotations, ranges or quick options
+and looks different in every browser. The picker is a `.saga-datepicker__trigger` that looks like an
 input with a calendar glyph in `--color-text-secondary` at the right
 ("10/12/2026"), sized to its content rather than the column. Clicking opens a
 `.saga-datepicker__popover` (`date_picker.png`):
@@ -193,9 +196,10 @@ input with a calendar glyph in `--color-text-secondary` at the right
   `--color-text-secondary`, Su through Sa.
 - Day cells are `button.saga-datepicker__day`, 32px squares, `--text-base`,
   `--radius-md`, hover `--color-bg-tertiary`. Adjacent-month days are
-  `--muted` (`--color-text-muted`); today is `--today` (bold). The selected
+  `--muted` (`--color-text-muted`); today is `--today`, a 1px `--color-primary`
+  ring with the number at its normal weight (DS-137). The selected
   day (`aria-selected="true"`) is a `--color-primary` filled square with white
-  text and a 2px `--color-primary-light` ring. Unselectable days
+  text and a 2px `--color-primary-light` ring, which replaces today's ring. Unselectable days
   (`:disabled` or `aria-disabled`) are `--datepicker-day-disabled`, lighter than
   adjacent-month days, with no hover fill and no pointer cursor (DS-133).
 - Keyboard: arrows move by day, PageUp and PageDown by month, Enter selects,
@@ -240,6 +244,13 @@ a list on focus (`time_picker.png`):
   clay and shows an error below.
 - Focus is the blue border plus a soft 3px blue halo at 18% opacity, which is
   the one place the ring sits inside the control instead of outside it.
+
+- When the time lands on another calendar day than the date being edited
+  (a viewer in another zone), a `.saga-chip--square` naming that weekday
+  ("WED") sits inside the input's right end, not beside it, so the field keeps
+  its width. The field is a `.saga-input-adorn.saga-input-adorn--end` wrapper
+  holding the input and a `.saga-input-adorn__end` span; the input reserves the
+  chip's room so typed text never runs under it (DS-139).
 
 A time range is two of these with an en dash between them and the DURATION
 readout to the right.

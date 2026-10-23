@@ -81,7 +81,8 @@ the nearest positioned ancestor instead of the viewport.
 
 A confirm is a small modal (`.saga-modal.saga-modal--confirm`, 440px) with a
 question for a title, one short paragraph in `--color-text-secondary`, and
-two buttons. It uses `role="alertdialog"`. The safe button (Cancel, Never
+two buttons. It is compact (DS-138): no rule under the header, no rule or grey
+band behind the buttons, and `--space-sm` between title, message and buttons. It uses `role="alertdialog"`. The safe button (Cancel, Never
 mind) is focused on open, not the confirming one.
 
 | Variant | Confirm button | Extra |
