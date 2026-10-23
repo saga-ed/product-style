@@ -813,10 +813,11 @@ Create. Cancel sits just to its left. A destructive action that is not the
 point of the modal (Delete in Edit Session) moves to the far left of the
 footer, away from Save, or between Cancel and Save in a short footer. When
 the destructive action is the point (a delete confirm) it is the
-bottom-right button. DS-054 kept dash's Edit Session order (Cancel, Save,
-Delete) with a wider gap; the review found the trailing Delete reads as the
-main action. The overlays showcase and the gallery's Edit Session demo
-follow the new order; dash's Edit Session modal changes when it adopts.
+bottom-right button. Every footer button is `--space-sm` from its neighbour;
+the danger button gets no extra gap. DS-054 described a Cancel, Save, Delete
+order with a wider gap before Delete; dash's Edit Session modal today ends
+Cancel, Save, as this entry says, so dash does not change. The overlays
+showcase and the gallery's Edit Session demo follow the new order.
 
 ### DS-130 — One reading size; small text is opt-in
 Status: accepted (gallery review 2026-10-22) · See it: /guide/typography#scale
@@ -864,4 +865,7 @@ fill and no pointer cursor, and their number is `--datepicker-day-disabled`
 The checked `.saga-checkbox` tick is larger and 3px thick. `.saga-tabs`
 sets `overflow-y: hidden` (with only `overflow-x: auto` the other axis
 computes to `auto`, and the selected tab's -1px margin showed a vertical
-scrollbar), and a tab's focus ring is inset so the clip never cuts it.
+scrollbar). The tab no longer sits 1px over the strip's border (`margin-bottom:
+-1px`), which the clip cut to a 1px underline: the strip's hairline is an inset
+shadow under the tabs, so the 2px underline shows whole. A tab's focus ring is
+inset so the clip never cuts it.
