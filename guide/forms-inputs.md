@@ -154,6 +154,10 @@ to the right (DS-116).
 - **Radio** `.saga-radio`: a `--space-md` circle, the same 1px ring. Selected
   fills `--color-primary` with a white dot in the centre (DS-060). Radios in
   a row sit `--space-md` apart; in a column, `--space-sm`.
+- **Click target**: only the control and its label text. A column of
+  checks inside a `.saga-field` is sized to its content, not stretched to the
+  field's width, so a click in the empty space beside an option does nothing
+  (DS-141).
 - **Toggle** `.saga-toggle` (`role="switch"`): a 36 × 20px track
   (`--space-xl + --space-xs` by `--space-md + --space-xs`), `--radius-full`,
   with a `--space-md` white knob inset `--space-2xs` from the track edge. Off

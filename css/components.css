@@ -265,6 +265,8 @@ iconify-icon { display: inline-block; vertical-align: -0.125em; }
    --space-md (16px) so they scale with the text-size preference. */
 .saga-check { display: inline-flex; align-items: center; gap: var(--space-sm); cursor: pointer; user-select: none; }
 .saga-check:has(> :disabled) { color: var(--color-text-disabled); cursor: not-allowed; }
+/* DS-141: in a .saga-field grid a check would stretch to the column, and so would its click target. */
+.saga-field > .saga-check { justify-self: start; }
 .saga-checkbox, .saga-radio {
 	appearance: none; margin: 0; flex-shrink: 0; width: var(--space-md); height: var(--space-md);
 	border: 1px solid var(--input-border-color-hover); background: var(--input-bg); cursor: pointer; position: relative;
