@@ -67,13 +67,20 @@ The ladder, with the pixel size at each root step:
 
 | Token | rem | at 15px | at 17px | at 19px | Use |
 |---|---|---|---|---|---|
-| `--text-xs` | `0.75rem` | 11.25 | 12.75 | 14.25 | Badges, chip labels, h4 small caps, table meta |
-| `--text-sm` | `0.875rem` | 13.1 | 14.9 | 16.6 | Helper text, dense tables, captions, secondary buttons |
-| `--text-base` | `1rem` | 15 | 17 | 19 | Body, inputs, buttons, h3 |
+| `--text-xs` | `0.75rem` | 11.25 | 12.75 | 14.25 | Badges, chip labels, chart axes and legends: labels, never sentences |
+| `--text-sm` | `0.875rem` | 13.1 | 14.9 | 16.6 | Opt-in only: the `--sm` control sizes, h4 small caps, `<small>` footnotes. No component defaults to it (DS-130) |
+| `--text-base` | `1rem` | 15 | 17 | 19 | Body and everything you read: inputs, buttons, labels, help, tables, notices, toasts, menus, tooltips, h3 |
 | `--text-lg` | `1.125rem` | 16.9 | 19.1 | 21.4 | Card titles, stat labels |
 | `--text-xl` | `1.25rem` | 18.75 | 21.25 | 23.75 | h2, section headings |
 | `--text-2xl` | `1.5rem` | 22.5 | 25.5 | 28.5 | h1, page title in the top bar |
 | `--text-3xl` | `2rem` | 30 | 34 | 38 | Stat card numbers, hero figures |
+
+**One reading size (DS-130).** Anything a person reads, from a table cell to a
+notice, a tooltip or a field's help line, is set in the body size. Hierarchy comes from
+weight, colour and space, not from shrinking the text. A smaller size is something you
+ask for (`.saga-btn--sm`, `.saga-input--sm`, `<small>` for a footnote), never a
+component's default. `--text-xs` is for labels that are not sentences: chips, badges,
+chart axes.
 
 Shell chrome is the exception: `--tab-font-size` is a fixed `15px` and the top bar is a
 fixed `64px`, so the frame does not grow with the content (DS-007).
@@ -157,7 +164,7 @@ figures (DS-028):
 
 - Right-align numeric columns; left-align text columns; never centre either.
 - Stat numbers: `--text-3xl`, 700, `--leading-tight`, `--color-primary`. The label under
-  them is `--text-base` 600 and the caption `--text-sm` secondary (see the Surveys
+  them is `--text-base` 600 and the caption `--text-base` secondary (see the Surveys
   report cards).
 - Durations and ranges use an en dash with spaces stripped: `8:00–8:50 AM`, `30m`.
 - Counts in a tab or badge are `--text-xs` 600 on `--color-bg-tertiary`, pill-shaped.

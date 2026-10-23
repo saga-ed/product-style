@@ -23,14 +23,14 @@ the tab, so it is missing from a tab share.
 </div>
 ```
 
-- **Label** above the control, `--text-sm`, `--weight-semibold`,
+- **Label** above the control, `--text-base`, `--weight-semibold`,
   `--color-text`, Title Case, `--space-xs` below it. Every control has one;
   a search box may use a visually hidden label plus placeholder.
 - **Control** at full width of its column.
-- **Help** (`.saga-help`) below, `--text-sm`, `--color-text-secondary`,
+- **Help** (`.saga-help`) below, `--text-base`, `--color-text-secondary`,
   `--space-xs` above. Optional. One sentence.
 - **Error** (`.saga-error`) replaces help (same slot; `data-invalid` on the
-  field hides the help), `--text-sm`, `--color-danger`, with a small warning
+  field hides the help), `--text-base`, `--color-danger`, with a small warning
   glyph. The control's border turns `--input-border-color-invalid`.
 - Fields stack `--space-md` apart; related fields sit side by side on one
   row with `--space-md` between them (Tutoring Period | When | Time in the
@@ -162,7 +162,7 @@ to the right (DS-116).
 
 Large choices become **option cards** (Same Every Week / Varies by Day Type;
 the four Rotation Pattern tiles): a `.saga-card` with the radio or an icon in
-the top-left, a `--text-base` semibold title, and a `--text-sm` secondary
+the top-left, a `--text-base` semibold title, and a `--text-base` secondary
 description. The selected card gets a 2px `--color-primary` border and a
 `--color-primary-light` fill. Use option cards when each choice needs a
 sentence of explanation; use plain radios when the labels are enough.
@@ -181,17 +181,18 @@ input with a calendar glyph in `--color-text-secondary` at the right
 - 264px wide, white, 1px `--color-border`, `--radius-lg`, `--space-md`
   padding, `--shadow-popover`, `--z-dropdown`.
 - `.saga-datepicker__nav`: a `.saga-datepicker__month` label ("October 2026")
-  in `--text-sm` semibold, centred, with small quiet chevron buttons in
+  in `--text-base` semibold, centred, with small quiet chevron buttons in
   `--color-primary` on either side.
 - `.saga-datepicker__grid`: seven 32px columns. The weekday row
   (`.saga-datepicker__weekday`) is `--text-xs` semibold
   `--color-text-secondary`, Su through Sa.
-- Day cells are `button.saga-datepicker__day`, 32px squares, `--text-sm`,
+- Day cells are `button.saga-datepicker__day`, 32px squares, `--text-base`,
   `--radius-md`, hover `--color-bg-tertiary`. Adjacent-month days are
   `--muted` (`--color-text-muted`); today is `--today` (bold). The selected
   day (`aria-selected="true"`) is a `--color-primary` filled square with white
-  text and a 2px `--color-primary-light` ring. Disabled days are
-  `--color-text-muted` with no hover.
+  text and a 2px `--color-primary-light` ring. Unselectable days
+  (`:disabled` or `aria-disabled`) are `--datepicker-day-disabled`, lighter than
+  adjacent-month days, with no hover fill and no pointer cursor (DS-133).
 - Keyboard: arrows move by day, PageUp and PageDown by month, Enter selects,
   Esc closes. Focus moves into the grid on open and back to the trigger on
   close.

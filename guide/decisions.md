@@ -230,7 +230,7 @@ Alternatives: a global `max-width` (wastes wide monitors on rosters); a collapse
 icon-rail nav (needs icons the guide has not specified).
 
 ### DS-027 — Two densities: comfortable 48px rows, dense 37px rows
-Status: proposed · See it: /guide/spacing-layout#density
+Status: amended by DS-130 (dense is tighter padding only; text stays the body size) · See it: /guide/spacing-layout#density
 
 The roster grid is 37px rows in 13px `#444` (dash motion docs and screenshots); the
 Schedule period list is about 48px. The guide names both, ties dense to `--text-sm` +
@@ -372,7 +372,7 @@ controls (`aria-pressed`) and keeps the single mode-toggle button as a
 separate pattern that goes `--color-primary-light` while on.
 
 ### DS-054 — Modal footer order: Cancel, Save, then Delete isolated by a wider gap
-Status: proposed · See it: /guide/buttons#groups-and-modal-footers
+Status: overturned → DS-129 (Save is bottom-right; a secondary Delete goes far left) · See it: /guide/buttons#groups-and-modal-footers
 
 The Edit Session modal shows Cancel (secondary), Save (primary), Delete
 (danger) right-aligned in that order. Connect's `modal.ts` right-aligns
@@ -504,7 +504,7 @@ Alternatives: inline SVG background-image (hardcodes the color, opts out
 of high contrast).
 
 ### DS-102 — Toast surface is `--nav-bg` navy with a colored left edge
-Status: proposed · See it: /showcase/overlays/#toasts
+Status: amended by DS-132 (8px edge, white icon) · See it: /showcase/overlays/#toasts
 
 Dash's toast is navy with a 2px teal border and 8px left accent; Connect's
 is navy-on-navy with a 10px teal rule. The layer keeps navy (the one dark
@@ -805,3 +805,63 @@ in a grid), grid rows are `display: contents` so the ARIA grid has rows, and
 `.saga-datepicker__day--in-range` tints the days between a range's ends;
 `.saga-toast__action--primary` is the emphasised toast action.
 
+### DS-129 — Modal footers end with the affirmative action (overturns DS-054)
+Status: accepted (gallery review 2026-10-22) · See it: /guide/buttons#groups-and-modal-footers
+
+The bottom-right button is the one the modal exists for: Save, Continue,
+Create. Cancel sits just to its left. A destructive action that is not the
+point of the modal (Delete in Edit Session) moves to the far left of the
+footer, away from Save, or between Cancel and Save in a short footer. When
+the destructive action is the point (a delete confirm) it is the
+bottom-right button. DS-054 kept dash's Edit Session order (Cancel, Save,
+Delete) with a wider gap; the review found the trailing Delete reads as the
+main action. The overlays showcase and the gallery's Edit Session demo
+follow the new order; dash's Edit Session modal changes when it adopts.
+
+### DS-130 — One reading size; small text is opt-in
+Status: accepted (gallery review 2026-10-22) · See it: /guide/typography#scale
+
+No component defaults to `--text-sm` any more. Tables, field labels, help
+and error lines, notices, toasts, menus and popovers, tooltips, card
+captions, list meta, key-value keys, date-picker days, the nav's links and
+labels, the top bar's meta and the month calendar all inherit the body size
+(`--text-base`, 15px at the default root). Hierarchy comes from weight,
+colour and space. `--text-sm` remains for what asks for it: the `--sm`
+control sizes, h4 small caps and `<small>` footnotes. `--text-xs` stays on
+labels that are not sentences (chips, badges, chart axes, weekday initials).
+The sizes came from dash and the source chapters (DS-027 tied dense tables
+to 13px; `.saga-table` shipped at `--text-sm` even when not dense); a
+uniform size reads better and the text-size preference (DS-020) already
+handles people who want more on screen. Dense tables keep their tighter
+padding. `.saga-notice` with its text straight inside (no
+`.saga-notice__body`) now flows as one paragraph instead of a flex row.
+
+### DS-131 — On-dark scrollbars; the nav never scrolls sideways
+Status: accepted (gallery review 2026-10-22) · See it: /guide/elevation-surfaces#scrollbars
+
+The DS-018 bar is a navy thumb, invisible on the navy nav, and the nav list
+fell back to the browser's default bar. `.saga-scrollbar--on-dark` is the
+thin, trackless, faint-white thumb of a touch OS, and `.saga-nav__items`
+carries it without the class. The list is `overflow-x: hidden`: a long
+label never makes the nav scroll sideways. Labels go in
+`.saga-nav__text`, one line with an ellipsis; bare text still clips at the
+pill edge rather than widening it.
+
+### DS-132 — Toast icons are white; the edge is 8px
+Status: accepted (gallery review 2026-10-22) · See it: /showcase/overlays/#toasts
+
+The success, warning and danger colours are tuned for white surfaces and
+read poorly as small icons on navy. The icon now takes the text colour, and
+the coloured left edge grows from `--space-xs` (4px) to `--space-sm` (8px)
+to carry the variant on its own.
+
+### DS-133 — Review fixes: unselectable days, the checkbox tick, tabs overflow
+Status: accepted (gallery review 2026-10-22) · See it: /showcase/forms
+
+Unselectable date-picker days (`:disabled` or `aria-disabled`) get no hover
+fill and no pointer cursor, and their number is `--datepicker-day-disabled`
+(`--gray-300`), lighter than other-month days, so they read as out of play.
+The checked `.saga-checkbox` tick is larger and 3px thick. `.saga-tabs`
+sets `overflow-y: hidden` (with only `overflow-x: auto` the other axis
+computes to `auto`, and the selected tab's -1px margin showed a vertical
+scrollbar), and a tab's focus ring is inset so the clip never cuts it.

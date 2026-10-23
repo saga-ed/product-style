@@ -257,6 +257,7 @@
 	--input-radius: var(--radius-md);
 	--input-bg-disabled: var(--color-gray-lighter);
 	--input-color-disabled: var(--color-text-dark);
+	--datepicker-day-disabled: var(--gray-300);   /* unselectable days, lighter than other-month days (DS-133) */
 	--input-color-placeholder: var(--saga-beige-dark);
 	--input-padding: 0.3rem 0.75rem;
 	--input-height: 2.4rem;
@@ -287,6 +288,9 @@
 	--scrollbar-track-shadow: inset 0 0 var(--radius-md) rgba(0, 0, 0, 0.3);
 	--scrollbar-thumb-bg: var(--saga-navy);
 	--scrollbar-thumb-outline: 1px solid var(--color-gray);
+	/* On navy and other dark surfaces (DS-131): a faint white thumb, no track. */
+	--scrollbar-thumb-on-dark: rgba(255, 255, 255, 0.28);
+	--scrollbar-thumb-on-dark-hover: rgba(255, 255, 255, 0.5);
 
 	/* Charts (DS-024): series order for categorical data; averages are neutral.
 	   DS-111: --chart-neutral is the remainder / "not yet" segment behind a
@@ -430,6 +434,12 @@ img, svg { vertical-align: middle; }
 .saga-scrollbar::-webkit-scrollbar { width: var(--scrollbar-width); height: var(--scrollbar-width); }
 .saga-scrollbar::-webkit-scrollbar-track { box-shadow: var(--scrollbar-track-shadow); border-radius: var(--radius-md); }
 .saga-scrollbar::-webkit-scrollbar-thumb { background: var(--scrollbar-thumb-bg); border-radius: var(--radius-md); outline: var(--scrollbar-thumb-outline); }
+/* On dark surfaces (DS-131): the thin, faint, trackless bar of a touch OS. The nav's
+   item list carries it without the class (components.css). */
+.saga-scrollbar--on-dark { scrollbar-width: thin; scrollbar-color: var(--scrollbar-thumb-on-dark) transparent; }
+.saga-scrollbar--on-dark::-webkit-scrollbar { width: var(--space-xs); height: var(--space-xs); background: transparent; }
+.saga-scrollbar--on-dark::-webkit-scrollbar-thumb { background: var(--scrollbar-thumb-on-dark); border-radius: var(--radius-full); }
+.saga-scrollbar--on-dark::-webkit-scrollbar-thumb:hover { background: var(--scrollbar-thumb-on-dark-hover); }
 
 /* Utilities */
 .sr-only { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; border: 0; }
@@ -542,7 +552,6 @@ iconify-icon { display: inline-block; vertical-align: -0.125em; }
 	--_bg: transparent; --_bg-hover: var(--btn-surface-quiet-hover); --_fg: var(--color-primary); --_border: var(--color-primary);
 	border-style: dashed; border-radius: var(--radius-sm);
 	padding: calc(var(--btn-padding-y) * 0.5) calc(var(--btn-padding-x) * 0.6);
-	font-size: var(--text-sm);
 }
 
 /* Disabled is a fill, never opacity (DS-016/017). */
@@ -571,7 +580,7 @@ iconify-icon { display: inline-block; vertical-align: -0.125em; }
 	border: 0; background: transparent; color: var(--color-text);
 	padding: calc(var(--btn-padding-y) * 0.75) var(--space-md);
 	border-radius: calc(var(--btn-radius) - var(--space-2xs));
-	font-weight: var(--btn-font-weight); font-size: var(--text-sm); line-height: var(--leading-tight); white-space: nowrap;
+	font-weight: var(--btn-font-weight); line-height: var(--leading-tight); white-space: nowrap;
 	transition: background var(--motion-fast) var(--ease-out), color var(--motion-fast) var(--ease-out);
 }
 .saga-segmented > button:hover { background: var(--color-bg); }
@@ -594,7 +603,7 @@ iconify-icon { display: inline-block; vertical-align: -0.125em; }
 .saga-card--stat { border-top: var(--border-width-emphasis) solid var(--color-primary); padding: var(--space-md); display: grid; gap: var(--space-2xs); }
 .saga-card__value { font-size: var(--text-2xl); font-weight: var(--weight-semibold); color: var(--color-primary); line-height: var(--leading-tight); }
 .saga-card__label { font-weight: var(--weight-semibold); }
-.saga-card__caption { font-size: var(--text-sm); color: var(--color-text-secondary); }
+.saga-card__caption { color: var(--color-text-secondary); }
 /* Title row inside a plain card: heading left, a control or meta right. */
 .saga-card__title-row { display: flex; align-items: center; justify-content: space-between; gap: var(--space-sm); margin-bottom: var(--space-sm); }
 .saga-card__title-row > :is(h2, h3, h4, .saga-card__title) { margin: 0; }
@@ -623,7 +632,7 @@ iconify-icon { display: inline-block; vertical-align: -0.125em; }
 .saga-list--interactive > .saga-list__row:hover { background: var(--color-bg-secondary); }
 .saga-list__main { flex: 1; min-width: 0; }
 .saga-list__title { font-weight: var(--weight-semibold); }
-.saga-list__meta { font-size: var(--text-sm); color: var(--color-text-secondary); }
+.saga-list__meta { color: var(--color-text-secondary); }
 .saga-list__end { margin-left: auto; display: flex; align-items: center; gap: var(--space-xs); flex-shrink: 0; }
 .saga-list__handle { display: inline-flex; color: var(--color-text-muted); cursor: grab; font-size: 1.2em; }
 
@@ -636,11 +645,11 @@ iconify-icon { display: inline-block; vertical-align: -0.125em; }
 .saga-field { display: grid; gap: var(--space-xs); align-content: start; }
 .saga-field--inline { grid-template-columns: max-content 1fr; column-gap: var(--space-md); align-items: center; }
 .saga-field--inline > .saga-help, .saga-field--inline > .saga-error { grid-column: 2; }
-.saga-label { font-size: var(--text-sm); font-weight: var(--weight-semibold); color: var(--color-text); }
+.saga-label { font-weight: var(--weight-semibold); color: var(--color-text); }
 /* DS-064: required is unmarked by default; .is-required exists for apps that must mark it */
 .saga-label.is-required::after { content: " *"; color: var(--color-danger); }
-.saga-help { font-size: var(--text-sm); color: var(--color-text-secondary); }
-.saga-error { font-size: var(--text-sm); color: var(--color-danger); }
+.saga-help { color: var(--color-text-secondary); }
+.saga-error { color: var(--color-danger); }
 .saga-field[data-invalid] .saga-help { display: none; }
 
 .saga-input, .saga-textarea, .saga-select > select, .saga-select__trigger {
@@ -706,8 +715,8 @@ iconify-icon { display: inline-block; vertical-align: -0.125em; }
 :is(.saga-checkbox, .saga-radio):hover { border-color: var(--color-primary); }
 :is(.saga-checkbox, .saga-radio):checked { background: var(--color-primary); border-color: var(--color-primary); }
 .saga-checkbox:checked::after {
-	content: ""; position: absolute; left: 30%; top: 8%; width: 30%; height: 60%;
-	border: solid var(--color-primary-contrast); border-width: 0 2px 2px 0; transform: rotate(45deg);
+	content: ""; position: absolute; left: 26%; top: -14%; width: 56%; height: 91%;
+	border: solid var(--color-primary-contrast); border-width: 0 3px 3px 0; transform: rotate(45deg); /* the bolder tick (DS-133) */
 }
 .saga-checkbox:indeterminate { background: var(--color-primary); border-color: var(--color-primary); }
 .saga-checkbox:indeterminate::after { content: ""; position: absolute; inset: 45% 20%; background: var(--color-primary-contrast); }
@@ -759,20 +768,23 @@ iconify-icon { display: inline-block; vertical-align: -0.125em; }
 .saga-datepicker__popover--static { position: static; display: inline-block; }
 .saga-datepicker__nav { display: flex; align-items: center; justify-content: space-between; gap: var(--space-sm); margin-bottom: var(--space-sm); }
 .saga-datepicker__nav > .saga-btn { --_fg: var(--color-primary); }
-.saga-datepicker__month { flex: 1; text-align: center; font-size: var(--text-sm); font-weight: var(--weight-semibold); }
-.saga-datepicker__grid { display: grid; grid-template-columns: repeat(7, var(--space-xl)); justify-content: space-between; row-gap: var(--space-2xs); font-size: var(--text-sm); text-align: center; }
+.saga-datepicker__month { flex: 1; text-align: center; font-weight: var(--weight-semibold); }
+.saga-datepicker__grid { display: grid; grid-template-columns: repeat(7, var(--space-xl)); justify-content: space-between; row-gap: var(--space-2xs); text-align: center; }
 .saga-datepicker__weekday { font-size: var(--text-xs); font-weight: var(--weight-semibold); color: var(--color-text-secondary); line-height: var(--space-lg); }
 .saga-datepicker__day {
 	appearance: none; display: inline-flex; align-items: center; justify-content: center; margin: 0; padding: 0;
 	width: var(--space-xl); height: var(--space-xl); border: 0; border-radius: var(--radius-md);
-	background: transparent; color: var(--color-text); font: inherit; font-size: var(--text-sm); font-variant-numeric: tabular-nums; cursor: pointer;
+	background: transparent; color: var(--color-text); font: inherit; font-variant-numeric: tabular-nums; cursor: pointer;
 	transition: background var(--motion-instant) var(--ease-out);
 }
 .saga-datepicker__day:hover { background: var(--color-bg-tertiary); }
 .saga-datepicker__day--muted { color: var(--color-text-muted); }
 .saga-datepicker__day--today { font-weight: var(--weight-bold); }
 .saga-datepicker__day[aria-selected="true"] { background: var(--color-primary); color: var(--color-primary-contrast); font-weight: var(--weight-semibold); box-shadow: 0 0 0 var(--border-width-emphasis) var(--color-primary-light); }
-.saga-datepicker__day:disabled, .saga-datepicker__day[aria-disabled="true"] { color: var(--color-text-muted); background: transparent; cursor: not-allowed; }
+/* Unselectable days read as out of play: lighter than other-month days, no hover fill, no
+   pointer cursor (DS-133). Still focusable when aria-disabled, for the roving cursor. */
+.saga-datepicker__day:disabled, .saga-datepicker__day[aria-disabled="true"],
+.saga-datepicker__day:disabled:hover, .saga-datepicker__day[aria-disabled="true"]:hover { color: var(--datepicker-day-disabled); background: transparent; cursor: default; }
 /* Rows exist for the ARIA grid structure only; the cells stay on the 7-column grid. */
 .saga-datepicker__grid > [role="row"] { display: contents; }
 /* Range mode (DS-128): the days between the two ends get the light tint; the ends keep the selected fill. */
@@ -786,7 +798,9 @@ iconify-icon { display: inline-block; vertical-align: -0.125em; }
 .saga-search > .saga-input:focus ~ .saga-search__icon { color: var(--color-primary); }
 
 /* ── Tabs (DS-007) ─────────────────────────────────────────────────────────── */
-.saga-tabs { display: flex; align-items: flex-end; gap: 0; border-bottom: 1px solid var(--color-border); overflow-x: auto; }
+/* overflow-y: hidden — overflow-x alone makes the other axis auto too, and the selected tab's
+   -1px margin then shows a vertical scrollbar. The focus ring is inset for the same reason (DS-133). */
+.saga-tabs { display: flex; align-items: flex-end; gap: 0; border-bottom: 1px solid var(--color-border); overflow-x: auto; overflow-y: hidden; }
 .saga-tab {
 	appearance: none; border: 0; background: none; cursor: pointer; white-space: nowrap; text-decoration: none;
 	display: inline-flex; align-items: center; gap: var(--space-sm);
@@ -796,6 +810,7 @@ iconify-icon { display: inline-block; vertical-align: -0.125em; }
 	transition: color var(--motion-fast) var(--ease-out), background var(--motion-instant) var(--ease-out);
 }
 .saga-tab:hover { color: var(--color-text); background: var(--color-bg-secondary); }
+.saga-tab:focus-visible { outline-offset: calc(var(--focus-ring-width) * -1); }
 .saga-tab[aria-selected="true"], .saga-tab.is-active { color: var(--tab-text-active); font-weight: var(--weight-semibold); border-bottom-color: var(--color-primary); background: none; }
 .saga-tab:disabled { color: var(--color-text-disabled); cursor: not-allowed; background: none; }
 .saga-tab__count {
@@ -805,12 +820,12 @@ iconify-icon { display: inline-block; vertical-align: -0.125em; }
 }
 .saga-tab[aria-selected="true"] .saga-tab__count, .saga-tab.is-active .saga-tab__count { background: var(--color-primary-light); color: var(--color-primary); }
 .saga-tabs__list { display: flex; align-items: flex-end; } /* the role="tablist" inside .saga-tabs when an __end sits beside it */
-.saga-tabs__end { margin-left: auto; display: flex; align-items: center; gap: var(--space-sm); padding-bottom: var(--space-xs); font-size: var(--text-sm); color: var(--color-text-secondary); }
+.saga-tabs__end { margin-left: auto; display: flex; align-items: center; gap: var(--space-sm); padding-bottom: var(--space-xs); color: var(--color-text-secondary); }
 
 /* ── Tables ────────────────────────────────────────────────────────────────── */
 .saga-table-wrap { overflow: auto; border: 1px solid var(--color-border); border-radius: var(--radius-md); background: var(--color-bg); }
 .saga-table-wrap > .saga-table { margin: 0; }
-.saga-table { width: 100%; border-collapse: collapse; font-size: var(--text-sm); }
+.saga-table { width: 100%; border-collapse: collapse; }
 .saga-table th, .saga-table td { padding: var(--space-sm) var(--space-md); text-align: left; vertical-align: middle; border-bottom: 1px solid var(--color-border); }
 .saga-table thead th { background: var(--color-bg-secondary); font-weight: var(--weight-semibold); color: var(--color-text); white-space: nowrap; }
 .saga-table tbody tr:last-child > td { border-bottom: 0; }
@@ -832,7 +847,7 @@ iconify-icon { display: inline-block; vertical-align: -0.125em; }
 .saga-table tfoot td, .saga-table tfoot th { font-weight: var(--weight-semibold); background: var(--color-bg-secondary); border-top: 1px solid var(--color-border-strong); border-bottom: 0; }
 
 .saga-kv { display: grid; grid-template-columns: max-content 1fr; gap: var(--space-xs) var(--space-lg); margin: 0; }
-.saga-kv > dt { font-size: var(--text-sm); font-weight: var(--weight-semibold); color: var(--color-text-secondary); }
+.saga-kv > dt { font-weight: var(--weight-semibold); color: var(--color-text-secondary); }
 .saga-kv > dd { margin: 0; min-width: 0; }
 .saga-kv--stacked { grid-template-columns: 1fr; gap: var(--space-2xs); }
 .saga-kv--stacked > dd + dt { margin-top: var(--space-sm); }
@@ -885,7 +900,7 @@ iconify-icon { display: inline-block; vertical-align: -0.125em; }
 	--_accent: var(--color-notice); --_bg: var(--color-notice-bg); --_border: var(--color-notice-border);
 	display: flex; align-items: flex-start; gap: var(--space-sm);
 	padding: var(--space-sm) var(--space-md); border: 1px solid var(--_border); border-radius: var(--radius-md);
-	background: var(--_bg); color: var(--color-text); font-size: var(--text-sm); line-height: var(--leading-normal);
+	background: var(--_bg); color: var(--color-text); line-height: var(--leading-normal);
 }
 .saga-notice--warning { --_accent: var(--color-warning); --_bg: var(--color-warning-bg); --_border: var(--color-warning-border); }
 .saga-notice--danger { --_accent: var(--color-danger); --_bg: var(--color-danger-bg); --_border: var(--color-danger-border); }
@@ -894,6 +909,9 @@ iconify-icon { display: inline-block; vertical-align: -0.125em; }
 .saga-notice--attention { --_accent: var(--color-attention); --_bg: var(--color-attention-bg); --_border: var(--color-warning-border); }
 .saga-notice__icon { display: inline-flex; flex-shrink: 0; font-size: 1.3em; color: var(--_accent); margin-top: 0.05em; }
 .saga-notice__body { flex: 1; min-width: 0; }
+/* Text straight in the notice, with no __body: flow it as one paragraph instead of letting
+   each inline element become its own flex column. */
+.saga-notice:not(:has(> .saga-notice__body)) { display: block; }
 .saga-notice__title { display: block; font-weight: var(--weight-semibold); }
 .saga-notice__action { font-weight: var(--weight-semibold); color: var(--color-primary); text-decoration: underline; background: none; border: 0; padding: 0; cursor: pointer; font-size: inherit; }
 .saga-notice__dismiss { margin: calc(var(--space-xs) * -1) calc(var(--space-sm) * -1) calc(var(--space-xs) * -1) 0; }
@@ -967,15 +985,15 @@ dialog.saga-modal::backdrop { background: var(--modal-scrim); }
 	pointer-events: auto; display: flex; align-items: center; gap: var(--space-sm); width: 100%;
 	padding: var(--space-sm) var(--space-sm) var(--space-sm) var(--space-md);
 	background: var(--color-surface-inverse); color: var(--color-text-inverse);
-	border-left: var(--space-xs) solid var(--_edge); border-radius: var(--radius-md); box-shadow: var(--shadow-toast);
-	font-size: var(--text-sm); font-weight: var(--weight-medium); line-height: var(--leading-normal);
+	border-left: var(--space-sm) solid var(--_edge); border-radius: var(--radius-md); box-shadow: var(--shadow-toast);
+	font-weight: var(--weight-medium); line-height: var(--leading-normal);
 	animation: saga-fade-in var(--motion-fade) var(--ease-out) both, saga-rise-in var(--motion-base) var(--ease-out) both;
 }
 .saga-toast--success { --_edge: var(--color-success); }
 .saga-toast--warning { --_edge: var(--color-warning); }
 .saga-toast--danger { --_edge: var(--color-danger); }
 .saga-toast.is-leaving { animation: saga-fade-out var(--motion-fade) var(--ease-in) forwards; }
-.saga-toast__icon { display: inline-flex; flex-shrink: 0; font-size: 1.3em; color: var(--_edge); }
+.saga-toast__icon { display: inline-flex; flex-shrink: 0; font-size: 1.3em; color: inherit; } /* white: the edge carries the variant (DS-132) */
 .saga-toast__msg { flex: 1; min-width: 0; overflow-wrap: anywhere; }
 .saga-toast__action {
 	flex-shrink: 0; appearance: none; cursor: pointer; font: inherit; font-weight: var(--weight-semibold);
@@ -997,7 +1015,7 @@ dialog.saga-modal::backdrop { background: var(--modal-scrim); }
 	position: absolute; z-index: var(--z-dropdown); min-width: 12rem; max-width: 20rem;
 	margin: 0; padding: var(--space-xs) 0; list-style: none;
 	background: var(--color-bg); color: var(--color-text); border: 1px solid var(--color-border);
-	border-radius: var(--radius-md); box-shadow: var(--shadow-popover); font-size: var(--text-sm);
+	border-radius: var(--radius-md); box-shadow: var(--shadow-popover);
 }
 .saga-popover--static { position: static; display: inline-block; }
 .saga-popover__item {
@@ -1019,7 +1037,7 @@ dialog.saga-modal::backdrop { background: var(--modal-scrim); }
 .saga-tooltip {
 	position: absolute; z-index: var(--z-tooltip); max-width: 16rem; padding: var(--space-sm) calc(var(--space-sm) + var(--space-2xs));
 	background: var(--color-bg); color: var(--color-text); border: 1px solid var(--color-border-strong); border-radius: var(--radius-lg); box-shadow: var(--shadow-md);
-	font-size: var(--text-sm); font-weight: var(--weight-regular); line-height: var(--leading-normal);
+	font-weight: var(--weight-regular); line-height: var(--leading-normal);
 	/* Hoverable: the pointer can move onto the panel without it closing (WCAG 1.4.13, DS-127). */
 	animation: saga-fade-in var(--motion-fade) var(--ease-out) both;
 }
@@ -1062,18 +1080,26 @@ dialog.saga-modal::backdrop { background: var(--modal-scrim); }
 .saga-nav__logo { display: flex; align-items: center; height: var(--topbar-height); flex-shrink: 0; padding: 0 var(--space-md); border-bottom: 1px solid var(--nav-border); }
 .saga-nav__logo img, .saga-nav__logo svg { height: calc(var(--space-xl) + var(--space-2xs)); width: auto; }
 .saga-nav__group { padding: var(--space-md); border-bottom: 1px solid var(--nav-border); }
-.saga-nav__label { display: block; margin-bottom: var(--space-xs); font-size: var(--text-sm); font-weight: var(--weight-medium); letter-spacing: 0.025em; color: var(--nav-text-active); }
-.saga-nav__link { display: inline-flex; align-items: center; gap: var(--space-xs); margin-top: var(--space-sm); font-size: var(--text-sm); color: var(--nav-text); }
+.saga-nav__label { display: block; margin-bottom: var(--space-xs); font-weight: var(--weight-medium); letter-spacing: 0.025em; color: var(--nav-text-active); }
+.saga-nav__link { display: inline-flex; align-items: center; gap: var(--space-xs); margin-top: var(--space-sm); color: var(--nav-text); }
 .saga-nav__link:hover { color: var(--nav-text-active); }
 .saga-nav__section { padding: var(--space-md) var(--space-md) var(--space-xs); font-size: var(--text-xs); font-weight: var(--weight-semibold); letter-spacing: 0.08em; text-transform: uppercase; color: var(--nav-text-muted); }
-.saga-nav__items { list-style: none; margin: 0; padding: var(--space-sm) 0; flex: 1; overflow-y: auto; }
+/* Never scrolls sideways; the vertical bar is the faint on-dark one (DS-131). */
+.saga-nav__items {
+	list-style: none; margin: 0; padding: var(--space-sm) 0; flex: 1; overflow-x: hidden; overflow-y: auto;
+	scrollbar-width: thin; scrollbar-color: var(--scrollbar-thumb-on-dark) transparent;
+}
+.saga-nav__items::-webkit-scrollbar { width: var(--space-xs); background: transparent; }
+.saga-nav__items::-webkit-scrollbar-thumb { background: var(--scrollbar-thumb-on-dark); border-radius: var(--radius-full); }
 .saga-nav__item {
 	display: flex; align-items: center; gap: var(--space-sm);
 	margin: var(--space-xs) var(--space-sm); padding: var(--space-sm) var(--space-md);
 	border-radius: var(--radius-full); color: var(--nav-text); text-decoration: none; font-size: var(--text-base);
-	border: 0; background: transparent; width: calc(100% - var(--space-md)); text-align: left; cursor: pointer;
+	border: 0; background: transparent; width: calc(100% - var(--space-md)); min-width: 0; overflow: hidden; text-align: left; cursor: pointer;
 	transition: background var(--motion-fast) var(--ease-out), color var(--motion-fast) var(--ease-out);
 }
+/* The label: one line, ellipsis when it does not fit (DS-131). Bare text still clips at the pill. */
+.saga-nav__text { flex: 1; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
 .saga-nav__item:hover { background: var(--nav-item-hover); color: var(--nav-text-active); }
 .saga-nav__item[aria-current="page"] { background: var(--nav-item-active); color: var(--nav-text-active); font-weight: var(--weight-semibold); }
 .saga-nav__item > iconify-icon, .saga-nav__item > svg, .saga-nav__item > .saga-icon { font-size: var(--text-xl); width: 1em; height: 1em; flex-shrink: 0; opacity: 0.7; }
@@ -1103,12 +1129,12 @@ dialog.saga-modal::backdrop { background: var(--modal-scrim); }
 .saga-topbar__title { margin: 0; min-width: 0; font-size: var(--text-2xl); font-weight: var(--weight-semibold); color: var(--color-primary); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
 .saga-topbar__context { color: var(--color-text-secondary); font-weight: var(--weight-medium); white-space: nowrap; }
 .saga-topbar__actions { margin-left: auto; display: flex; align-items: center; gap: var(--space-xs); flex-shrink: 0; }
-.saga-topbar__meta { font-size: var(--text-sm); color: var(--color-text-secondary); margin-right: var(--space-sm); }
+.saga-topbar__meta { color: var(--color-text-secondary); margin-right: var(--space-sm); }
 
 /* ── Calendar (month grid) ─────────────────────────────────────────────────── */
 .saga-calendar { display: grid; grid-template-columns: repeat(7, minmax(0, 1fr)); border-top: 1px solid var(--color-border); border-left: 1px solid var(--color-border); background: var(--color-bg); }
-.saga-calendar__weekday { padding: var(--space-xs) var(--space-sm); font-size: var(--text-sm); color: var(--color-text-secondary); border-right: 1px solid var(--color-border); border-bottom: 1px solid var(--color-border); }
-.saga-calendar__cell { display: flex; flex-direction: column; gap: var(--space-xs); min-height: 5rem; padding: var(--space-xs); font-size: var(--text-sm); border-right: 1px solid var(--color-border); border-bottom: 1px solid var(--color-border); }
+.saga-calendar__weekday { padding: var(--space-xs) var(--space-sm); color: var(--color-text-secondary); border-right: 1px solid var(--color-border); border-bottom: 1px solid var(--color-border); }
+.saga-calendar__cell { display: flex; flex-direction: column; gap: var(--space-xs); min-height: 5rem; padding: var(--space-xs); border-right: 1px solid var(--color-border); border-bottom: 1px solid var(--color-border); }
 .saga-calendar__cell--outside { color: var(--color-text-muted); background: var(--color-bg-secondary); }
 .saga-calendar__day { display: flex; align-items: center; gap: var(--space-xs); }
 .saga-calendar__cell--today .saga-calendar__day > span:first-child { display: inline-flex; align-items: center; justify-content: center; min-width: 1.5em; height: 1.5em; border-radius: var(--radius-full); background: var(--color-primary); color: var(--color-primary-contrast); font-weight: var(--weight-semibold); }
@@ -1168,10 +1194,10 @@ dialog.saga-modal::backdrop { background: var(--modal-scrim); }
 			<a class="saga-nav__link" href="#"><iconify-icon icon="material-symbols-light:settings-outline-rounded"></iconify-icon> Configure program</a>
 		</div>
 		<ul class="saga-nav__items">
-			<li><a class="saga-nav__item" href="#"><iconify-icon icon="material-symbols-light:dashboard-outline-rounded"></iconify-icon> Dashboard</a></li>
-			<li><a class="saga-nav__item" href="#" aria-current="page"><iconify-icon icon="material-symbols-light:calendar-month-outline-rounded"></iconify-icon> Sessions</a></li>
-			<li><a class="saga-nav__item" href="#"><iconify-icon icon="material-symbols-light:group-outline-rounded"></iconify-icon> Rosters</a></li>
-			<li><a class="saga-nav__item" href="#"><iconify-icon icon="material-symbols-light:bar-chart-rounded"></iconify-icon> Reports</a></li>
+			<li><a class="saga-nav__item" href="#"><iconify-icon icon="material-symbols-light:dashboard-outline-rounded"></iconify-icon> <span class="saga-nav__text">Dashboard</span></a></li>
+			<li><a class="saga-nav__item" href="#" aria-current="page"><iconify-icon icon="material-symbols-light:calendar-month-outline-rounded"></iconify-icon> <span class="saga-nav__text">Sessions</span></a></li>
+			<li><a class="saga-nav__item" href="#"><iconify-icon icon="material-symbols-light:group-outline-rounded"></iconify-icon> <span class="saga-nav__text">Rosters</span></a></li>
+			<li><a class="saga-nav__item" href="#"><iconify-icon icon="material-symbols-light:bar-chart-rounded"></iconify-icon> <span class="saga-nav__text">Reports</span></a></li>
 		</ul>
 		<div class="saga-nav__footer"><span class="saga-nav__label">District</span><div>Saga Sandbox District</div></div>
 	</nav>

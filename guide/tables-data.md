@@ -17,8 +17,8 @@ The roster grid (`dashboard_rosters_page.png`) is the reference table.
 | Part | Treatment |
 |---|---|
 | Container | 1px `--color-border` on all sides, `--radius-md`, white |
-| Header row | `--color-bg-secondary` (`#f9fafb`) fill, `--text-sm` `--weight-semibold` `--color-text`, sticky to the top of the scroll container with `.saga-table--sticky` |
-| Cells | `--text-sm` `--color-text`, padding `--space-sm` `--space-md`, 1px `--color-border` between rows and columns |
+| Header row | `--color-bg-secondary` (`#f9fafb`) fill, `--text-base` `--weight-semibold` `--color-text`, sticky to the top of the scroll container with `.saga-table--sticky` |
+| Cells | `--text-base` `--color-text`, padding `--space-sm` `--space-md`, 1px `--color-border` between rows and columns |
 | Row height | about 36px; dense tables may drop to 32px, never below |
 | Row hover | `--color-bg-secondary` wash; selected row `--color-primary-light` |
 | Sort | the sorted column shows a small up or down triangle after its label in `--color-text`; unsorted columns show nothing until hovered. Click toggles direction. |
@@ -102,7 +102,7 @@ first:
    `--color-primary`. A percentage keeps its sign in the same size ("0%").
 2. The label (`.saga-card__label`): inherits the card's size,
    `--weight-semibold`, `--color-text` ("Completion").
-3. The caption (`.saga-card__caption`): `--text-sm`,
+3. The caption (`.saga-card__caption`): `--text-base`,
    `--color-text-secondary`, one line ("0 of 55 students").
 
 The card has the standard hairline border and `--shadow-sm`, plus a
@@ -123,8 +123,8 @@ a stat rather than a content card. Stat cards sit in a `.saga-grid--stats`
 
 ## Key-value lists
 
-Two columns, no borders: the key in `--text-sm` `--weight-semibold`
-`--color-text-dark`, the value in `--text-sm` `--color-text`, rows
+Two columns, no borders: the key in `--text-base` `--weight-semibold`
+`--color-text-dark`, the value in `--text-base` `--color-text`, rows
 `--space-sm` apart, keys a fixed width (about 160px) so values line up. When
 there are more than six pairs, add hairline rules between rows and it becomes
 a borderless table (the Day Types / Time / Duration block in the Configure
@@ -256,7 +256,7 @@ Charts follow the AI Insights screens (`ai_insights_*.png`):
 The month grid (`calendar_view.png`) is a 7-column table of `.saga-card`-like
 cells, 1px `--color-border` between them, 96px tall:
 
-- Day number top-left in `--text-sm`; adjacent-month days in
+- Day number top-left in `--text-base`; adjacent-month days in
   `--color-text-muted`.
 - A day-type chip (Regular or Advisory) to the right of the number.
 - One **count tile** per day with sessions, left-aligned, `--text-xs`

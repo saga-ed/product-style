@@ -86,7 +86,7 @@ The card contract (DS-015): white, `8px` radius, `1px` `--color-border`, `--shad
 Variants:
 - `.saga-card--stat`: adds a `--border-width-emphasis` (2px) top edge in
   `--color-primary`, a blue `--text-2xl` `.saga-card__value`, a 600
-  `.saga-card__label` and a `--text-sm` secondary `.saga-card__caption`.
+  `.saga-card__label` and a `--text-base` secondary `.saga-card__caption`.
 - `.saga-card__header` / `__body` / `__footer` split a card into a titled band,
   the content and a `--color-bg-secondary` well for actions; a plain card that
   only needs a heading beside a control uses `.saga-card__title-row`.
@@ -184,6 +184,10 @@ Arrow end-caps are hidden everywhere (DS-018). The styled bar is opt-in with
 `.saga-scrollbar`: `0.5em` wide, rounded navy thumb with a hairline outline, inset
 track shadow, `6px` radius. Use it on the content area, modal bodies and any scrolling
 panel; leave native bars on `<textarea>` and iframes.
+
+On navy and other dark surfaces use `.saga-scrollbar--on-dark` instead (DS-131): a
+thin, trackless, faint-white thumb, like a touch OS. The nav's item list
+(`.saga-nav__items`) has it built in, and never scrolls sideways.
 
 ```html
 <div class="roster-scroll saga-scrollbar">…</div>
