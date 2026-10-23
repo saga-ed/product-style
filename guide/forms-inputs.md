@@ -87,7 +87,12 @@ the list needs search, groups, multi-select or rich rows:
   The selected row (`aria-selected="true"`) is `--color-primary-light` fill
   with `--color-primary` semibold text (the "Demo Program 08/17" row in
   `program_dropdown.png`). A row that cannot be chosen is
-  `aria-disabled="true"` in `--color-text-disabled`.
+  `aria-disabled="true"` in `--color-text-disabled`. A de-emphasized
+  escape-valve choice such as "No Period" (`data-muted`, on the row and on the
+  trigger's label when it is the value) is italic `--color-text-secondary`. A
+  row the page marks, such as a school holding a search match (`data-marked`),
+  takes the selected tint and a small primary dot before its label. A trigger
+  that needs a look (`data-attention`) gets a primary border and ring (DS-134).
 - **Footer** slot (`.saga-select__footer`) for an add action, separated by a
   hairline: the blue add-disc and "Add New Program".
 - Group headers inside the list are navy, `--text-xs` bold, uppercase, with a

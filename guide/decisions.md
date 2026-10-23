@@ -869,3 +869,15 @@ scrollbar). The tab no longer sits 1px over the strip's border (`margin-bottom:
 -1px`), which the clip cut to a 1px underline: the strip's hairline is an inset
 shadow under the tabs, so the 2px underline shows whole. A tab's focus ring is
 inset so the clip never cuts it.
+
+### DS-134 — Select row states: muted, marked, attention
+Status: proposed · See it: /guide/forms-inputs#select
+
+The Svelte `Select` (ui-svelte) carries three states from dash's core-ui
+SelectMenu as data attributes, and the class layer had no rule for them, so
+they vanished when dash switched. A muted row or trigger label (`data-muted`,
+the "No Period" escape-valve choice) is italic `--color-text-secondary`; core-ui
+used 55% opacity, which put an enabled option near 2.5:1. A marked row
+(`data-marked`, a school holding a search match) gets the selected tint and a
+small primary dot before its label. A trigger with `data-attention` gets a
+primary border and a 1px ring.
