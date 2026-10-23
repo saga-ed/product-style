@@ -211,6 +211,9 @@ input with a calendar glyph in `--color-text-secondary` at the right
   `--color-primary` text centred above the list, a `--color-primary-light`
   tint on hover and while open, muted text when disabled. It is the field's
   variant, not a replacement: a date inside a form stays a field.
+- A blocked day says why. The reason ("After the program ends") ends the day's
+  accessible name, and while the day is under the pointer or focus it shows in
+  a `.saga-datepicker__hint` line under the grid. Colour is never the only cue.
 
 ```html
 <div class="saga-datepicker">
