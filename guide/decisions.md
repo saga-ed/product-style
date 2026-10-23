@@ -934,6 +934,15 @@ date. The dash review reversed that: `.saga-datepicker` is the default everywher
 and a native date input is an exception its owning team chooses case by case.
 dash keeps its check against new native date inputs.
 
+### DS-141 — A check's click target is the control and its label
+Status: accepted (staff-admin review 2026-10-23) · See it: /showcase/forms/
+
+A `.saga-check` inside a `.saga-field` sits at its content width
+(`justify-self: start`). The field is a grid, and grid items stretch to the
+column by default, so a radio group in a column made each option clickable
+across the whole form. Clicks in empty space, such as dismissing a modal,
+then changed the selection.
+
 ### DS-142 — A header trigger for either date picker; a range with quick options is two columns
 Status: proposed (saga-dash review 2026-10-23) · See it: /guide/forms-inputs#date-range-with-quick-options
 
