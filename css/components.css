@@ -319,6 +319,20 @@ iconify-icon { display: inline-block; vertical-align: -0.125em; }
 .saga-datepicker__trigger[aria-invalid="true"] { border-color: var(--input-border-color-invalid); }
 .saga-datepicker__trigger:disabled { background: var(--input-bg-disabled); color: var(--input-color-disabled); border-color: var(--input-border-color-readonly); cursor: not-allowed; }
 .saga-datepicker__trigger.is-placeholder > span { color: var(--input-color-placeholder); font-style: italic; }
+/* DS-142: the header trigger (either picker) is a clickable date heading, not a field: no border or glyph,
+   semibold --color-primary text with a light primary hover tint. A page's own date header
+   (a single-day list, a reporting range) uses it; a date in a form keeps the field (the default). */
+.saga-datepicker__trigger--header {
+	min-width: 0; min-height: 0; padding: var(--space-2xs) var(--space-xs);
+	background: transparent; color: var(--color-primary); border: 0; border-radius: var(--radius-sm);
+	font-weight: var(--weight-semibold); text-align: center; white-space: nowrap;
+}
+.saga-datepicker__trigger--header:hover, .saga-datepicker__trigger--header[aria-expanded="true"] { background: var(--color-primary-light); }
+/* No fill to carry "disabled" here (a field's grey box), so the text itself goes muted. */
+.saga-datepicker__trigger--header:disabled { background: transparent; color: var(--color-text-muted); }
+/* A date the viewer can aim at on its own (a range's start or end) underlines on hover. */
+.saga-datepicker__trigger [data-seg]:hover { text-decoration: underline; }
+.saga-datepicker__trigger:disabled [data-seg]:hover { text-decoration: none; }
 .saga-datepicker__popover {
 	position: absolute; left: 0; top: calc(100% + var(--space-xs)); width: 264px; padding: var(--space-md);
 	background: var(--color-bg); color: var(--color-text); border: 1px solid var(--color-border); border-radius: var(--radius-lg);
@@ -326,6 +340,24 @@ iconify-icon { display: inline-block; vertical-align: -0.125em; }
 }
 .saga-datepicker__popover[hidden] { display: none; }
 .saga-datepicker__popover--static { position: static; display: inline-block; }
+/* DS-142: a range with quick options is two columns, the options on the left and the
+   always-visible month (nav, grid, hint) on the right, split by a 1px --color-border rule. */
+.saga-datepicker__popover--range { display: flex; width: auto; padding: 0; }
+.saga-datepicker__popover--range.saga-datepicker__popover--static { display: inline-flex; }
+.saga-datepicker__presets {
+	display: flex; flex-direction: column; gap: var(--space-2xs); min-width: 8rem;
+	padding: var(--space-sm); border-right: 1px solid var(--color-border);
+}
+/* Custom is the way into the calendar, not a preset: italic, and secondary until checked. */
+.saga-datepicker__presets > [data-custom] { font-style: italic; }
+.saga-datepicker__presets > [data-custom]:not([aria-checked="true"]) { color: var(--color-text-secondary); }
+.saga-datepicker__calendar { width: 264px; padding: var(--space-md); }
+/* What the day under the pointer will do. Holds two lines so the panel never jumps as it changes. */
+.saga-datepicker__hint {
+	margin-top: var(--space-sm); padding-top: var(--space-sm); border-top: 1px solid var(--color-border);
+	min-height: calc(var(--text-xs) * var(--leading-normal) * 2 + var(--space-sm)); font-size: var(--text-xs);
+	line-height: var(--leading-normal); color: var(--color-text-secondary); text-align: center;
+}
 .saga-datepicker__nav { display: flex; align-items: center; justify-content: space-between; gap: var(--space-sm); margin-bottom: var(--space-sm); }
 .saga-datepicker__nav > .saga-btn { --_fg: var(--color-primary); }
 .saga-datepicker__month { flex: 1; text-align: center; font-weight: var(--weight-semibold); }
@@ -352,6 +384,9 @@ iconify-icon { display: inline-block; vertical-align: -0.125em; }
 /* Range mode (DS-128): the days between the two ends get the light tint; the ends keep the selected fill. */
 .saga-datepicker__day--in-range { background: var(--color-primary-light); color: var(--color-primary); border-radius: 0; }
 .saga-datepicker__day--in-range:hover { background: var(--color-primary-light); }
+/* DS-142: a soft day (beyond a range's length cap) still works but starts a new range. It is
+   one ink tier lighter with a dotted underline, which still shows on an already-muted day. */
+.saga-datepicker__day[data-soft] { color: var(--color-text-secondary); text-decoration: underline dotted; text-underline-offset: 2px; }
 
 /* Search: pill input with a leading icon slot; italic placeholder from base. */
 .saga-search { position: relative; display: block; }
