@@ -199,7 +199,7 @@
 	/* ── Layering (DS-013) ──────────────────────────────────────────────── */
 	--z-raised: 1;
 	--z-sticky: 100;
-	--z-dropdown: 200;
+	--z-dropdown: 1150;              /* above --z-modal: a menu opened from a modal opens over it (DS-126) */
 	--z-overlay: 1000;
 	--z-modal: 1100;
 	--z-toast: 1200;
@@ -235,6 +235,7 @@
 	--input-radius: var(--radius-md);
 	--input-bg-disabled: var(--color-gray-lighter);
 	--input-color-disabled: var(--color-text-dark);
+	--datepicker-day-disabled: var(--gray-300);   /* unselectable days, lighter than other-month days (DS-133) */
 	--input-color-placeholder: var(--saga-beige-dark);
 	--input-padding: 0.3rem 0.75rem;
 	--input-height: 2.4rem;
@@ -265,6 +266,9 @@
 	--scrollbar-track-shadow: inset 0 0 var(--radius-md) rgba(0, 0, 0, 0.3);
 	--scrollbar-thumb-bg: var(--saga-navy);
 	--scrollbar-thumb-outline: 1px solid var(--color-gray);
+	/* On navy and other dark surfaces (DS-131): a faint white thumb, no track. */
+	--scrollbar-thumb-on-dark: rgba(255, 255, 255, 0.28);
+	--scrollbar-thumb-on-dark-hover: rgba(255, 255, 255, 0.5);
 
 	/* Charts (DS-024): series order for categorical data; averages are neutral.
 	   DS-111: --chart-neutral is the remainder / "not yet" segment behind a

@@ -58,10 +58,10 @@
 					<div class="saga-field"><label class="saga-label" for="m-title">Session Title</label><input class="saga-input" id="m-title" value="Out Of Window Test - Early"></div>
 				</div>
 				<div class="saga-modal__footer">
+					<button class="saga-btn saga-btn--danger" value="delete">Delete</button>
 					<div class="saga-modal__footer-end">
 						<button class="saga-btn saga-btn--secondary" value="cancel">Cancel</button>
 						<button class="saga-btn" value="save">Save</button>
-						<button class="saga-btn saga-btn--danger" value="delete">Delete</button>
 					</div>
 				</div>
 			</form>
@@ -79,10 +79,10 @@
 			&lt;div class=&quot;saga-field&quot;&gt;&lt;label class=&quot;saga-label&quot; for=&quot;m-title&quot;&gt;Session Title&lt;/label&gt;&lt;input class=&quot;saga-input&quot; id=&quot;m-title&quot; value=&quot;Out Of Window Test - Early&quot;&gt;&lt;/div&gt;
 		&lt;/div&gt;
 		&lt;div class=&quot;saga-modal__footer&quot;&gt;
+			&lt;button class=&quot;saga-btn saga-btn--danger&quot; value=&quot;delete&quot;&gt;Delete&lt;/button&gt;
 			&lt;div class=&quot;saga-modal__footer-end&quot;&gt;
 				&lt;button class=&quot;saga-btn saga-btn--secondary&quot; value=&quot;cancel&quot;&gt;Cancel&lt;/button&gt;
 				&lt;button class=&quot;saga-btn&quot; value=&quot;save&quot;&gt;Save&lt;/button&gt;
-				&lt;button class=&quot;saga-btn saga-btn--danger&quot; value=&quot;delete&quot;&gt;Delete&lt;/button&gt;
 			&lt;/div&gt;
 		&lt;/div&gt;
 	&lt;/form&gt;
@@ -99,10 +99,10 @@
 				<div class="saga-field"><label class="saga-label" for="m2-title">Session Title</label><input class="saga-input" id="m2-title" value="Out Of Window Test - Early"></div>
 			</div>
 			<div class="saga-modal__footer">
+				<button class="saga-btn saga-btn--danger">Delete</button>
 				<div class="saga-modal__footer-end">
 					<button class="saga-btn saga-btn--secondary">Cancel</button>
 					<button class="saga-btn">Save</button>
-					<button class="saga-btn saga-btn--danger">Delete</button>
 				</div>
 			</div>
 		</div>
@@ -116,10 +116,10 @@
 		&lt;div class=&quot;saga-field&quot;&gt;&lt;label class=&quot;saga-label&quot; for=&quot;m2-title&quot;&gt;Session Title&lt;/label&gt;&lt;input class=&quot;saga-input&quot; id=&quot;m2-title&quot; value=&quot;Out Of Window Test - Early&quot;&gt;&lt;/div&gt;
 	&lt;/div&gt;
 	&lt;div class=&quot;saga-modal__footer&quot;&gt;
+		&lt;button class=&quot;saga-btn saga-btn--danger&quot;&gt;Delete&lt;/button&gt;
 		&lt;div class=&quot;saga-modal__footer-end&quot;&gt;
 			&lt;button class=&quot;saga-btn saga-btn--secondary&quot;&gt;Cancel&lt;/button&gt;
 			&lt;button class=&quot;saga-btn&quot;&gt;Save&lt;/button&gt;
-			&lt;button class=&quot;saga-btn saga-btn--danger&quot;&gt;Delete&lt;/button&gt;
 		&lt;/div&gt;
 	&lt;/div&gt;
 &lt;/div&gt;</code></pre>
@@ -157,7 +157,7 @@
 				</div>
 			</div>
 		</div>
-		<div class="saga-modal saga-modal--confirm" role="alertdialog" aria-modal="true" aria-labelledby="cf2-title" style="margin:0 auto;border-top:var(--space-xs) solid var(--color-warning-border)">
+		<div class="saga-modal saga-modal--confirm saga-modal--caution" role="alertdialog" aria-modal="true" aria-labelledby="cf2-title" style="margin:0 auto">
 			<div class="saga-modal__header"><h2 class="saga-modal__title" id="cf2-title">Move 3 students to Pod 2?</h2></div>
 			<div class="saga-modal__body"><p class="text-secondary">They keep their attendance history. Their current tutor will see the change on the next schedule refresh.</p></div>
 			<div class="saga-modal__footer">
@@ -178,7 +178,7 @@
 		&lt;/div&gt;
 	&lt;/div&gt;
 &lt;/div&gt;
-&lt;div class=&quot;saga-modal saga-modal--confirm&quot; role=&quot;alertdialog&quot; aria-modal=&quot;true&quot; aria-labelledby=&quot;cf2-title&quot; style=&quot;margin:0 auto;border-top:var(--space-xs) solid var(--color-warning-border)&quot;&gt;
+&lt;div class=&quot;saga-modal saga-modal--confirm saga-modal--caution&quot; role=&quot;alertdialog&quot; aria-modal=&quot;true&quot; aria-labelledby=&quot;cf2-title&quot; style=&quot;margin:0 auto&quot;&gt;
 	&lt;div class=&quot;saga-modal__header&quot;&gt;&lt;h2 class=&quot;saga-modal__title&quot; id=&quot;cf2-title&quot;&gt;Move 3 students to Pod 2?&lt;/h2&gt;&lt;/div&gt;
 	&lt;div class=&quot;saga-modal__body&quot;&gt;&lt;p class=&quot;text-secondary&quot;&gt;They keep their attendance history. Their current tutor will see the change on the next schedule refresh.&lt;/p&gt;&lt;/div&gt;
 	&lt;div class=&quot;saga-modal__footer&quot;&gt;
@@ -193,7 +193,7 @@
 	<div class="demo-row demo-row--stack demo-row--tint">
 		<div class="demo-frame">
 			<div class="saga-shell saga-shell--framed">
-				<nav class="saga-nav" aria-label="Scene nav"><div class="saga-nav__logo"></div><ul class="saga-nav__items"><li><a class="saga-nav__item" href="#" aria-current="page"><iconify-icon icon="material-symbols-light:calendar-month-outline-rounded"></iconify-icon> Sessions</a></li></ul></nav>
+				<nav class="saga-nav" aria-label="Scene nav"><div class="saga-nav__logo"></div><ul class="saga-nav__items"><li><a class="saga-nav__item" href="#" aria-current="page"><iconify-icon icon="material-symbols-light:calendar-month-outline-rounded"></iconify-icon> <span class="saga-nav__text">Sessions</span></a></li></ul></nav>
 				<div class="saga-shell__main">
 					<header class="saga-topbar"><h1 class="saga-topbar__title">Demo Program 08/17</h1></header>
 					<main class="saga-page"><p class="text-secondary">A framed shell: the scrim and toast stack stay inside this box.</p></main>
@@ -211,7 +211,7 @@
 	</div>
 <pre class="demo-snippet"><code>&lt;div class=&quot;demo-frame&quot;&gt;
 	&lt;div class=&quot;saga-shell saga-shell--framed&quot;&gt;
-		&lt;nav class=&quot;saga-nav&quot; aria-label=&quot;Scene nav&quot;&gt;&lt;div class=&quot;saga-nav__logo&quot;&gt;&lt;/div&gt;&lt;ul class=&quot;saga-nav__items&quot;&gt;&lt;li&gt;&lt;a class=&quot;saga-nav__item&quot; href=&quot;#&quot; aria-current=&quot;page&quot;&gt;&lt;iconify-icon icon=&quot;material-symbols-light:calendar-month-outline-rounded&quot;&gt;&lt;/iconify-icon&gt; Sessions&lt;/a&gt;&lt;/li&gt;&lt;/ul&gt;&lt;/nav&gt;
+		&lt;nav class=&quot;saga-nav&quot; aria-label=&quot;Scene nav&quot;&gt;&lt;div class=&quot;saga-nav__logo&quot;&gt;&lt;/div&gt;&lt;ul class=&quot;saga-nav__items&quot;&gt;&lt;li&gt;&lt;a class=&quot;saga-nav__item&quot; href=&quot;#&quot; aria-current=&quot;page&quot;&gt;&lt;iconify-icon icon=&quot;material-symbols-light:calendar-month-outline-rounded&quot;&gt;&lt;/iconify-icon&gt; &lt;span class=&quot;saga-nav__text&quot;&gt;Sessions&lt;/span&gt;&lt;/a&gt;&lt;/li&gt;&lt;/ul&gt;&lt;/nav&gt;
 		&lt;div class=&quot;saga-shell__main&quot;&gt;
 			&lt;header class=&quot;saga-topbar&quot;&gt;&lt;h1 class=&quot;saga-topbar__title&quot;&gt;Demo Program 08/17&lt;/h1&gt;&lt;/header&gt;
 			&lt;main class=&quot;saga-page&quot;&gt;&lt;p class=&quot;text-secondary&quot;&gt;A framed shell: the scrim and toast stack stay inside this box.&lt;/p&gt;&lt;/main&gt;

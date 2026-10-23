@@ -121,7 +121,7 @@ Two densities, chosen per surface, never mixed inside one table (DS-027):
 
 | | Comfortable (default) | Dense |
 |---|---|---|
-| Table row height | about `40px` (`.saga-table`: cell padding `--space-sm` `--space-md`, `--text-sm`) | about `32px` (`.saga-table--dense`: cell padding `--space-xs` `--space-sm`) |
+| Table row height | about `40px` (`.saga-table`: cell padding `--space-sm` `--space-md`, `--text-base`) | about `32px` (`.saga-table--dense`: cell padding `--space-xs` `--space-sm`) |
 | List row | `--space-md` vertical padding | `--space-sm` |
 | Card grid gap | `--space-lg` | `--space-md` |
 | Button | default `.saga-btn` | `.saga-btn--sm` |

@@ -61,6 +61,12 @@ img, svg { vertical-align: middle; }
 .saga-scrollbar::-webkit-scrollbar { width: var(--scrollbar-width); height: var(--scrollbar-width); }
 .saga-scrollbar::-webkit-scrollbar-track { box-shadow: var(--scrollbar-track-shadow); border-radius: var(--radius-md); }
 .saga-scrollbar::-webkit-scrollbar-thumb { background: var(--scrollbar-thumb-bg); border-radius: var(--radius-md); outline: var(--scrollbar-thumb-outline); }
+/* On dark surfaces (DS-131): the thin, faint, trackless bar of a touch OS. The nav's
+   item list carries it without the class (components.css). */
+.saga-scrollbar--on-dark { scrollbar-width: thin; scrollbar-color: var(--scrollbar-thumb-on-dark) transparent; }
+.saga-scrollbar--on-dark::-webkit-scrollbar { width: var(--space-xs); height: var(--space-xs); background: transparent; }
+.saga-scrollbar--on-dark::-webkit-scrollbar-thumb { background: var(--scrollbar-thumb-on-dark); border-radius: var(--radius-full); }
+.saga-scrollbar--on-dark::-webkit-scrollbar-thumb:hover { background: var(--scrollbar-thumb-on-dark-hover); }
 
 /* Utilities */
 .sr-only { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; border: 0; }

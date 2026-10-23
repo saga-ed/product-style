@@ -121,10 +121,10 @@ never a question that needs an answer.
 Look:
 
 - `.saga-toast`: a navy `--color-surface-inverse` card, white text at
-  `--text-sm` `--weight-medium`, `--radius-md`, `--shadow-toast`, the stack
+  `--text-base` `--weight-medium`, `--radius-md`, `--shadow-toast`, the stack
   up to 26rem wide.
-- A 4px (`--space-xs`) colored left edge and no outer border. Variants
-  recolor only this edge and the icon: `--success` to `--color-success`,
+- An 8px (`--space-sm`) colored left edge and no outer border; the icon is
+  white like the text (DS-132). Variants recolor only this edge: `--success` to `--color-success`,
   `--warning` to `--color-warning`, `--danger` to `--color-danger`; the
   default edge is `--color-accent` teal. The fill stays navy so the stack
   reads as one family (DS-102).
@@ -181,7 +181,7 @@ level; escalate only for destruction.
 The levels are the modifier: bare (notice), `--warning`, `--danger`,
 `--success`, plus `--attention` for a standing problem (below). Inline
 notices are anchored next to the thing that was just touched, not in a global
-corner: `--radius-md`, `--space-sm --space-md` padding, `--text-sm`, flat (no
+corner: `--radius-md`, `--space-sm --space-md` padding, `--text-base`, flat (no
 shadow; the tint and border are the surface), up to 560px wide, with a ✕
 (`.saga-notice__dismiss`) at the right. They carry their response as inline
 links (`.saga-notice__action`) in `--color-primary` semibold underline:
@@ -213,7 +213,7 @@ glow on the affected rows.
 A kebab or caret opens an anchored menu (`.saga-popover`): white, 1px
 `--color-border`, `--radius-md`, `--shadow-popover`, `--z-dropdown`, 12 to
 20rem wide, `--space-xs` vertical padding. Items (`.saga-popover__item`) are
-2.25rem rows with an optional 1.2em icon, `--text-sm`, hover
+2.25rem rows with an optional 1.2em icon, `--text-base`, hover
 `--color-bg-tertiary`; a danger item (`data-danger`) is `--color-danger` text
 with a faint danger wash on hover; a divider (`.saga-popover__divider`) is a
 1px `--color-border` rule. The menu prefers bottom-end placement and flips when it would overflow.
@@ -232,7 +232,7 @@ along as a harmless extra but carries the description on its own only in a
 prototype or where no tooltip component exists.
 
 - Panel (`.saga-tooltip`): white, 1px `--color-border-strong`,
-  `--radius-lg`, `--space-sm` by 10px padding, `--text-sm`, `--shadow-md`,
+  `--radius-lg`, `--space-sm` by 10px padding, `--text-base`, `--shadow-md`,
   `--z-tooltip`, fades in over `--motion-fade`; this is dash's core-ui
   Tooltip (DS-057, DS-120). `.saga-tooltip--filled` uses `--color-primary`
   fill with white text for the info-icon case. `.saga-tooltip--rich` is

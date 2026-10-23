@@ -28,7 +28,7 @@ next by a 1px `--nav-border` rule (white at 38%).
    white Saga logotype sits on the top bar's line. Logo height 34px, left
    padding `--space-md`. It links home.
 2. **Program selector** (`.saga-nav__group`). A small label
-   (`.saga-nav__label`), "Current Program", in `--text-sm` medium weight,
+   (`.saga-nav__label`), "Current Program", in `--text-base` medium weight,
    white (`--nav-text-active`), then the painted select
    (`.saga-select > .saga-select__trigger`, see
    [forms-inputs](forms-inputs.md#select)). The select is the one white
@@ -38,8 +38,10 @@ next by a 1px `--nav-border` rule (white at 38%).
 3. **Section links** (`.saga-nav__items > li > .saga-nav__item`). One per
    top-level area, in this canonical order: Dashboard, Sessions, Rosters,
    Surveys, Reports. Each is an icon (`--text-xl`, 70% opacity) plus a label
-   in `--text-base`, with `--space-sm` between them and `--space-sm` /
-   `--space-md` padding.
+   (`.saga-nav__text`) in `--text-base`, with `--space-sm` between them and
+   `--space-sm` / `--space-md` padding. A label is one line and ends in an
+   ellipsis when it does not fit; the list never scrolls sideways, and its
+   vertical scrollbar is the faint on-dark one (DS-131).
 4. **Empty flex space** that pushes the footer down.
 5. **District footer** (`.saga-nav__footer`). A `.saga-nav__label`
    "District" and the district name in `--nav-text`.
@@ -69,7 +71,7 @@ When an admin enters program configuration the nav swaps bands 2 and 3 for a
 checklist (see `dashboard_schedule.png`):
 
 - An **exit box** at the top: a left arrow, "Exit configuration" in
-  `--text-sm` semibold, and a hint line "back to Demo Program 08/17" in
+  `--text-base` semibold, and a hint line "back to Demo Program 08/17" in
   `--text-xs` at 75% opacity. It is a translucent light-blue panel with a 1px
   border and `--radius-md` corners. This box is the only way out; the section
   links are gone.
@@ -103,7 +105,7 @@ A single 64px row, white, with a 1px `--topbar-border` rule and a soft
 
 **Right cluster**, `--space-xs` apart, all vertically centred:
 
-- A clock in `--text-sm`, medium weight, `--color-text-secondary`, tabular
+- A clock in `--text-base`, medium weight, `--color-text-secondary`, tabular
   figures ("8:34 PM"). It shows the program's local time when a program is
   selected.
 - Icon buttons (search, hamburger menu): 24px glyph, `--color-text-secondary`,
@@ -154,7 +156,7 @@ the left nav and top bar and use a single navy strip instead:
 
 - `--saga-navy` background, 56 to 64px tall, white text.
 - Left: an avatar circle, then the subject name (`--text-base` semibold) with
-  a one-line sub-label ("2 students") in `--text-sm` at 70% white.
+  a one-line sub-label ("2 students") in `--text-base` at 70% white.
 - Then context chips: a filled `--color-primary` pill for the period and room,
   and icon + text pairs (calendar, clock, duration) in white.
 - Right: an underlined white link ("View Workspace") and a round white close
@@ -168,8 +170,9 @@ the frame.
 This is the markup of the [shell showcase](/showcase/shell/) and of the
 starter; the class names are the contract. `.saga-shell` is a two-column grid
 (`--nav-width` + the rest) at `100vh`; `.saga-shell__main` is a column that
-holds the top bar and the scrolling `.saga-page`. A shell that must sit inside
-a page frame instead of the viewport adds `.saga-shell--framed` (see
+holds the top bar and the scrolling `.saga-page`. The nav is the full height of the
+viewport however short the page is; only `.saga-page` scrolls. A shell that must sit inside
+a page frame instead of the viewport (a showcase scene, never an app) adds `.saga-shell--framed` (see
 [spacing-layout](spacing-layout.md#page-layout)).
 
 ```html
@@ -184,11 +187,11 @@ a page frame instead of the viewport adds `.saga-shell--framed` (see
       <a class="saga-nav__link" href="#"><iconify-icon icon="material-symbols-light:settings-outline-rounded"></iconify-icon> Configure program</a>
     </div>
     <ul class="saga-nav__items">
-      <li><a class="saga-nav__item" href="#"><iconify-icon icon="material-symbols-light:dashboard-outline-rounded"></iconify-icon> Dashboard</a></li>
-      <li><a class="saga-nav__item" href="#"><iconify-icon icon="material-symbols-light:calendar-month-outline-rounded"></iconify-icon> Sessions</a></li>
-      <li><a class="saga-nav__item" href="#" aria-current="page"><iconify-icon icon="material-symbols-light:group-outline-rounded"></iconify-icon> Rosters</a></li>
-      <li><a class="saga-nav__item" href="#"><iconify-icon icon="material-symbols-light:checklist-rounded"></iconify-icon> Surveys</a></li>
-      <li><a class="saga-nav__item" href="#"><iconify-icon icon="material-symbols-light:bar-chart-rounded"></iconify-icon> Reports</a></li>
+      <li><a class="saga-nav__item" href="#"><iconify-icon icon="material-symbols-light:dashboard-outline-rounded"></iconify-icon> <span class="saga-nav__text">Dashboard</span></a></li>
+      <li><a class="saga-nav__item" href="#"><iconify-icon icon="material-symbols-light:calendar-month-outline-rounded"></iconify-icon> <span class="saga-nav__text">Sessions</span></a></li>
+      <li><a class="saga-nav__item" href="#" aria-current="page"><iconify-icon icon="material-symbols-light:group-outline-rounded"></iconify-icon> <span class="saga-nav__text">Rosters</span></a></li>
+      <li><a class="saga-nav__item" href="#"><iconify-icon icon="material-symbols-light:checklist-rounded"></iconify-icon> <span class="saga-nav__text">Surveys</span></a></li>
+      <li><a class="saga-nav__item" href="#"><iconify-icon icon="material-symbols-light:bar-chart-rounded"></iconify-icon> <span class="saga-nav__text">Reports</span></a></li>
     </ul>
     <div class="saga-nav__footer">
       <span class="saga-nav__label">District</span>

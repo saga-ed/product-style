@@ -120,21 +120,26 @@ Buttons in a row sit `--space-sm` apart. Order is by reading direction toward
 the commit: the safe action first, the main action last, so the main action
 is at the right end.
 
-A modal footer is right-aligned: **Cancel** (secondary) then **Save**
-(primary). When a destructive action also belongs to the modal, it goes last
-and is separated from the pair by a wider gap (`--space-lg`) so it cannot be
-hit by accident when reaching for Save: `Cancel · Save · · · Delete`. Danger
-intent, never primary.
+A modal footer ends with the affirmative action: **Save** (primary) is the
+bottom-right button and **Cancel** (secondary) sits just to its left (DS-129).
+A destructive action that is not the point of the modal, such as Delete in an
+Edit Session modal, goes at the far left of the footer (`.saga-modal__footer`'s
+start, before `.saga-modal__footer-end`), away from Save. It may instead sit
+between Cancel and Save when the footer is short. When the destructive action
+*is* the point, as in a delete confirm, it is the bottom-right button: `Cancel ·
+Delete session`. Danger intent, never primary.
 
 A wizard footer uses Back (secondary) and Continue or Next (primary); the last
 step says what it does: "Create program", not "Finish".
 
 ```html
-<footer class="saga-modal__footer">
-  <button class="saga-btn saga-btn--secondary">Cancel</button>
-  <button class="saga-btn saga-btn--primary">Save</button>
-  <button class="saga-btn saga-btn--danger" style="margin-left: var(--space-lg)">Delete</button>
-</footer>
+<div class="saga-modal__footer">
+  <button class="saga-btn saga-btn--danger">Delete</button>
+  <div class="saga-modal__footer-end">
+    <button class="saga-btn saga-btn--secondary">Cancel</button>
+    <button class="saga-btn saga-btn--primary">Save</button>
+  </div>
+</div>
 ```
 
 ## The Add pattern
@@ -178,7 +183,7 @@ buttons:
 
 - Container: `--color-bg-tertiary` fill, `--radius-md`, no border, 2px inner
   padding.
-- Segment: `--text-sm` semibold, `--color-text-dark`, transparent.
+- Segment: `--text-base` semibold, `--color-text-dark`, transparent.
 - Pressed segment (`aria-pressed="true"`, or `aria-checked="true"` when the
   group is a `radiogroup`): `--color-primary` fill, white text, `--radius-sm`.
 - Exactly one segment is pressed at all times.
