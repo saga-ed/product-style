@@ -62,6 +62,47 @@ format ("Search whole name, Student ID, school"), not the label.
 
 `.saga-textarea` is the same box, minimum three lines, resizable vertically.
 
+### Password field
+
+A password input is the text input with a Show/Hide eye inside its right end,
+so the field keeps its width (DS-143). It is a `.saga-input-adorn.saga-input-adorn--end`
+wrapper holding the `type="password"` input and a `.saga-input-adorn__end` span;
+the span holds the toggle.
+
+- **The eye** is `button[type="button"]` with `saga-btn saga-btn--quiet
+  saga-btn--icon saga-btn--sm`, showing `visibility-outline-rounded` while the
+  password is hidden and `visibility-off-outline-rounded` while it is shown.
+  `type="button"` keeps it from submitting a surrounding form. A button in the
+  adornment takes clicks even though the span around it does not; the rest of
+  the adornment still passes them to the input.
+- **Its name** is the action, `aria-label="Show password"` or `"Hide password"`,
+  and flips with the field. It carries `aria-controls` for the input and no
+  `aria-pressed`: the label already says the state, and a pressed button paints
+  the mode-toggle wash (DS-113). Focus stays on the eye after a click.
+- **Help** (`.saga-help`) says the rule: "At least 8 characters."
+- **An advisory** is a second `.saga-help` under the first, a note about the
+  value typed so far ("This is one of the most commonly used passwords in the
+  world."). It informs and never blocks. Like help it is hidden while the
+  field is invalid, so `aria-describedby` names the `.saga-error` alone then
+  and lists help and advisory otherwise.
+- **The input** sets `autocomplete="new-password"` when a password is being
+  chosen (`current-password` when signing in), `spellcheck="false"` and
+  `autocapitalize="off"`. A password field is never prefilled.
+
+```html
+<div class="saga-field">
+  <label class="saga-label" for="pw">New password</label>
+  <div class="saga-input-adorn saga-input-adorn--end">
+    <input class="saga-input" id="pw" type="password" autocomplete="new-password" spellcheck="false" autocapitalize="off" aria-describedby="pw-help pw-advisory">
+    <span class="saga-input-adorn__end">
+      <button type="button" class="saga-btn saga-btn--quiet saga-btn--icon saga-btn--sm" aria-label="Show password" aria-controls="pw"><iconify-icon icon="material-symbols-light:visibility-outline-rounded"></iconify-icon></button>
+    </span>
+  </div>
+  <p class="saga-help" id="pw-help">At least 8 characters.</p>
+  <p class="saga-help" id="pw-advisory">This is one of the most commonly used passwords in the world.</p>
+</div>
+```
+
 ## Select
 
 Both kinds of select share one box: `.saga-select` wraps either a native
@@ -259,7 +300,8 @@ a list on focus (`time_picker.png`):
   ("WED") sits inside the input's right end, not beside it, so the field keeps
   its width. The field is a `.saga-input-adorn.saga-input-adorn--end` wrapper
   holding the input and a `.saga-input-adorn__end` span; the input reserves the
-  chip's room so typed text never runs under it (DS-139).
+  chip's room so typed text never runs under it (DS-139). The span is
+  click-through; a button in it still takes clicks (DS-143).
 
 A time range is two of these with an en dash between them and the DURATION
 readout to the right.
