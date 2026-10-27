@@ -98,8 +98,8 @@ the span holds the toggle.
       <button type="button" class="saga-btn saga-btn--quiet saga-btn--icon saga-btn--sm" aria-label="Show password" aria-controls="pw"><iconify-icon icon="material-symbols-light:visibility-outline-rounded"></iconify-icon></button>
     </span>
   </div>
-  <p class="saga-help" id="pw-help">At least 8 characters.</p>
-  <p class="saga-help" id="pw-advisory">This is one of the most commonly used passwords in the world.</p>
+  <span class="saga-help" id="pw-help">At least 8 characters.</span>
+  <span class="saga-help" id="pw-advisory">This is one of the most commonly used passwords in the world.</span>
 </div>
 ```
 

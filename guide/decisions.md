@@ -971,7 +971,9 @@ with the field. It carries no `aria-pressed`: the label already names the
 state, and `.saga-btn[aria-pressed="true"]` paints the DS-113 mode-toggle wash
 on a control that is not a mode toggle. A note about the typed value (a common
 password, say) is a second `.saga-help` under the first; like help it is hidden
-while the field is invalid, so the error alone speaks then.
+while the field is invalid, so the error alone speaks then. Help, advisory and
+error render as `<span>`s, so the field's grid gap alone spaces them (a `<p>`
+that isn't the last child carries base.css's bottom margin).
 Alternatives: the eye beside the input (it widens every password field, the
 cost DS-139 removed for the day chip); a "Show password" checkbox under the
 field (a second control to find and a second label to read).
