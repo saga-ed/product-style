@@ -955,6 +955,10 @@ but it starts a new range) is `--color-text-secondary` with a dotted
 underline, a cue that survives on an already-muted adjacent-month day.
 Alternatives: keep the stacked popover and widen it (the month still hides
 behind Custom, and the presets push the grid off small screens).
+Amended 2026-10-30: the popover and `.saga-datepicker__calendar` are sized in
+rem (17.6rem, 264px at the 15px root) and the month heading does not wrap. At a
+fixed 264px, the responsive root size (DS-010) wrapped "September 2026" from
+1800px screens up, and the panel jumped a line as the month paged.
 
 ### DS-143 — A button can sit in an input's trailing adornment
 Status: proposed (saga-dash#2070) · See it: /guide/forms-inputs#password-field

@@ -328,7 +328,8 @@ The class contract (DS-142):
   `.saga-popover__item` radios; Custom carries `data-custom` and is italic,
   `--color-text-secondary` until checked. `.saga-datepicker__calendar` holds the
   usual nav and grid, always visible, with a `.saga-datepicker__hint` line under
-  it saying what the day under the pointer will do ("Sets Sep 3 – 9, 2026").
+  it saying what the day or quick option under the pointer will do ("Set Sep 3 –
+  9, 2026"). The month heading stays on one line, whichever month it names.
 - The days between the ends are `.saga-datepicker__day--in-range`. A day beyond
   the range's length cap carries `data-soft`: still clickable (it starts a new
   range), `--color-text-secondary` with a dotted underline.
