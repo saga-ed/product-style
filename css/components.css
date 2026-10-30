@@ -355,7 +355,7 @@ iconify-icon { display: inline-block; vertical-align: -0.125em; }
 .saga-datepicker__trigger [data-seg]:hover { text-decoration: underline; }
 .saga-datepicker__trigger:disabled [data-seg]:hover { text-decoration: none; }
 .saga-datepicker__popover {
-	position: absolute; left: 0; top: calc(100% + var(--space-xs)); width: 264px; padding: var(--space-md);
+	position: absolute; left: 0; top: calc(100% + var(--space-xs)); width: 17.6rem; padding: var(--space-md);
 	background: var(--color-bg); color: var(--color-text); border: 1px solid var(--color-border); border-radius: var(--radius-lg);
 	box-shadow: var(--shadow-popover); z-index: var(--z-dropdown);
 }
@@ -372,7 +372,9 @@ iconify-icon { display: inline-block; vertical-align: -0.125em; }
 /* Custom is the way into the calendar, not a preset: italic, and secondary until checked. */
 .saga-datepicker__presets > [data-custom] { font-style: italic; }
 .saga-datepicker__presets > [data-custom]:not([aria-checked="true"]) { color: var(--color-text-secondary); }
-.saga-datepicker__calendar { width: 264px; padding: var(--space-md); }
+/* In rem, 264px at the 15px root: the month heading grows with the root size and a text-size
+   preference (DS-010, DS-020), and a px width wrapped "September 2026" from 1800px screens up. */
+.saga-datepicker__calendar { width: 17.6rem; padding: var(--space-md); }
 /* What the day under the pointer will do. Holds two lines so the panel never jumps as it changes. */
 .saga-datepicker__hint {
 	margin-top: var(--space-sm); padding-top: var(--space-sm); border-top: 1px solid var(--color-border);
@@ -381,7 +383,7 @@ iconify-icon { display: inline-block; vertical-align: -0.125em; }
 }
 .saga-datepicker__nav { display: flex; align-items: center; justify-content: space-between; gap: var(--space-sm); margin-bottom: var(--space-sm); }
 .saga-datepicker__nav > .saga-btn { --_fg: var(--color-primary); }
-.saga-datepicker__month { flex: 1; text-align: center; font-weight: var(--weight-semibold); }
+.saga-datepicker__month { flex: 1; text-align: center; font-weight: var(--weight-semibold); white-space: nowrap; }
 .saga-datepicker__grid { display: grid; grid-template-columns: repeat(7, var(--space-xl)); justify-content: space-between; row-gap: var(--space-2xs); text-align: center; }
 .saga-datepicker__weekday { font-size: var(--text-xs); font-weight: var(--weight-semibold); color: var(--color-text-secondary); line-height: var(--space-lg); }
 .saga-datepicker__day {
