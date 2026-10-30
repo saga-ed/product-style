@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Saga prototype — [name]</title>
 <!--
-  Saga prototype starter · generated from https://github.com/saga-ed/product-style (v0.1.8)
+  Saga prototype starter · generated from https://github.com/saga-ed/product-style (v0.1.9)
   Guide: https://style.wootdev.com  ·  Agents: read https://style.wootdev.com/CLAUDE.md
   This file may be published on a public site, so every name, score and date is
   invented. Anything violet (.ptag / .standin) is prototype chrome, not proposed UI.
@@ -258,6 +258,9 @@
 	--input-bg-disabled: var(--color-gray-lighter);
 	--input-color-disabled: var(--color-text-dark);
 	--datepicker-day-disabled: var(--gray-300);   /* unselectable days, lighter than other-month days (DS-133) */
+	--datepicker-day-dropped: #ededed;            /* a day a click would drop from the range: grey at the band's brightness (DS-145) */
+	--datepicker-day-dropped-end: var(--gray-300); /* the end a click would leave behind (DS-145) */
+	--datepicker-day-passed-end: #b7d8ec;         /* an old end the new range runs past (DS-145) */
 	--input-color-placeholder: var(--saga-beige-dark);
 	--input-padding: 0.3rem 0.75rem;
 	--input-height: 2.4rem;
@@ -850,25 +853,43 @@ iconify-icon { display: inline-block; vertical-align: -0.125em; }
 	width: var(--space-xl); height: var(--space-xl); border: 0; border-radius: var(--radius-md);
 	background: transparent; color: var(--color-text); font: inherit; font-variant-numeric: tabular-nums; cursor: pointer;
 	transition: background var(--motion-instant) var(--ease-out);
+	/* Rings compose (DS-145): a projected end, a projected band's rails and today's ring or the selected halo. */
+	--_ring: 0 0 transparent; --_rail: 0 0 transparent; --_mark: 0 0 transparent;
+	box-shadow: var(--_ring), var(--_rail), var(--_mark);
 }
 .saga-datepicker__day:hover { background: var(--color-bg-tertiary); }
 .saga-datepicker__day--muted { color: var(--color-text-muted); }
 /* DS-137: today is a 1px primary ring, not a bold number; the selected fill replaces it. */
-.saga-datepicker__day--today { box-shadow: inset 0 0 0 1px var(--color-primary); }
-.saga-datepicker__day--today.saga-datepicker__day--muted { box-shadow: inset 0 0 0 1px var(--color-primary-light); }
-.saga-datepicker__day[aria-selected="true"] { background: var(--color-primary); color: var(--color-primary-contrast); font-weight: var(--weight-semibold); box-shadow: 0 0 0 var(--border-width-emphasis) var(--color-primary-light); }
+.saga-datepicker__day--today { --_mark: inset 0 0 0 1px var(--color-primary); }
+.saga-datepicker__day--today.saga-datepicker__day--muted { --_mark: inset 0 0 0 1px var(--color-primary-light); }
+.saga-datepicker__day[aria-selected="true"] { background: var(--color-primary); color: var(--color-primary-contrast); font-weight: var(--weight-semibold); --_mark: 0 0 0 var(--border-width-emphasis) var(--color-primary-light); }
 /* Unselectable days read as out of play: lighter than other-month days, no hover fill, no
    pointer cursor (DS-133). Still focusable when aria-disabled, for the roving cursor. */
 .saga-datepicker__day:disabled, .saga-datepicker__day[aria-disabled="true"],
 .saga-datepicker__day:disabled:hover, .saga-datepicker__day[aria-disabled="true"]:hover { color: var(--datepicker-day-disabled); background: transparent; cursor: default; }
 /* Rows exist for the ARIA grid structure only; the cells stay on the 7-column grid. */
 .saga-datepicker__grid > [role="row"] { display: contents; }
+/* DS-145: a range's days fill their columns, so its band has no seams as the panel grows with the root size. */
+.saga-datepicker__grid[data-range] { grid-template-columns: repeat(7, 1fr); }
+.saga-datepicker__grid[data-range] .saga-datepicker__day { width: 100%; }
 /* Range mode (DS-128): the days between the two ends get the light tint; the ends keep the selected fill. */
 .saga-datepicker__day--in-range { background: var(--color-primary-light); color: var(--color-primary); border-radius: 0; }
 .saga-datepicker__day--in-range:hover { background: var(--color-primary-light); }
 /* DS-142: a soft day (beyond a range's length cap) still works but starts a new range. It is
    one ink tier lighter with a dotted underline, which still shows on an already-muted day. */
 .saga-datepicker__day[data-soft] { color: var(--color-text-secondary); text-decoration: underline dotted; text-underline-offset: 2px; }
+/* DS-145: previewing the range a click would set, over the applied range. Days the click keeps stay
+   as they are. Added days have rails and no fill, so the applied band's edge stays hard. */
+.saga-datepicker__day[data-preview] { border-radius: 0; }
+.saga-datepicker__day[data-preview]:not(.saga-datepicker__day--in-range):not([aria-selected="true"]) { --_rail: inset 0 1px 0 var(--color-primary), inset 0 -1px 0 var(--color-primary); }
+.saga-datepicker__day[data-preview]:not(.saga-datepicker__day--in-range):not([aria-selected="true"]):not([aria-disabled="true"]) { color: var(--color-primary); }
+.saga-datepicker__day[data-preview-cap]:not([aria-selected="true"]) { --_ring: inset 0 0 0 var(--border-width-emphasis) var(--color-primary); color: var(--color-primary); font-weight: var(--weight-semibold); }
+.saga-datepicker__day[data-preview-cap]:not([aria-selected="true"]):not(.saga-datepicker__day--in-range):hover { background: transparent; }
+/* An applied day outside the projection goes grey at the band's brightness. */
+[data-previewing] .saga-datepicker__day--in-range:not([data-preview]):not([data-preview-cap]):not([aria-disabled="true"]) { background: var(--datepicker-day-dropped); color: var(--color-text-dark); }
+[data-previewing] .saga-datepicker__day[aria-selected="true"]:not([data-preview]):not([data-preview-cap]) { background: var(--datepicker-day-dropped-end); color: var(--color-text-dark); --_mark: 0 0 transparent; }
+/* An old end the projection runs past: still in the range, no longer an end. */
+[data-previewing] .saga-datepicker__day[aria-selected="true"][data-preview] { background: var(--datepicker-day-passed-end); color: var(--color-primary-hover); --_mark: 0 0 transparent; }
 
 /* Search: pill input with a leading icon slot; italic placeholder from base. */
 .saga-search { position: relative; display: block; }

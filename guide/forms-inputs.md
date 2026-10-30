@@ -333,6 +333,13 @@ The class contract (DS-142):
 - The days between the ends are `.saga-datepicker__day--in-range`. A day beyond
   the range's length cap carries `data-soft`: still clickable (it starts a new
   range), `--color-text-secondary` with a dotted underline.
+- While the day or quick option under the pointer would set a range, the grid
+  previews it over the applied range (DS-145). The grid carries
+  `data-previewing`, the projected ends `data-preview-cap="start|end|both"` and
+  the days between `data-preview`. Days the click keeps look as they do at rest.
+  Days it adds have rails and no fill, with a 2px ring on the end it lands on.
+  Days it drops go grey. The preview is visual only, so `aria-selected` stays on
+  the applied ends and the held date.
 
 ```html
 <div class="saga-datepicker">

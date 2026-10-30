@@ -236,6 +236,9 @@
 	--input-bg-disabled: var(--color-gray-lighter);
 	--input-color-disabled: var(--color-text-dark);
 	--datepicker-day-disabled: var(--gray-300);   /* unselectable days, lighter than other-month days (DS-133) */
+	--datepicker-day-dropped: #ededed;            /* a day a click would drop from the range: grey at the band's brightness (DS-145) */
+	--datepicker-day-dropped-end: var(--gray-300); /* the end a click would leave behind (DS-145) */
+	--datepicker-day-passed-end: #b7d8ec;         /* an old end the new range runs past (DS-145) */
 	--input-color-placeholder: var(--saga-beige-dark);
 	--input-padding: 0.3rem 0.75rem;
 	--input-height: 2.4rem;
