@@ -112,6 +112,22 @@ iconify-icon { display: inline-block; vertical-align: -0.125em; }
 }
 @keyframes saga-spin { to { transform: rotate(1turn); } }
 
+/* ── Split button (DS-144) ─────────────────────────────────────────────────── */
+/* One action and its alternatives: two .saga-btn joined into one control. .saga-btn still paints both halves, so
+   the intents and the --btn-* tokens apply as on any button. The list behind the caret is a .saga-select__menu. */
+.saga-split-btn { display: inline-flex; }
+/* When the main button has hover text, the painted tooltip's wrap anchor sits between the group and the button. */
+.saga-split-btn__anchor { display: flex; }
+.saga-split-btn__main { border-start-end-radius: 0; border-end-end-radius: 0; }
+/* The -1px overlap lets the two borders share one hairline. */
+.saga-split-btn__more { margin-inline-start: -1px; padding-inline: var(--space-sm); border-start-start-radius: 0; border-end-start-radius: 0; }
+.saga-split-btn .saga-btn:focus-visible { z-index: 1; }
+/* Disabled keeps its own text colour (DS-016/017). */
+.saga-split-btn--danger .saga-btn:not(:disabled, [aria-disabled="true"]) { --_fg: var(--color-danger); }
+/* The dropdown triangle: one shape for this caret and the Select's chevron. */
+.saga-split-btn__caret, .saga-select::after { border: 0.35em solid transparent; border-bottom: 0; }
+.saga-split-btn__caret { display: block; border-top-color: currentColor; }
+
 /* ── Segmented control ─────────────────────────────────────────────────────── */
 .saga-segmented {
 	display: inline-flex; padding: var(--space-2xs);
@@ -225,7 +241,7 @@ iconify-icon { display: inline-block; vertical-align: -0.125em; }
 .saga-select__trigger > span { flex: 1; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
 .saga-select::after {
 	content: ""; position: absolute; right: var(--space-md); top: 50%; transform: translateY(-50%);
-	border: 0.35em solid transparent; border-top-color: var(--color-primary); border-bottom: 0; pointer-events: none;
+	border-top-color: var(--color-primary); pointer-events: none;
 }
 .saga-select:has(> :disabled)::after { border-top-color: var(--color-text-disabled); }
 .saga-select__menu {
@@ -244,6 +260,8 @@ iconify-icon { display: inline-block; vertical-align: -0.125em; }
 .saga-select__option[data-active] { box-shadow: inset 3px 0 0 var(--color-primary); }
 .saga-select__option > .saga-check { margin-left: auto; }
 .saga-select__option[aria-selected="true"] { background: var(--color-primary-light); color: var(--color-primary); font-weight: var(--weight-semibold); }
+/* DS-144: a destructive choice, such as the ones behind a danger split button's caret. */
+.saga-select__option[data-danger] { color: var(--color-danger); }
 .saga-select__option[aria-disabled="true"] { color: var(--color-text-disabled); cursor: not-allowed; }
 /* States the Svelte Select sets (DS-134): a de-emphasized escape-valve choice ("No Period"),
    rows the host marks (a search match), and a trigger asking for attention. */

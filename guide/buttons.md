@@ -142,6 +142,48 @@ step says what it does: "Create program", not "Finish".
 </div>
 ```
 
+## Split button
+
+A split button is one action plus other ways to do the same kind of thing:
+"Remove from Program", with "Remove from District" behind the caret (DS-144).
+The button runs the default and the caret opens the rest. With nothing else to
+offer it is a plain button, with no caret.
+
+It is two secondary buttons joined by `.saga-split-btn`, so the `--btn-*` tokens
+apply as on any button, and a host can fit it to its surroundings by setting
+those tokens on an ancestor. In Svelte, `@saga-ed/ui-svelte/SplitButton.svelte`
+does all of the below.
+
+- **The button** takes `.saga-split-btn__main`. When it has hover text, the
+  painted tooltip's wrap anchor takes `.saga-split-btn__anchor`.
+- **The caret button** takes `.saga-split-btn__more` and holds
+  `.saga-split-btn__caret`, the Select chevron's triangle in the button's colour.
+- **The list** is a `.saga-select__menu` of `.saga-select__option` buttons. It is
+  portaled to `<body>` and anchored below the button, so it can hang past a
+  modal's edge, and it flips up only when the window has no room.
+- **A destructive action** that is not the point of the modal puts
+  `.saga-split-btn--danger` on the group and `data-danger` on each option, which
+  turn the text clay.
+- **It is a disclosure, not an ARIA menu.** The caret carries `aria-label`,
+  `aria-haspopup`, `aria-controls` and `aria-expanded`, and the choices are
+  ordinary buttons. Opening moves focus to the first choice and the arrow keys
+  move between them. Escape or Tab closes the list and returns focus to the
+  caret. An outside click dismisses the list and goes no further, so it can't
+  also close a modal.
+
+```html
+<div class="saga-split-btn saga-split-btn--danger">
+  <button type="button" class="saga-btn saga-btn--secondary saga-split-btn__main">Remove from Program</button>
+  <button type="button" class="saga-btn saga-btn--secondary saga-split-btn__more" aria-label="More ways to remove" aria-haspopup="true" aria-controls="remove-list" aria-expanded="false">
+    <span class="saga-split-btn__caret" aria-hidden="true"></span>
+  </button>
+</div>
+<!-- While open, at the end of <body>: -->
+<div class="saga-select__menu" id="remove-list">
+  <button type="button" class="saga-select__option" data-danger>Remove from District</button>
+</div>
+```
+
 ## The Add pattern
 
 Adding something is the most common page-level action, so it has a fixed

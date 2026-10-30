@@ -955,3 +955,19 @@ but it starts a new range) is `--color-text-secondary` with a dotted
 underline, a cue that survives on an already-muted adjacent-month day.
 Alternatives: keep the stacked popover and widen it (the month still hides
 behind Custom, and the presets push the grid off small screens).
+
+### DS-144 — A split button is two buttons and the Select's triangle
+Status: proposed (rostering#1775) · See it: /guide/buttons#split-button
+
+One action with other ways to do the same kind of thing. saga-dash hand-styled
+two of these, the roster's Remove and Sessions' Join, each with its own joined
+corners and its own caret. `.saga-split-btn` joins two `.saga-btn`s, so the
+`--btn-*` tokens still apply, and the caret button overlaps by 1px so the two
+borders share one hairline. `.saga-split-btn__caret` shares its declaration with
+the `.saga-select::after` chevron and takes `currentColor`. The list reuses
+`.saga-select__menu` and `.saga-select__option`. `.saga-split-btn--danger` turns
+both halves' text clay and `data-danger` does the same for an option; a disabled
+half keeps the disabled colour (DS-016/017). Secondary is the only intent so
+far: a filled pair needs a divider, because its borders are transparent.
+Alternatives: one menu button (the default then takes two clicks); two buttons
+side by side (a reach the admin didn't choose stays one mis-click away).

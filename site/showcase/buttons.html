@@ -123,6 +123,35 @@
 </section>
 
 <section class="demo-section">
+	<h2>Split button</h2>
+	<p>One action and its alternatives (DS-144): the button runs the default and the caret opens the rest. The caret is the Select chevron's triangle in the button's colour, and the list is a <code>.saga-select__menu</code>, here in the flow; <code>@saga-ed/ui-svelte/SplitButton.svelte</code> portals it to <code>&lt;body&gt;</code>.</p>
+	<div class="demo-row" style="align-items:flex-start;min-height:8rem">
+		<div class="saga-split-btn">
+			<button type="button" class="saga-btn saga-btn--secondary saga-split-btn__main">Download</button>
+			<button type="button" class="saga-btn saga-btn--secondary saga-split-btn__more" aria-label="More ways to download" aria-haspopup="true" aria-expanded="false"><span class="saga-split-btn__caret" aria-hidden="true"></span></button>
+		</div>
+		<div class="saga-split-btn saga-split-btn--danger">
+			<button type="button" class="saga-btn saga-btn--secondary saga-split-btn__main" disabled>Remove from Program</button>
+			<button type="button" class="saga-btn saga-btn--secondary saga-split-btn__more" aria-label="More ways to remove" aria-haspopup="true" aria-expanded="false" disabled><span class="saga-split-btn__caret" aria-hidden="true"></span></button>
+		</div>
+		<div class="saga-split-btn saga-split-btn--danger" style="position:relative">
+			<button type="button" class="saga-btn saga-btn--secondary saga-split-btn__main">Remove from Program</button>
+			<button type="button" class="saga-btn saga-btn--secondary saga-split-btn__more" aria-label="More ways to remove" aria-haspopup="true" aria-controls="sb1" aria-expanded="true"><span class="saga-split-btn__caret" aria-hidden="true"></span></button>
+			<div class="saga-select__menu" id="sb1">
+				<button type="button" class="saga-select__option" data-danger>Remove from District</button>
+			</div>
+		</div>
+	</div>
+<pre class="demo-snippet"><code>&lt;div class=&quot;saga-split-btn saga-split-btn--danger&quot;&gt;
+	&lt;button type=&quot;button&quot; class=&quot;saga-btn saga-btn--secondary saga-split-btn__main&quot;&gt;Remove from Program&lt;/button&gt;
+	&lt;button type=&quot;button&quot; class=&quot;saga-btn saga-btn--secondary saga-split-btn__more&quot; aria-label=&quot;More ways to remove&quot; aria-haspopup=&quot;true&quot; aria-controls=&quot;sb1&quot; aria-expanded=&quot;true&quot;&gt;&lt;span class=&quot;saga-split-btn__caret&quot; aria-hidden=&quot;true&quot;&gt;&lt;/span&gt;&lt;/button&gt;
+&lt;/div&gt;
+&lt;div class=&quot;saga-select__menu&quot; id=&quot;sb1&quot;&gt;
+	&lt;button type=&quot;button&quot; class=&quot;saga-select__option&quot; data-danger&gt;Remove from District&lt;/button&gt;
+&lt;/div&gt;</code></pre>
+</section>
+
+<section class="demo-section">
 	<h2>States</h2>
 	<div class="demo-row">
 		<button class="saga-btn" disabled>Disabled</button>
