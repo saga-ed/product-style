@@ -982,30 +982,19 @@ Alternatives: the eye beside the input (it widens every password field, the
 cost DS-139 removed for the day chip); a "Show password" checkbox under the
 field (a second control to find and a second label to read).
 
-### DS-145 — A range previews the range a click would set over the applied one
-Status: proposed (saga-dash review 2026-10-30) · See it: /showcase/forms/#date-range-preview
+### DS-144 — A split button is two buttons and the Select's triangle
+Status: proposed (rostering#1775) · See it: /guide/buttons#split-button
 
-Before this, the band turned into the preview while one end was placed, which
-hid the applied range, and it did not move at all after a placement, even though
-the hint already said "Set Oct 6 – 23". The applied range now stays on the grid,
-and the preview says what happens to each day. Days the click keeps look as they
-do at rest. Added days (`data-preview`, not `--in-range`) have 1px rails along
-their top and bottom and no fill, so the applied band's edge stays hard. The
-projected end (`data-preview-cap`) has a 2px ring and semibold ink, against today's
-1px ring and regular weight. Dropped days, inside `data-previewing` and outside the
-projection, go `--datepicker-day-dropped` with `--color-text-dark`: a grey at the
-band's brightness (1.004:1 fill against it), told from a kept day by hue, ink and by
-sitting outside the rings. That reads "no state is conveyed by colour alone" as
-met by position, and Nathan accepted that reading over a strikethrough. An end the
-click leaves behind is `--datepicker-day-dropped-end`; an old end the new range runs
-past is `--datepicker-day-passed-end`, since it stays in the range. The held end
-keeps the selected fill. A day's box-shadow now composes from `--_ring`, `--_rail`
-and `--_mark`, so these can coexist with today's ring. A range's days also fill
-their columns (`[data-range]`), because the rem-sized panel (DS-142) spread fixed
-32px days into 7px gaps at the 17px root and 13px at 19px, breaking the band; days
-are wider than tall on large screens, and the single-date grid is unchanged.
-Alternatives: an outline over the applied fill with no new tones (the days that
-aren't changing carry the most ink); paler added days (too close to the band, so
-it blurred where the current selection ends); struck-through dropped days (the
-strike outweighs the range being set on a long drop). Record:
-saga-dash `docs/decisions/date-range-projected-preview.md`.
+One action with other ways to do the same kind of thing. saga-dash hand-styled
+two of these, the roster's Remove and Sessions' Join, each with its own joined
+corners and its own caret. `.saga-split-btn` joins two `.saga-btn`s, so the
+`--btn-*` tokens still apply, and the caret button overlaps by 1px so the two
+borders share one hairline. `.saga-split-btn__caret` shares its declaration with
+the `.saga-select::after` chevron and takes `currentColor`. The list reuses
+`.saga-select__menu` and `.saga-select__option`. `.saga-split-btn--danger` turns
+both halves' text clay and `data-danger` does the same for an option; a disabled
+half keeps the disabled colour (DS-016/017). Secondary is the only intent so
+far: a filled pair needs a divider, because its borders are transparent.
+Alternatives: one menu button (the default then takes two clicks); two buttons
+side by side (a reach the admin didn't choose stays one mis-click away).
+
