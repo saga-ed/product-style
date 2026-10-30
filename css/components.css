@@ -216,6 +216,9 @@ iconify-icon { display: inline-block; vertical-align: -0.125em; }
 .saga-input-adorn--end > .saga-input { padding-right: calc(var(--space-xs) * 2 + var(--_adorn, 2.25rem)); }
 .saga-input-adorn__end { position: absolute; right: var(--space-xs); top: 50%; transform: translateY(-50%); display: inline-flex; align-items: center; pointer-events: none; }
 .saga-input-adorn__end > .saga-chip { padding-inline: var(--space-2xs); }
+/* DS-143: a button is the one thing in the adornment that takes clicks. The span stays click-through (DS-139), so
+   the input under the rest of it still gets them. The password field's Show/Hide eye is the first user. */
+.saga-input-adorn__end > .saga-btn { pointer-events: auto; }
 
 /* Select: a native <select> or a button trigger, both with the blue chevron.
    The custom listbox (.saga-select__menu) is styled now, wired by JS later. */

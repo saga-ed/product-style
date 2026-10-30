@@ -959,3 +959,25 @@ Amended 2026-10-30: the popover and `.saga-datepicker__calendar` are sized in
 rem (17.6rem, 264px at the 15px root) and the month heading does not wrap. At a
 fixed 264px, the responsive root size (DS-010) wrapped "September 2026" from
 1800px screens up, and the panel jumped a line as the month paged.
+
+### DS-143 — A button can sit in an input's trailing adornment
+Status: proposed (saga-dash#2070) · See it: /guide/forms-inputs#password-field
+
+DS-139 made the adornment click-through, which is right for a chip but leaves a
+button inside it dead: the click lands on the input underneath. A `.saga-btn`
+that is a direct child of `.saga-input-adorn__end` takes
+`pointer-events: auto`; the span stays click-through, so the rest of the
+adornment still passes clicks to the input. The password field's Show/Hide eye
+is the first user: `button[type="button"]` with `saga-btn saga-btn--quiet
+saga-btn--icon saga-btn--sm` (28px square, inside the 2.25rem the input
+reserves). Its `aria-label` is `Show password` or `Hide password` and flips
+with the field. It carries no `aria-pressed`: the label already names the
+state, and `.saga-btn[aria-pressed="true"]` paints the DS-113 mode-toggle wash
+on a control that is not a mode toggle. A note about the typed value (a common
+password, say) is a second `.saga-help` under the first; like help it is hidden
+while the field is invalid, so the error alone speaks then. Help, advisory and
+error render as `<span>`s, so the field's grid gap alone spaces them (a `<p>`
+that isn't the last child carries base.css's bottom margin).
+Alternatives: the eye beside the input (it widens every password field, the
+cost DS-139 removed for the day chip); a "Show password" checkbox under the
+field (a second control to find and a second label to read).

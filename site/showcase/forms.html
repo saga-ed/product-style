@@ -103,6 +103,68 @@
 </section>
 
 <section class="demo-section">
+	<h2>Password field</h2>
+	<p>The Show/Hide eye sits inside the input's right end (DS-143). The first field has help and an advisory; the invalid one shows only the error, as help and advisory are hidden then.</p>
+	<div class="demo-row" style="align-items:start">
+		<div class="saga-field">
+			<label class="saga-label" for="pw1">New password</label>
+			<div class="saga-input-adorn saga-input-adorn--end">
+				<input class="saga-input" id="pw1" type="password" value="password1" autocomplete="new-password" spellcheck="false" autocapitalize="off" aria-describedby="pw1-help pw1-advisory">
+				<span class="saga-input-adorn__end">
+					<button type="button" class="saga-btn saga-btn--quiet saga-btn--icon saga-btn--sm" aria-label="Show password" aria-controls="pw1" data-pw-toggle><iconify-icon icon="material-symbols-light:visibility-outline-rounded"></iconify-icon></button>
+				</span>
+			</div>
+			<span class="saga-help" id="pw1-help">At least 8 characters.</span>
+			<span class="saga-help" id="pw1-advisory">This is one of the most commonly used passwords in the world.</span>
+		</div>
+		<div class="saga-field" data-invalid>
+			<label class="saga-label" for="pw2">New password</label>
+			<div class="saga-input-adorn saga-input-adorn--end">
+				<input class="saga-input" id="pw2" type="password" value="tiger" autocomplete="new-password" spellcheck="false" autocapitalize="off" aria-invalid="true" aria-describedby="pw2-error">
+				<span class="saga-input-adorn__end">
+					<button type="button" class="saga-btn saga-btn--quiet saga-btn--icon saga-btn--sm" aria-label="Show password" aria-controls="pw2" data-pw-toggle><iconify-icon icon="material-symbols-light:visibility-outline-rounded"></iconify-icon></button>
+				</span>
+			</div>
+			<span class="saga-help" id="pw2-help">At least 8 characters.</span>
+			<span class="saga-error" id="pw2-error">Use at least 8 characters.</span>
+		</div>
+	</div>
+<pre class="demo-snippet"><code>&lt;div class=&quot;saga-field&quot;&gt;
+	&lt;label class=&quot;saga-label&quot; for=&quot;pw1&quot;&gt;New password&lt;/label&gt;
+	&lt;div class=&quot;saga-input-adorn saga-input-adorn--end&quot;&gt;
+		&lt;input class=&quot;saga-input&quot; id=&quot;pw1&quot; type=&quot;password&quot; autocomplete=&quot;new-password&quot; spellcheck=&quot;false&quot; autocapitalize=&quot;off&quot; aria-describedby=&quot;pw1-help pw1-advisory&quot;&gt;
+		&lt;span class=&quot;saga-input-adorn__end&quot;&gt;
+			&lt;button type=&quot;button&quot; class=&quot;saga-btn saga-btn--quiet saga-btn--icon saga-btn--sm&quot; aria-label=&quot;Show password&quot; aria-controls=&quot;pw1&quot;&gt;&lt;iconify-icon icon=&quot;material-symbols-light:visibility-outline-rounded&quot;&gt;&lt;/iconify-icon&gt;&lt;/button&gt;
+		&lt;/span&gt;
+	&lt;/div&gt;
+	&lt;span class=&quot;saga-help&quot; id=&quot;pw1-help&quot;&gt;At least 8 characters.&lt;/span&gt;
+	&lt;span class=&quot;saga-help&quot; id=&quot;pw1-advisory&quot;&gt;This is one of the most commonly used passwords in the world.&lt;/span&gt;
+&lt;/div&gt;
+&lt;div class=&quot;saga-field&quot; data-invalid&gt;
+	&lt;label class=&quot;saga-label&quot; for=&quot;pw2&quot;&gt;New password&lt;/label&gt;
+	&lt;div class=&quot;saga-input-adorn saga-input-adorn--end&quot;&gt;
+		&lt;input class=&quot;saga-input&quot; id=&quot;pw2&quot; type=&quot;password&quot; autocomplete=&quot;new-password&quot; spellcheck=&quot;false&quot; autocapitalize=&quot;off&quot; aria-invalid=&quot;true&quot; aria-describedby=&quot;pw2-error&quot;&gt;
+		&lt;span class=&quot;saga-input-adorn__end&quot;&gt;
+			&lt;button type=&quot;button&quot; class=&quot;saga-btn saga-btn--quiet saga-btn--icon saga-btn--sm&quot; aria-label=&quot;Show password&quot; aria-controls=&quot;pw2&quot;&gt;&lt;iconify-icon icon=&quot;material-symbols-light:visibility-outline-rounded&quot;&gt;&lt;/iconify-icon&gt;&lt;/button&gt;
+		&lt;/span&gt;
+	&lt;/div&gt;
+	&lt;span class=&quot;saga-help&quot; id=&quot;pw2-help&quot;&gt;At least 8 characters.&lt;/span&gt;
+	&lt;span class=&quot;saga-error&quot; id=&quot;pw2-error&quot;&gt;Use at least 8 characters.&lt;/span&gt;
+&lt;/div&gt;</code></pre>
+	<script>
+		document.querySelectorAll('[data-pw-toggle]').forEach(function (btn) {
+			btn.addEventListener('click', function () {
+				var input = document.getElementById(btn.getAttribute('aria-controls'));
+				var show = input.type === 'password';
+				input.type = show ? 'text' : 'password';
+				btn.setAttribute('aria-label', show ? 'Hide password' : 'Show password');
+				btn.querySelector('iconify-icon').setAttribute('icon', 'material-symbols-light:' + (show ? 'visibility-off-outline-rounded' : 'visibility-outline-rounded'));
+			});
+		});
+	</script>
+</section>
+
+<section class="demo-section">
 	<h2>Select</h2>
 	<p>Product UI uses the painted trigger (<code>.saga-select &gt; .saga-select__trigger</code>) and the <code>.saga-select__menu</code> listbox, never a native <code>&lt;select&gt;</code> (DS-101, DS-117). Closed, placeholder, disabled, and the <code>--inline --sm</code> toolbar size:</p>
 	<div class="demo-row">
