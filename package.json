@@ -1,6 +1,6 @@
 {
   "name": "@saga-ed/product-style",
-  "version": "0.1.7",
+  "version": "0.1.9",
   "description": "Saga product style guide: design guide, CSS tokens, and the vanilla component layer.",
   "license": "UNLICENSED",
   "homepage": "https://style.wootdev.com",
