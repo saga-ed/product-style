@@ -38,6 +38,22 @@ Use it for: open questions, "this is where the real thing goes", version notes,
 anything a reviewer must not mistake for a proposal. Do not use violet in the design
 itself; `#6c4fc7` is not a Saga color, which is the point.
 
+### A product page may ship a stand-in
+
+`.proto-standin` is the one violet class allowed in a product repo (DS-146). It marks
+an element that is real and planned whose data is not available yet: the page is built
+from the designer's comp in full, and each gap renders a stand-in in that element's
+place, naming the missing field and the issue that tracks it. Successive versions
+remove them as data arrives. Only on a page nobody can reach in production (dark
+launch, a permission nobody holds); never in a generally available view. Same look as
+`.standin`, different meaning, so a reviewer and a screenshot test can tell "planned,
+data pending" from prototype chrome.
+
+```html
+<div class="proto-standin">Time to Think: needs a pipeline metric (insights#11, lift table row 14)</div>
+<th><span class="proto-standin">High Leverage Student Talk: no source yet</span></th>
+```
+
 ## Link or inline the tokens
 
 Two ways to get the system into a single file (DS-035). Link when the page lives on

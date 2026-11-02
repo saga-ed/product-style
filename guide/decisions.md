@@ -1025,3 +1025,18 @@ aren't changing carry the most ink); paler added days (too close to the band, so
 it blurred where the current selection ends); struck-through dropped days (the
 strike outweighs the range being set on a long drop). Record:
 saga-dash `docs/decisions/date-range-projected-preview.md`.
+
+### DS-146 — A product page may ship a violet stand-in for data it cannot show yet
+Status: proposed (modular page PoC, saga-dash#2122, 2026-11-02) · See it: /guide/prototyping
+
+DS-023 makes violet mean "prototype chrome, never proposed UI", and product repos delete
+`.ptag` and `.standin` on the way in. The modular page work builds a product page from the
+designer's comp in full and ships it dark while the API catches up, so it needs a class
+whose meaning is "this element is real and planned; its data is not here yet".
+`.proto-standin` is that class: same look as `.standin`, allowed only on a page nobody can
+reach in production (dark launch or a permission nobody holds), its text naming the
+missing field and the issue, removed as data arrives. A generally available view with a
+`.proto-standin` in it is a bug. Alternatives: reuse `.standin` in product code (its
+documented meaning is the opposite, and the prototyping chapter tells products to delete
+it); a neutral grey placeholder (reads as an empty state, which is a different claim: the
+data exists and is absent, rather than the feature is planned).

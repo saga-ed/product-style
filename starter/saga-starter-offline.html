@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Saga prototype — [name]</title>
 <!--
-  Saga prototype starter · generated from https://github.com/saga-ed/product-style (v0.1.9)
+  Saga prototype starter · generated from https://github.com/saga-ed/product-style (v0.1.10)
   Guide: https://style.wootdev.com  ·  Agents: read https://style.wootdev.com/CLAUDE.md
   This file may be published on a public site, so every name, score and date is
   invented. Anything violet (.ptag / .standin) is prototype chrome, not proposed UI.
@@ -453,7 +453,10 @@ img, svg { vertical-align: middle; }
 /* Prototype-only chrome (DS-023, Nathan's convention): anything violet is a
    note to the reader, never proposed UI. */
 :root { --proto: #6c4fc7; --proto-wash: #f3effb; --proto-ink: #4a3d7a; --proto-line: #e6def7; }
-.ptag, .standin { color: var(--proto-ink); background: var(--proto-wash); border: 1px dashed var(--proto); border-radius: var(--radius-sm); padding: 0 var(--space-xs); font-size: var(--text-xs); }
+.ptag, .standin, .proto-standin { color: var(--proto-ink); background: var(--proto-wash); border: 1px dashed var(--proto); border-radius: var(--radius-sm); padding: 0 var(--space-xs); font-size: var(--text-xs); }
+/* .proto-standin (DS-146) is the one violet class a PRODUCT page may ship: the
+   element is real and planned, its data is not here yet. Only behind a dark
+   launch or a permission; its text names the missing field and the issue. */
 
 /* Reduced motion is handled by the tokens (movement durations → 0, fade floor
    survives). No blanket animation kill here: a component that reads
