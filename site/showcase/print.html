@@ -1,0 +1,167 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Printable reports · Saga showcase</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/css/tokens.css">
+<link rel="stylesheet" href="/css/base.css">
+<link rel="stylesheet" href="/css/components.css">
+<script src="https://cdn.jsdelivr.net/npm/iconify-icon@2.1.0/dist/iconify-icon.min.js"></script>
+<style>
+	/* Showcase scaffolding only — not part of the system. */
+	.demo-page { max-width: 72rem; margin: 0 auto; padding: var(--space-xl) var(--space-lg) var(--space-3xl); }
+	.demo-page > header { margin-bottom: var(--space-xl); }
+	.demo-page > header p { color: var(--color-text-secondary); }
+	.demo-nav { display: flex; flex-wrap: wrap; gap: var(--space-sm) var(--space-md); font-size: var(--text-sm); margin-bottom: var(--space-lg); }
+	.demo-section { margin-bottom: var(--space-2xl); }
+	.demo-section > h2 { padding-bottom: var(--space-xs); border-bottom: 1px solid var(--color-border); margin-bottom: var(--space-md); }
+	.demo-section > h3 { margin-top: var(--space-lg); }
+	.demo-section > p { color: var(--color-text-secondary); font-size: var(--text-sm); }
+	.demo-row { display: flex; flex-wrap: wrap; align-items: center; gap: var(--space-md); padding: var(--space-lg); border: 1px dashed var(--color-border-hover); border-radius: var(--radius-lg) var(--radius-lg) 0 0; background: var(--color-bg); }
+	.demo-row--stack { flex-direction: column; align-items: stretch; }
+	.demo-row--tint { background: var(--color-bg-secondary); }
+	.demo-row--tall { min-height: 14rem; position: relative; }
+	.demo-snippet { margin: 0 0 var(--space-lg); padding: var(--space-md); overflow: auto; background: var(--color-bg-tertiary); border: 1px solid var(--color-border); border-top: 0; border-radius: 0 0 var(--radius-lg) var(--radius-lg); font-size: var(--text-xs); line-height: var(--leading-relaxed); color: var(--color-text-dark); }
+	.demo-snippet code { font-size: inherit; }
+	.demo-row--tall .saga-popover, .demo-row--tall .saga-tooltip { position: static; }
+	.demo-modal-inline .saga-modal { position: static; z-index: auto; box-shadow: var(--shadow-modal); }
+	.demo-frame { position: relative; height: 22rem; width: 100%; border: 1px solid var(--color-border); border-radius: var(--radius-lg); overflow: hidden; }
+	.demo-sheets { display: flex; flex-wrap: wrap; gap: var(--space-lg); padding: var(--space-lg); background: var(--color-bg-tertiary); border-radius: var(--radius-lg) var(--radius-lg) 0 0; overflow: auto; }
+	/* A report's own domain colours are Tier 3 aliases on its sheet (DS-148); these are the demo's. */
+	.demo-report { --mark-yes: var(--paper-success); --mark-no: var(--paper-danger); --mark-some: var(--paper-warning); }
+	.demo-mark { display: inline-block; min-width: 1.6em; padding: 0 var(--space-2xs); border-radius: var(--radius-xs); font-weight: var(--weight-semibold); }
+	.demo-mark--yes { background: var(--mark-yes); color: var(--paper-bg); }
+	.demo-mark--no { background: var(--mark-no); color: var(--paper-bg); }
+	.demo-mark--some { background: var(--mark-some); color: var(--paper-ink); }
+</style>
+</head>
+<body>
+<main class="demo-page">
+<nav class="demo-nav" aria-label="Showcase pages">
+	<a href="/showcase/">Index</a> <a href="/showcase/buttons/">Buttons</a> <a href="/showcase/forms/">Forms</a> <a href="/showcase/cards-tables/">Cards &amp; tables</a> <a href="/showcase/overlays/">Overlays</a> <a href="/showcase/feedback/">Feedback</a> <a href="/showcase/shell/">Shell</a> <a href="/showcase/print/">Printable reports</a>
+</nav>
+<header>
+	<h1>Printable reports</h1>
+	<p>Download PDF is the browser's print (DS-147). Sheets are US Letter at real size on screen and on paper, built from data with row budgets. Guide: <a href="/guide/printable-reports/">Printable reports</a>.</p>
+</header>
+
+<section class="demo-section">
+	<h2>Print preview</h2>
+	<p>The preview is portalled to <code>&lt;body&gt;</code> as the print root. Download PDF sets <code>body.saga-printing</code>, names the file through <code>document.title</code>, and prints only the sheets: page 1 portrait, page 2 landscape. In Safari and on iPhone or iPad, the note under the toolbar appears, because WebKit prints every sheet portrait (DS-153).</p>
+	<div class="demo-row">
+		<button class="saga-btn" id="pp-open">Open the preview</button>
+	</div>
+	<pre class="demo-snippet"><code>&lt;div class=&quot;saga-print-preview saga-print-root&quot; hidden&gt; … &lt;div class=&quot;saga-print-preview__pages&quot;&gt; .saga-sheet × n &lt;/div&gt;&lt;/div&gt;</code></pre>
+</section>
+
+<section class="demo-section">
+	<h2>Sheets</h2>
+	<p><code>.saga-sheet</code> (portrait) and <code>.saga-sheet--landscape</code>, with a header, a body that clips, and the optional footer. Stats, the report table and the continued line on the first; a <code>--grid --small</code> table on the second.</p>
+	<div class="demo-sheets" id="demo-sheets">
+<section class="saga-sheet demo-report">
+	<header class="saga-sheet__header">
+		<div class="saga-sheet__heading">
+			<h2 class="saga-sheet__title">Student Sentiment Report</h2>
+			<p class="saga-sheet__meta">Lincoln Middle · Oct 1 – Oct 31, 2026</p>
+			<p class="saga-sheet__meta">Weekly check-in · 135 students · 4 tutors</p>
+		</div>
+		<span class="saga-sheet__brand">Saga Education</span>
+	</header>
+	<div class="saga-sheet__body">
+		<ul class="saga-sheet__stats">
+			<li class="saga-sheet__stat"><span class="saga-sheet__stat-value">82%</span><span class="saga-sheet__stat-label">Completion</span><span class="saga-sheet__stat-caption">443 of 540 check-ins</span></li>
+			<li class="saga-sheet__stat"><span class="saga-sheet__stat-value">+0.4</span><span class="saga-sheet__stat-label">Net sentiment</span><span class="saga-sheet__stat-caption">happy minus sad</span></li>
+			<li class="saga-sheet__stat"><span class="saga-sheet__stat-value">14</span><span class="saga-sheet__stat-label">Need attention</span><span class="saga-sheet__stat-caption">of 135 students</span></li>
+		</ul>
+		<h3 class="saga-sheet__section-title">Students who need attention</h3>
+		<table class="saga-report-table">
+			<colgroup><col style="width:22%"><col style="width:22%"><col style="width:16%"><col></colgroup>
+			<thead><tr><th>Student</th><th>Period</th><th class="num">Answered</th><th>Why</th></tr></thead>
+			<tbody><tr><td>Ana R.</td><td>Math 6A</td><td class="num">9 of 9</td><td>Sad 2 weeks in a row</td></tr><tr><td>Ben O.</td><td>Math 6B</td><td class="num">8 of 9</td><td>Low completion</td></tr><tr><td>Chloé D.</td><td>Math 7A</td><td class="num">7 of 9</td><td>Sad 3 of the last 4</td></tr><tr><td>Dev P.</td><td>Math 6A</td><td class="num">6 of 9</td><td>Not answered 2 weeks</td></tr><tr><td>Elif K.</td><td>Math 6B</td><td class="num">9 of 9</td><td>Sad 2 weeks in a row</td></tr><tr><td>Femi A.</td><td>Math 7A</td><td class="num">8 of 9</td><td>Low completion</td></tr><tr><td>Grace L.</td><td>Math 6A</td><td class="num">7 of 9</td><td>Sad 3 of the last 4</td></tr><tr><td>Hiro T.</td><td>Math 6B</td><td class="num">6 of 9</td><td>Not answered 2 weeks</td></tr><tr><td>Isla M.</td><td>Math 7A</td><td class="num">9 of 9</td><td>Sad 2 weeks in a row</td></tr><tr><td>Jae W.</td><td>Math 6A</td><td class="num">8 of 9</td><td>Low completion</td></tr><tr><td>Kofi B.</td><td>Math 6B</td><td class="num">7 of 9</td><td>Sad 3 of the last 4</td></tr><tr><td>Lena S.</td><td>Math 7A</td><td class="num">6 of 9</td><td>Not answered 2 weeks</td></tr><tr><td>Mateo G.</td><td>Math 6A</td><td class="num">9 of 9</td><td>Sad 2 weeks in a row</td></tr><tr><td>Nia J.</td><td>Math 6B</td><td class="num">8 of 9</td><td>Low completion</td></tr></tbody>
+		</table>
+		<p class="saga-sheet__continued">Showing 14 of 14 students who need attention. Every response is in the CSV download.</p>
+	</div>
+	<footer class="saga-sheet__footer"><span class="saga-sheet__notice">Notice slot: the product supplies its own wording.</span><span class="saga-sheet__page">Page 1 of 2</span></footer>
+</section>
+<section class="saga-sheet saga-sheet--landscape demo-report">
+	<header class="saga-sheet__header">
+		<div class="saga-sheet__heading">
+			<h2 class="saga-sheet__title">Day-by-day</h2>
+			<p class="saga-sheet__meta">Lincoln Middle · Math 6A · Oct 5 – Oct 23, 2026</p>
+		</div>
+		<span class="saga-sheet__brand">Saga Education</span>
+	</header>
+	<div class="saga-sheet__body">
+		<table class="saga-report-table saga-report-table--grid saga-report-table--small">
+			<colgroup><col style="width:9em"></colgroup>
+			<thead><tr><th>Student</th><th>M 5</th><th>T 6</th><th>W 7</th><th>Th 8</th><th>F 9</th><th>M 12</th><th>T 13</th><th>W 14</th><th>Th 15</th><th>F 16</th><th>M 19</th><th>T 20</th><th>W 21</th><th>Th 22</th><th>F 23</th></tr></thead>
+			<tbody><tr><td>Ana R.</td><td><span class="demo-mark demo-mark--yes">Y</span></td><td><span class="demo-mark demo-mark--yes">Y</span></td><td><span class="demo-mark demo-mark--some">P</span></td><td><span class="demo-mark demo-mark--yes">Y</span></td><td><span class="demo-mark demo-mark--no">N</span></td><td><span class="demo-mark demo-mark--yes">Y</span></td><td><span class="demo-mark demo-mark--yes">Y</span></td><td><span class="demo-mark demo-mark--some">P</span></td><td><span class="demo-mark demo-mark--yes">Y</span></td><td><span class="demo-mark demo-mark--yes">Y</span></td><td><span class="demo-mark demo-mark--some">P</span></td><td><span class="demo-mark demo-mark--yes">Y</span></td><td><span class="demo-mark demo-mark--no">N</span></td><td><span class="demo-mark demo-mark--yes">Y</span></td><td><span class="demo-mark demo-mark--yes">Y</span></td></tr><tr><td>Ben O.</td><td><span class="demo-mark demo-mark--yes">Y</span></td><td><span class="demo-mark demo-mark--some">P</span></td><td><span class="demo-mark demo-mark--yes">Y</span></td><td><span class="demo-mark demo-mark--no">N</span></td><td><span class="demo-mark demo-mark--yes">Y</span></td><td><span class="demo-mark demo-mark--yes">Y</span></td><td><span class="demo-mark demo-mark--some">P</span></td><td><span class="demo-mark demo-mark--yes">Y</span></td><td><span class="demo-mark demo-mark--yes">Y</span></td><td><span class="demo-mark demo-mark--some">P</span></td><td><span class="demo-mark demo-mark--yes">Y</span></td><td><span class="demo-mark demo-mark--no">N</span></td><td><span class="demo-mark demo-mark--yes">Y</span></td><td><span class="demo-mark demo-mark--yes">Y</span></td><td><span class="demo-mark demo-mark--some">P</span></td></tr><tr><td>Chloé D.</td><td><span class="demo-mark demo-mark--some">P</span></td><td><span class="demo-mark demo-mark--yes">Y</span></td><td><span class="demo-mark demo-mark--no">N</span></td><td><span class="demo-mark demo-mark--yes">Y</span></td><td><span class="demo-mark demo-mark--yes">Y</span></td><td><span class="demo-mark demo-mark--some">P</span></td><td><span class="demo-mark demo-mark--yes">Y</span></td><td><span class="demo-mark demo-mark--yes">Y</span></td><td><span class="demo-mark demo-mark--some">P</span></td><td><span class="demo-mark demo-mark--yes">Y</span></td><td><span class="demo-mark demo-mark--no">N</span></td><td><span class="demo-mark demo-mark--yes">Y</span></td><td><span class="demo-mark demo-mark--yes">Y</span></td><td><span class="demo-mark demo-mark--some">P</span></td><td><span class="demo-mark demo-mark--yes">Y</span></td></tr><tr><td>Dev P.</td><td><span class="demo-mark demo-mark--yes">Y</span></td><td><span class="demo-mark demo-mark--no">N</span></td><td><span class="demo-mark demo-mark--yes">Y</span></td><td><span class="demo-mark demo-mark--yes">Y</span></td><td><span class="demo-mark demo-mark--some">P</span></td><td><span class="demo-mark demo-mark--yes">Y</span></td><td><span class="demo-mark demo-mark--yes">Y</span></td><td><span class="demo-mark demo-mark--some">P</span></td><td><span class="demo-mark demo-mark--yes">Y</span></td><td><span class="demo-mark demo-mark--no">N</span></td><td><span class="demo-mark demo-mark--yes">Y</span></td><td><span class="demo-mark demo-mark--yes">Y</span></td><td><span class="demo-mark demo-mark--some">P</span></td><td><span class="demo-mark demo-mark--yes">Y</span></td><td><span class="demo-mark demo-mark--yes">Y</span></td></tr><tr><td>Elif K.</td><td><span class="demo-mark demo-mark--no">N</span></td><td><span class="demo-mark demo-mark--yes">Y</span></td><td><span class="demo-mark demo-mark--yes">Y</span></td><td><span class="demo-mark demo-mark--some">P</span></td><td><span class="demo-mark demo-mark--yes">Y</span></td><td><span class="demo-mark demo-mark--yes">Y</span></td><td><span class="demo-mark demo-mark--some">P</span></td><td><span class="demo-mark demo-mark--yes">Y</span></td><td><span class="demo-mark demo-mark--no">N</span></td><td><span class="demo-mark demo-mark--yes">Y</span></td><td><span class="demo-mark demo-mark--yes">Y</span></td><td><span class="demo-mark demo-mark--some">P</span></td><td><span class="demo-mark demo-mark--yes">Y</span></td><td><span class="demo-mark demo-mark--yes">Y</span></td><td><span class="demo-mark demo-mark--some">P</span></td></tr><tr><td>Femi A.</td><td><span class="demo-mark demo-mark--yes">Y</span></td><td><span class="demo-mark demo-mark--yes">Y</span></td><td><span class="demo-mark demo-mark--some">P</span></td><td><span class="demo-mark demo-mark--yes">Y</span></td><td><span class="demo-mark demo-mark--yes">Y</span></td><td><span class="demo-mark demo-mark--some">P</span></td><td><span class="demo-mark demo-mark--yes">Y</span></td><td><span class="demo-mark demo-mark--no">N</span></td><td><span class="demo-mark demo-mark--yes">Y</span></td><td><span class="demo-mark demo-mark--yes">Y</span></td><td><span class="demo-mark demo-mark--some">P</span></td><td><span class="demo-mark demo-mark--yes">Y</span></td><td><span class="demo-mark demo-mark--yes">Y</span></td><td><span class="demo-mark demo-mark--some">P</span></td><td><span class="demo-mark demo-mark--yes">Y</span></td></tr><tr><td>Grace L.</td><td><span class="demo-mark demo-mark--yes">Y</span></td><td><span class="demo-mark demo-mark--some">P</span></td><td><span class="demo-mark demo-mark--yes">Y</span></td><td><span class="demo-mark demo-mark--yes">Y</span></td><td><span class="demo-mark demo-mark--some">P</span></td><td><span class="demo-mark demo-mark--yes">Y</span></td><td><span class="demo-mark demo-mark--no">N</span></td><td><span class="demo-mark demo-mark--yes">Y</span></td><td><span class="demo-mark demo-mark--yes">Y</span></td><td><span class="demo-mark demo-mark--some">P</span></td><td><span class="demo-mark demo-mark--yes">Y</span></td><td><span class="demo-mark demo-mark--yes">Y</span></td><td><span class="demo-mark demo-mark--some">P</span></td><td><span class="demo-mark demo-mark--yes">Y</span></td><td><span class="demo-mark demo-mark--no">N</span></td></tr><tr><td>Hiro T.</td><td><span class="demo-mark demo-mark--some">P</span></td><td><span class="demo-mark demo-mark--yes">Y</span></td><td><span class="demo-mark demo-mark--yes">Y</span></td><td><span class="demo-mark demo-mark--some">P</span></td><td><span class="demo-mark demo-mark--yes">Y</span></td><td><span class="demo-mark demo-mark--no">N</span></td><td><span class="demo-mark demo-mark--yes">Y</span></td><td><span class="demo-mark demo-mark--yes">Y</span></td><td><span class="demo-mark demo-mark--some">P</span></td><td><span class="demo-mark demo-mark--yes">Y</span></td><td><span class="demo-mark demo-mark--yes">Y</span></td><td><span class="demo-mark demo-mark--some">P</span></td><td><span class="demo-mark demo-mark--yes">Y</span></td><td><span class="demo-mark demo-mark--no">N</span></td><td><span class="demo-mark demo-mark--yes">Y</span></td></tr><tr><td>Isla M.</td><td><span class="demo-mark demo-mark--yes">Y</span></td><td><span class="demo-mark demo-mark--yes">Y</span></td><td><span class="demo-mark demo-mark--some">P</span></td><td><span class="demo-mark demo-mark--yes">Y</span></td><td><span class="demo-mark demo-mark--no">N</span></td><td><span class="demo-mark demo-mark--yes">Y</span></td><td><span class="demo-mark demo-mark--yes">Y</span></td><td><span class="demo-mark demo-mark--some">P</span></td><td><span class="demo-mark demo-mark--yes">Y</span></td><td><span class="demo-mark demo-mark--yes">Y</span></td><td><span class="demo-mark demo-mark--some">P</span></td><td><span class="demo-mark demo-mark--yes">Y</span></td><td><span class="demo-mark demo-mark--no">N</span></td><td><span class="demo-mark demo-mark--yes">Y</span></td><td><span class="demo-mark demo-mark--yes">Y</span></td></tr><tr><td>Jae W.</td><td><span class="demo-mark demo-mark--yes">Y</span></td><td><span class="demo-mark demo-mark--some">P</span></td><td><span class="demo-mark demo-mark--yes">Y</span></td><td><span class="demo-mark demo-mark--no">N</span></td><td><span class="demo-mark demo-mark--yes">Y</span></td><td><span class="demo-mark demo-mark--yes">Y</span></td><td><span class="demo-mark demo-mark--some">P</span></td><td><span class="demo-mark demo-mark--yes">Y</span></td><td><span class="demo-mark demo-mark--yes">Y</span></td><td><span class="demo-mark demo-mark--some">P</span></td><td><span class="demo-mark demo-mark--yes">Y</span></td><td><span class="demo-mark demo-mark--no">N</span></td><td><span class="demo-mark demo-mark--yes">Y</span></td><td><span class="demo-mark demo-mark--yes">Y</span></td><td><span class="demo-mark demo-mark--some">P</span></td></tr><tr><td>Kofi B.</td><td><span class="demo-mark demo-mark--some">P</span></td><td><span class="demo-mark demo-mark--yes">Y</span></td><td><span class="demo-mark demo-mark--no">N</span></td><td><span class="demo-mark demo-mark--yes">Y</span></td><td><span class="demo-mark demo-mark--yes">Y</span></td><td><span class="demo-mark demo-mark--some">P</span></td><td><span class="demo-mark demo-mark--yes">Y</span></td><td><span class="demo-mark demo-mark--yes">Y</span></td><td><span class="demo-mark demo-mark--some">P</span></td><td><span class="demo-mark demo-mark--yes">Y</span></td><td><span class="demo-mark demo-mark--no">N</span></td><td><span class="demo-mark demo-mark--yes">Y</span></td><td><span class="demo-mark demo-mark--yes">Y</span></td><td><span class="demo-mark demo-mark--some">P</span></td><td><span class="demo-mark demo-mark--yes">Y</span></td></tr><tr><td>Lena S.</td><td><span class="demo-mark demo-mark--yes">Y</span></td><td><span class="demo-mark demo-mark--no">N</span></td><td><span class="demo-mark demo-mark--yes">Y</span></td><td><span class="demo-mark demo-mark--yes">Y</span></td><td><span class="demo-mark demo-mark--some">P</span></td><td><span class="demo-mark demo-mark--yes">Y</span></td><td><span class="demo-mark demo-mark--yes">Y</span></td><td><span class="demo-mark demo-mark--some">P</span></td><td><span class="demo-mark demo-mark--yes">Y</span></td><td><span class="demo-mark demo-mark--no">N</span></td><td><span class="demo-mark demo-mark--yes">Y</span></td><td><span class="demo-mark demo-mark--yes">Y</span></td><td><span class="demo-mark demo-mark--some">P</span></td><td><span class="demo-mark demo-mark--yes">Y</span></td><td><span class="demo-mark demo-mark--yes">Y</span></td></tr><tr><td>Mateo G.</td><td><span class="demo-mark demo-mark--no">N</span></td><td><span class="demo-mark demo-mark--yes">Y</span></td><td><span class="demo-mark demo-mark--yes">Y</span></td><td><span class="demo-mark demo-mark--some">P</span></td><td><span class="demo-mark demo-mark--yes">Y</span></td><td><span class="demo-mark demo-mark--yes">Y</span></td><td><span class="demo-mark demo-mark--some">P</span></td><td><span class="demo-mark demo-mark--yes">Y</span></td><td><span class="demo-mark demo-mark--no">N</span></td><td><span class="demo-mark demo-mark--yes">Y</span></td><td><span class="demo-mark demo-mark--yes">Y</span></td><td><span class="demo-mark demo-mark--some">P</span></td><td><span class="demo-mark demo-mark--yes">Y</span></td><td><span class="demo-mark demo-mark--yes">Y</span></td><td><span class="demo-mark demo-mark--some">P</span></td></tr><tr><td>Nia J.</td><td><span class="demo-mark demo-mark--yes">Y</span></td><td><span class="demo-mark demo-mark--yes">Y</span></td><td><span class="demo-mark demo-mark--some">P</span></td><td><span class="demo-mark demo-mark--yes">Y</span></td><td><span class="demo-mark demo-mark--yes">Y</span></td><td><span class="demo-mark demo-mark--some">P</span></td><td><span class="demo-mark demo-mark--yes">Y</span></td><td><span class="demo-mark demo-mark--no">N</span></td><td><span class="demo-mark demo-mark--yes">Y</span></td><td><span class="demo-mark demo-mark--yes">Y</span></td><td><span class="demo-mark demo-mark--some">P</span></td><td><span class="demo-mark demo-mark--yes">Y</span></td><td><span class="demo-mark demo-mark--yes">Y</span></td><td><span class="demo-mark demo-mark--some">P</span></td><td><span class="demo-mark demo-mark--yes">Y</span></td></tr><tr><td>Omar F.</td><td><span class="demo-mark demo-mark--yes">Y</span></td><td><span class="demo-mark demo-mark--some">P</span></td><td><span class="demo-mark demo-mark--yes">Y</span></td><td><span class="demo-mark demo-mark--yes">Y</span></td><td><span class="demo-mark demo-mark--some">P</span></td><td><span class="demo-mark demo-mark--yes">Y</span></td><td><span class="demo-mark demo-mark--no">N</span></td><td><span class="demo-mark demo-mark--yes">Y</span></td><td><span class="demo-mark demo-mark--yes">Y</span></td><td><span class="demo-mark demo-mark--some">P</span></td><td><span class="demo-mark demo-mark--yes">Y</span></td><td><span class="demo-mark demo-mark--yes">Y</span></td><td><span class="demo-mark demo-mark--some">P</span></td><td><span class="demo-mark demo-mark--yes">Y</span></td><td><span class="demo-mark demo-mark--no">N</span></td></tr><tr><td>Priya N.</td><td><span class="demo-mark demo-mark--some">P</span></td><td><span class="demo-mark demo-mark--yes">Y</span></td><td><span class="demo-mark demo-mark--yes">Y</span></td><td><span class="demo-mark demo-mark--some">P</span></td><td><span class="demo-mark demo-mark--yes">Y</span></td><td><span class="demo-mark demo-mark--no">N</span></td><td><span class="demo-mark demo-mark--yes">Y</span></td><td><span class="demo-mark demo-mark--yes">Y</span></td><td><span class="demo-mark demo-mark--some">P</span></td><td><span class="demo-mark demo-mark--yes">Y</span></td><td><span class="demo-mark demo-mark--yes">Y</span></td><td><span class="demo-mark demo-mark--some">P</span></td><td><span class="demo-mark demo-mark--yes">Y</span></td><td><span class="demo-mark demo-mark--no">N</span></td><td><span class="demo-mark demo-mark--yes">Y</span></td></tr><tr><td>Quinn H.</td><td><span class="demo-mark demo-mark--yes">Y</span></td><td><span class="demo-mark demo-mark--yes">Y</span></td><td><span class="demo-mark demo-mark--some">P</span></td><td><span class="demo-mark demo-mark--yes">Y</span></td><td><span class="demo-mark demo-mark--no">N</span></td><td><span class="demo-mark demo-mark--yes">Y</span></td><td><span class="demo-mark demo-mark--yes">Y</span></td><td><span class="demo-mark demo-mark--some">P</span></td><td><span class="demo-mark demo-mark--yes">Y</span></td><td><span class="demo-mark demo-mark--yes">Y</span></td><td><span class="demo-mark demo-mark--some">P</span></td><td><span class="demo-mark demo-mark--yes">Y</span></td><td><span class="demo-mark demo-mark--no">N</span></td><td><span class="demo-mark demo-mark--yes">Y</span></td><td><span class="demo-mark demo-mark--yes">Y</span></td></tr><tr><td>Rosa V.</td><td><span class="demo-mark demo-mark--yes">Y</span></td><td><span class="demo-mark demo-mark--some">P</span></td><td><span class="demo-mark demo-mark--yes">Y</span></td><td><span class="demo-mark demo-mark--no">N</span></td><td><span class="demo-mark demo-mark--yes">Y</span></td><td><span class="demo-mark demo-mark--yes">Y</span></td><td><span class="demo-mark demo-mark--some">P</span></td><td><span class="demo-mark demo-mark--yes">Y</span></td><td><span class="demo-mark demo-mark--yes">Y</span></td><td><span class="demo-mark demo-mark--some">P</span></td><td><span class="demo-mark demo-mark--yes">Y</span></td><td><span class="demo-mark demo-mark--no">N</span></td><td><span class="demo-mark demo-mark--yes">Y</span></td><td><span class="demo-mark demo-mark--yes">Y</span></td><td><span class="demo-mark demo-mark--some">P</span></td></tr><tr><td>Sami E.</td><td><span class="demo-mark demo-mark--some">P</span></td><td><span class="demo-mark demo-mark--yes">Y</span></td><td><span class="demo-mark demo-mark--no">N</span></td><td><span class="demo-mark demo-mark--yes">Y</span></td><td><span class="demo-mark demo-mark--yes">Y</span></td><td><span class="demo-mark demo-mark--some">P</span></td><td><span class="demo-mark demo-mark--yes">Y</span></td><td><span class="demo-mark demo-mark--yes">Y</span></td><td><span class="demo-mark demo-mark--some">P</span></td><td><span class="demo-mark demo-mark--yes">Y</span></td><td><span class="demo-mark demo-mark--no">N</span></td><td><span class="demo-mark demo-mark--yes">Y</span></td><td><span class="demo-mark demo-mark--yes">Y</span></td><td><span class="demo-mark demo-mark--some">P</span></td><td><span class="demo-mark demo-mark--yes">Y</span></td></tr><tr><td>Tess C.</td><td><span class="demo-mark demo-mark--yes">Y</span></td><td><span class="demo-mark demo-mark--no">N</span></td><td><span class="demo-mark demo-mark--yes">Y</span></td><td><span class="demo-mark demo-mark--yes">Y</span></td><td><span class="demo-mark demo-mark--some">P</span></td><td><span class="demo-mark demo-mark--yes">Y</span></td><td><span class="demo-mark demo-mark--yes">Y</span></td><td><span class="demo-mark demo-mark--some">P</span></td><td><span class="demo-mark demo-mark--yes">Y</span></td><td><span class="demo-mark demo-mark--no">N</span></td><td><span class="demo-mark demo-mark--yes">Y</span></td><td><span class="demo-mark demo-mark--yes">Y</span></td><td><span class="demo-mark demo-mark--some">P</span></td><td><span class="demo-mark demo-mark--yes">Y</span></td><td><span class="demo-mark demo-mark--yes">Y</span></td></tr></tbody>
+		</table>
+		<p class="saga-sheet__note"><span class="demo-mark demo-mark--yes">Y</span> Yes · <span class="demo-mark demo-mark--some">P</span> Partly · <span class="demo-mark demo-mark--no">N</span> No. Every colour also carries its letter, so the page reads in greyscale.</p>
+	</div>
+	<footer class="saga-sheet__footer"><span class="saga-sheet__notice">Notice slot: the product supplies its own wording.</span><span class="saga-sheet__page">Page 2 of 2</span></footer>
+</section>
+	</div>
+	<pre class="demo-snippet"><code>&lt;section class=&quot;saga-sheet&quot;&gt; header.saga-sheet__header · div.saga-sheet__body · footer.saga-sheet__footer &lt;/section&gt;</code></pre>
+</section>
+
+<section class="demo-section">
+	<h2>Overflow badge</h2>
+	<p>DS-150: cap the rows and say so; never shrink text to fit. When content still runs past a sheet, the preview says so.</p>
+	<div class="demo-sheets">
+<section class="saga-sheet" data-overflows="Content exceeds this page" style="height: 3in">
+	<header class="saga-sheet__header"><div class="saga-sheet__heading"><h2 class="saga-sheet__title">A sheet whose content runs past it</h2><p class="saga-sheet__meta">Cut to 3in tall for this demo</p></div></header>
+	<div class="saga-sheet__body"><p>The product measured the body (<code>scrollHeight &gt; clientHeight</code>) and set <code>data-overflows</code>; the attribute's value is the badge text. The badge and the outline show on screen only. The fix is a smaller row budget, never smaller text.</p><p>More content.</p><p>More content.</p><p>More content.</p><p>More content.</p><p>More content.</p></div>
+</section>
+	</div>
+	<pre class="demo-snippet"><code>&lt;section class=&quot;saga-sheet&quot; data-overflows=&quot;Content exceeds this page&quot;&gt;</code></pre>
+</section>
+
+<div class="saga-print-preview saga-print-root" id="pp" hidden>
+	<div class="saga-print-preview__dialog" role="dialog" aria-modal="true" aria-labelledby="pp-title">
+		<div class="saga-print-preview__bar">
+			<h2 class="saga-print-preview__title" id="pp-title">Download PDF</h2>
+			<div class="saga-print-preview__controls"><span class="text-secondary">2 pages</span></div>
+			<div class="saga-print-preview__actions">
+				<button class="saga-btn" id="pp-print">Download PDF</button>
+				<button class="saga-btn saga-btn--quiet saga-btn--icon" id="pp-close" aria-label="Close"><iconify-icon icon="material-symbols-light:close-rounded"></iconify-icon></button>
+			</div>
+			<p class="saga-print-preview__note" id="pp-note" hidden>Landscape pages print correctly in Chrome or Edge.</p>
+		</div>
+		<div class="saga-print-preview__pages" id="pp-pages"></div>
+	</div>
+</div>
+<script>
+	// The reference implementation from guide/printable-reports, plus the demo's open button.
+	const pp = document.getElementById('pp');
+	document.body.append(pp); // the print root must be a direct child of <body>
+	// WebKit ignores @page size, and CSS.supports('page', …) still answers true: detect the engine.
+	const isWebKit = /AppleWebKit/.test(navigator.userAgent) && !/Chrome|Chromium|Edg\//.test(navigator.userAgent) || /iPhone|iPad|iPod/.test(navigator.userAgent);
+	document.getElementById('pp-note').hidden = !isWebKit;
+	let savedTitle = document.title;
+	function openPreview() {
+		document.getElementById('pp-pages').innerHTML = document.getElementById('demo-sheets').innerHTML;
+		pp.hidden = false;
+		setTimeout(() => document.getElementById('pp-close').focus());
+	}
+	function closePreview() { pp.hidden = true; }
+	function endPrint() { document.body.classList.remove('saga-printing'); document.title = savedTitle; }
+	document.getElementById('pp-open').onclick = openPreview;
+	document.getElementById('pp-print').onclick = () => {
+		savedTitle = document.title;
+		document.title = 'student-sentiment-report_2026-10-01_to_2026-10-31';
+		document.body.classList.add('saga-printing');
+		addEventListener('afterprint', endPrint, { once: true });
+		print();
+	};
+	document.getElementById('pp-close').onclick = closePreview;
+	pp.onclick = (e) => { if (e.target === pp) closePreview(); };
+	addEventListener('keydown', (e) => { if (e.key === 'Escape' && !pp.hidden) closePreview(); });
+</script>
+</main>
+</body>
+</html>
