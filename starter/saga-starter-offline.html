@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Saga prototype — [name]</title>
 <!--
-  Saga prototype starter · generated from https://github.com/saga-ed/product-style (v0.1.10)
+  Saga prototype starter · generated from https://github.com/saga-ed/product-style (v0.1.11)
   Guide: https://style.wootdev.com  ·  Agents: read https://style.wootdev.com/CLAUDE.md
   This file may be published on a public site, so every name, score and date is
   invented. Anything violet (.ptag / .standin) is prototype chrome, not proposed UI.
@@ -319,6 +319,40 @@
 	--chip-neutral-bg: var(--gray-100);
 	--chip-neutral-text: var(--color-text-dark);
 
+	/* ── Print: paper, not the screen (DS-148) ─────────────────────────── */
+	/* The paper palette reads Tier 1 only, so a theme or high-contrast remap of
+	   Tier 2 never reaches a printed page. A report's own domain colours (the
+	   attendance marks, a survey's faces) stay in the product as Tier 3 aliases. */
+	--paper-bg: var(--white);
+	--paper-ink: var(--gray-900);
+	--paper-ink-soft: var(--gray-700);
+	--paper-muted: var(--gray-500);
+	--paper-rule: var(--gray-200);
+	--paper-fill: var(--gray-100);
+	--paper-fill-faint: var(--gray-50);
+	--paper-brand: var(--saga-blue);
+	--paper-success: var(--saga-green);
+	--paper-warning: var(--saga-orange);           /* a fill under --paper-ink, never text */
+	--paper-danger: var(--saga-clay);
+	/* US Letter. A sheet swaps the two for landscape; @page size cannot read a
+	   variable, so css/components.css repeats 8.5in × 11in there. */
+	--sheet-width: 8.5in;
+	--sheet-height: 11in;
+	--sheet-pad-y: 0.35in;
+	--sheet-pad-x: 0.45in;
+	/* Print type scale in px, never rem: the screen root grows with the window
+	   and the reader's text-size setting (DS-010, DS-020), and paper must not. */
+	--print-text-2xs: 9px;                          /* chips and marks in a dense grid */
+	--print-text-xs: 10px;                          /* notes, footer, legends */
+	--print-text-sm: 11px;                          /* body and table cells */
+	--print-text-md: 12px;                          /* section headings */
+	--print-text-lg: 16px;                          /* sheet title */
+	--print-text-xl: 20px;                          /* a stat's value */
+	--print-leading: 1.4;
+	--print-gap: 10px;                              /* between blocks on a sheet */
+	--print-cell-y: 3px;
+	--print-cell-x: 6px;
+
 	/* ── Deprecated aliases — keep dash/staff-admin/prototype CSS working.
 	   New code never writes these; remove once no consumer references them. */
 	--color-brand-teal: var(--color-primary);          /* was blue, not teal */
@@ -474,7 +508,7 @@ img, svg { vertical-align: middle; }
    empty state) · forms (inputs, select, choice controls, date picker) · tabs ·
    tables · charts · chips & badges · notices · modal & steps · toasts ·
    popover & tooltip · skeleton & progress · shell (nav, topbar, page) ·
-   calendar · avatar.
+   calendar · avatar · printable reports (sheet, report table, print preview).
    ============================================================================= */
 
 /* ── Icons ─────────────────────────────────────────────────────────────────── */
@@ -751,6 +785,8 @@ iconify-icon { display: inline-block; vertical-align: -0.125em; }
    --space-md (16px) so they scale with the text-size preference. */
 .saga-check { display: inline-flex; align-items: center; gap: var(--space-sm); cursor: pointer; user-select: none; }
 .saga-check:has(> :disabled) { color: var(--color-text-disabled); cursor: not-allowed; }
+/* DS-141: in a .saga-field grid a check would stretch to the column, and so would its click target. */
+.saga-field > .saga-check { justify-self: start; }
 .saga-checkbox, .saga-radio {
 	appearance: none; margin: 0; flex-shrink: 0; width: var(--space-md); height: var(--space-md);
 	border: 1px solid var(--input-border-color-hover); background: var(--input-bg); cursor: pointer; position: relative;
@@ -1268,6 +1304,108 @@ dialog.saga-modal::backdrop { background: var(--modal-scrim); }
 .saga-avatar-group { display: inline-flex; }
 .saga-avatar-group > .saga-avatar { border: 2px solid var(--color-bg); }
 .saga-avatar-group > .saga-avatar + .saga-avatar { margin-left: calc(var(--space-sm) * -1); }
+
+/* ── Printable reports (DS-147–DS-153) ─────────────────────────────────────── */
+/* A sheet is one printed page at its real size, on screen and on paper: the preview is the
+   print layout. Pages are built in data with row budgets (guide: printable-reports), so a
+   sheet clips rather than grows, and says so with data-overflows. Inch lengths here are
+   paper geometry, the one exception to "only 1px hairlines and 0". */
+.saga-sheet {
+	--_w: var(--sheet-width); --_h: var(--sheet-height);
+	box-sizing: border-box; position: relative; flex: none;
+	width: var(--_w); height: var(--_h); padding: var(--sheet-pad-y) var(--sheet-pad-x);
+	display: flex; flex-direction: column; gap: var(--print-gap); overflow: hidden;
+	background: var(--paper-bg); color: var(--paper-ink); box-shadow: var(--shadow-md);
+	font-family: var(--font-sans); font-size: var(--print-text-sm); line-height: var(--print-leading);
+	break-after: page; page: saga-letter-portrait;
+	/* Off-screen sheets skip layout and paint until scrolled to (a 23-page report). */
+	content-visibility: auto; contain-intrinsic-size: var(--_w) var(--_h);
+	print-color-adjust: exact; -webkit-print-color-adjust: exact;
+}
+.saga-sheet--landscape { --_w: var(--sheet-height); --_h: var(--sheet-width); page: saga-letter-landscape; }
+.saga-sheet *, .saga-sheet *::before, .saga-sheet *::after { print-color-adjust: exact; -webkit-print-color-adjust: exact; }
+/* DS-150: the preview's honesty check. The attribute's value is the badge text. */
+.saga-sheet[data-overflows] { outline: var(--border-width-emphasis) solid var(--color-danger); }
+.saga-sheet[data-overflows]::after {
+	content: attr(data-overflows); position: absolute; top: var(--space-xs); right: var(--space-sm);
+	padding: var(--space-2xs) var(--space-xs); border-radius: var(--radius-sm);
+	background: var(--color-danger); color: var(--color-text-inverse);
+	font-size: var(--print-text-xs); font-weight: var(--weight-semibold);
+}
+.saga-sheet__header { display: flex; justify-content: space-between; align-items: flex-start; gap: var(--space-md); padding-bottom: var(--space-sm); border-bottom: 1px solid var(--paper-rule); }
+.saga-sheet__heading { flex: 1; min-width: 0; }
+.saga-sheet__title { margin: 0; font-size: var(--print-text-lg); font-weight: var(--weight-bold); line-height: var(--leading-tight); }
+/* One line each, clipped: the header's height never moves, so the row budgets below it hold. */
+.saga-sheet__meta { margin: var(--space-2xs) 0 0; color: var(--paper-muted); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.saga-sheet__brand { font-weight: var(--weight-bold); color: var(--paper-brand); white-space: nowrap; }
+.saga-sheet__body { flex: 1 1 auto; min-height: 0; overflow: hidden; display: flex; flex-direction: column; gap: var(--print-gap); }
+.saga-sheet__section-title { margin: var(--space-xs) 0 0; font-size: var(--print-text-md); font-weight: var(--weight-bold); }
+.saga-sheet__note { margin: 0; color: var(--paper-muted); font-size: var(--print-text-xs); }
+/* DS-150: "Showing the most recent 28 of 61 sessions", "continued, 15–46 of 120". */
+.saga-sheet__continued { margin: 0; color: var(--paper-muted); font-size: var(--print-text-xs); font-style: italic; }
+/* DS-152: optional. The notice slot holds wording the product owns; the page number is "Page n of N". */
+.saga-sheet__footer { display: flex; align-items: baseline; gap: var(--space-md); padding-top: var(--space-xs); border-top: 1px solid var(--paper-rule); color: var(--paper-muted); font-size: var(--print-text-xs); }
+.saga-sheet__notice { flex: 1; min-width: 0; }
+.saga-sheet__page { margin-left: auto; white-space: nowrap; font-variant-numeric: tabular-nums; }
+/* Stat tiles on paper: a hairline box, no shadow. */
+.saga-sheet__stats { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(auto-fit, minmax(0, 1fr)); gap: var(--print-gap); }
+.saga-sheet__stat { display: flex; flex-direction: column; padding: var(--space-sm) var(--print-gap); border: 1px solid var(--paper-rule); border-radius: var(--radius-md); }
+.saga-sheet__stat-value { font-size: var(--print-text-xl); font-weight: var(--weight-bold); font-variant-numeric: tabular-nums; }
+.saga-sheet__stat-label { color: var(--paper-ink-soft); }
+.saga-sheet__stat-caption { color: var(--paper-muted); font-size: var(--print-text-xs); }
+
+/* DS-151: the dense report table. One line per cell (the row budgets count lines); the header
+   repeats if a browser ever splits the table across sheets. --grid boxes every cell (day grids). */
+.saga-report-table { width: 100%; border-collapse: collapse; table-layout: fixed; }
+.saga-report-table thead { display: table-header-group; }
+.saga-report-table tr { break-inside: avoid; }
+.saga-report-table th, .saga-report-table td {
+	padding: var(--print-cell-y) var(--print-cell-x); text-align: left; vertical-align: top;
+	border-bottom: 1px solid var(--paper-rule); white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+}
+.saga-report-table th { color: var(--paper-muted); font-weight: var(--weight-semibold); }
+.saga-report-table .num, .saga-report-table [data-align="end"] { text-align: right; font-variant-numeric: tabular-nums; }
+.saga-report-table--grid th, .saga-report-table--grid td { padding: 1px var(--space-2xs); text-align: center; border: 1px solid var(--paper-rule); }
+.saga-report-table--grid th:first-child, .saga-report-table--grid td:first-child { text-align: left; }
+.saga-report-table--small { font-size: var(--print-text-2xs); }
+
+/* The print preview: a scrim over the page, a toolbar, and the sheets in a scrolling column.
+   It is a direct child of <body> (portalled), and carries .saga-print-root. */
+.saga-print-preview { position: fixed; inset: 0; z-index: var(--z-overlay); display: flex; justify-content: center; background: var(--modal-scrim); }
+.saga-print-preview[hidden] { display: none; }
+.saga-print-preview__dialog { display: flex; flex-direction: column; gap: var(--space-sm); width: min(calc(var(--sheet-height) + var(--space-2xl)), 96vw); min-height: 0; margin: var(--space-lg) 0; }
+.saga-print-preview__bar {
+	display: flex; flex-wrap: wrap; align-items: center; gap: var(--space-sm) var(--space-md);
+	padding: var(--space-sm) var(--space-md); border-radius: var(--radius-lg);
+	background: var(--color-bg); color: var(--color-text); box-shadow: var(--shadow-md);
+}
+.saga-print-preview__title { margin: 0; font-size: var(--text-base); font-weight: var(--weight-semibold); }
+.saga-print-preview__controls { display: flex; flex-wrap: wrap; align-items: center; gap: var(--space-sm) var(--space-md); }
+.saga-print-preview__actions { display: inline-flex; align-items: center; gap: var(--space-sm); margin-left: auto; }
+/* DS-153: the one line WebKit readers get ("Landscape pages print correctly in Chrome or Edge."). */
+.saga-print-preview__note { flex-basis: 100%; margin: 0; color: var(--color-text-secondary); font-size: var(--text-sm); }
+.saga-print-preview__pages {
+	display: flex; flex-direction: column; align-items: safe center; gap: var(--space-md);
+	overflow: auto; padding: var(--space-md); border-radius: var(--radius-lg); background: var(--color-bg-tertiary);
+}
+
+/* DS-149: the print rules are always on. Named pages size the sheets and nothing else, so a
+   page's ordinary print keeps the browser's margins; there is no unnamed @page rule. */
+@page saga-letter-portrait { size: 8.5in 11in; margin: 0; }
+@page saga-letter-landscape { size: 11in 8.5in; margin: 0; }
+@media print {
+	/* Around window.print() the page sets body.saga-printing; only the print root is laid out. */
+	body.saga-printing > :not(.saga-print-root) { display: none !important; }
+	.saga-print-preview { position: static; display: block; background: none; }
+	.saga-print-preview__dialog { display: block; width: auto; margin: 0; }
+	.saga-print-preview__bar { display: none; }
+	.saga-print-preview__pages { display: block; overflow: visible; padding: 0; background: none; }
+	/* Explicit inch sizes, never vh: print vh is measured from the first sheet, so a landscape
+	   sheet at 100vh would take the portrait height and spill onto a second page. */
+	.saga-sheet { box-shadow: none; outline: none; content-visibility: visible; }
+	.saga-sheet:last-child { break-after: auto; }
+	.saga-sheet[data-overflows]::after { display: none; }
+}
 
 /* ── Motion patterns (DS-030): class equivalents of the core-ui transitions ── */
 .pop-in { transform-origin: top right; animation: pop-in var(--motion-fast) var(--ease-out) both; }

@@ -1049,3 +1049,105 @@ missing field and the issue, removed as data arrives. A generally available view
 documented meaning is the opposite, and the prototyping chapter tells products to delete
 it); a neutral grey placeholder (reads as an empty state, which is a different claim: the
 data exists and is absent, rather than the feature is planned).
+
+### DS-147 — Report PDFs are the browser's print of Letter sheets, never a PDF library
+Status: accepted (Jeff 2026-11-06; product-style#7) · See it: /guide/printable-reports
+
+A report's Download PDF lays the report out as `.saga-sheet` pages in HTML,
+previews them at real size and calls `window.print()`; the person saves the
+PDF from the print dialog. Pages are built in data with row budgets before
+anything renders, so the preview's page count is the document's. saga-dash's
+attendance report PDF (saga-dash#2050) proved the mechanics in Chromium.
+Alternatives: jsPDF or pdfmake in the browser (the sentiment prototype used
+jsPDF): a real download with an exact file name, but every report is laid out
+a second time in drawing code, nothing from the tokens or components carries
+over, its built-in fonts cannot print many student names, and charts are
+redrawn by hand. Server rendering in headless Chromium: the same HTML and CSS,
+a true download and batches, but a service to run (qboard's Playwright
+thumb-renderer was retired 2026-10-28) and no request needs it yet. Choosing
+print CSS keeps server rendering open, since a server would render these same
+sheets. Decision record: saga-dash `docs/decisions/report-pdf-approach.md`.
+
+### DS-148 — Paper has its own palette and a px type scale
+Status: accepted (Jeff 2026-11-06) · See it: /guide/printable-reports#paper-colour-and-type
+
+`--paper-*` (bg, ink, ink-soft, muted, rule, fill, fill-faint, brand, success,
+warning, danger) reads Tier 1 primitives only, so no theme or high-contrast
+remap of Tier 2 reaches paper. `--print-text-2xs`…`--print-text-xl` (9–20px),
+`--print-leading`, `--print-gap` and the cell padding are px, not rem: the
+screen root grows with the window and the reader's setting (DS-010, DS-020),
+and row budgets need a fixed line height. Sheets print colour exactly
+(`print-color-adjust: exact`), and a status colour on paper always carries a
+label, code or pattern too, because many schools print in greyscale. A
+report's domain colours stay Tier 3 aliases in the product. Values are #2050's
+`--paper-*` set, renamed onto primitives.
+Alternatives: the screen's Tier 2 colours (a theme would reach paper); rem
+type (a large-text reader's PDF would overflow its own row budgets).
+
+### DS-149 — Always-on named pages, and one print root on body
+Status: accepted (Jeff 2026-11-06) · See it: /guide/printable-reports#print-mechanics
+
+`@page saga-letter-portrait` and `@page saga-letter-landscape` hold the only
+page size and the zero margins; `.saga-sheet` and `.saga-sheet--landscape`
+name them. There is no unnamed `@page` rule, so a page's ordinary print keeps
+the browser's margins and nothing is injected at runtime. While
+`body.saga-printing` is set (around `window.print()`, cleared on
+`afterprint`), every child of `<body>` except `.saga-print-root` is
+`display: none`; the preview is portalled to `<body>` and carries that class.
+Sheets are sized in inches, never `vh` (print `vh` is the first sheet's).
+Verified in Chromium headless and Safari on 2026-11-06.
+Alternatives: #2050's `<svelte:head>` rules present only while its dialog is
+open, which needed the unnamed `@page { margin: 0 }` to be scoped in time.
+
+### DS-150 — Cap the rows and say so; never shrink text to fit
+Status: accepted (Jeff 2026-11-06) · See it: /showcase/print/
+
+A sheet's body clips at its padding rather than growing. More rows than fit
+go on continuation sheets ("continued, 33–64 of 120") or are capped with a
+line that says what was left out and where it is ("Showing the most recent
+28 of 61 sessions; every session is in the CSV download"), both in
+`.saga-sheet__continued`. In the preview, a sheet whose content still runs
+past it gets `data-overflows="<badge text>"`: a red outline and a badge, on
+screen only. The cure is a smaller row budget.
+Alternatives: scale the sheet to fit (unreadable type, and the page count
+stops being knowable in advance).
+
+### DS-151 — The report table: dense, one line per cell
+Status: accepted (Jeff 2026-11-06) · See it: /guide/printable-reports#the-report-table
+
+`.saga-report-table` is `--print-text-sm` with `--print-cell-y`/`-x`
+padding, a hairline per row, muted semibold headers and
+`table-layout: fixed`; every cell is one line with an ellipsis, because row
+budgets count lines. The header repeats if a browser splits a table.
+`--grid` boxes and centres cells (a day grid, names left); `--small` drops to
+`--print-text-2xs`. Separate from `.saga-table`, whose padding, hover and
+sticky header are screen behaviour.
+Alternatives: `.saga-table--dense` on paper (rem sizes, hover states, wraps).
+
+### DS-152 — The guide places the notice; the product words it
+Status: accepted (Jeff 2026-11-06; product-style#7) · See it: /guide/printable-reports#the-confidentiality-notice
+
+`.saga-sheet__footer` is optional. When a report carries a confidentiality
+notice it sits in `.saga-sheet__notice` on every sheet, with "Page n of N" in
+`.saga-sheet__page`. The wording is the product's and its legal or
+data-privacy review's; a public style guide never holds it. saga-dash's
+attendance report has no footer: it asks "Download student data?" before
+printing instead.
+Alternatives: a canonical notice string here (public, and not yet approved).
+
+### DS-153 — Portrait by default; WebKit readers get one line about landscape
+Status: accepted (Jeff 2026-11-06) · See it: /guide/printable-reports#orientation-and-browsers
+
+Safari, and every browser on iPhone and iPad, ignores `@page` `size`: every
+sheet prints portrait unless the person picks Landscape, and a mix of
+orientations is shrunk to fit the widest sheet. Margins, colours and the
+`document.title` file name work. `CSS.supports('page', 'x')` answers true
+anyway, so a page detects the engine. Reports use portrait unless the content
+needs the width, and a preview with landscape sheets shows one line in
+`.saga-print-preview__note` in WebKit: "Landscape pages print correctly in
+Chrome or Edge." (mixed) or "Choose Landscape in the print dialog."
+(landscape only). WebKit is about 1.5% of dash's users (RUM, 30 days to
+2026-11-06); Chrome and Edge are about 97%.
+Alternatives: one orientation per document (still needs the person to pick
+Landscape in Safari); rotating landscape content onto portrait sheets in
+WebKit (the PDF reads sideways on screen).

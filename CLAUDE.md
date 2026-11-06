@@ -11,6 +11,7 @@ how Saga products look. Read this file, then the chapters you need.
 | A page in a Svelte 5 product repo (saga-dash, coach, staff-admin) | `@saga-ed/ui-svelte` from `saga-ed/product-ui-components`, plus the tokens. Never raw hex or px. |
 | Vanilla JS/TS app (Saga Connect) | Tokens + `components.css`; the app keeps its own `--cv3-*` alias layer. |
 | A comp or design description | Quote tokens by name (`--color-primary`, `--space-md`), not values. |
+| A report's Download PDF (any layer) | `.saga-sheet` pages and `window.print()`, per `guide/printable-reports.md`. Never jsPDF, pdfmake or html2canvas. |
 
 ## Non-negotiable rules
 
@@ -30,8 +31,8 @@ how Saga products look. Read this file, then the chapters you need.
 - `guide/overview.md` then the chapter for what you are building:
   `color`, `typography`, `spacing-layout`, `elevation-surfaces`, `motion`,
   `accessibility`, `shell-navigation`, `buttons`, `forms-inputs`,
-  `tables-data`, `modals-toasts-notices`, `iconography`, `voice-writing`,
-  `prototyping`.
+  `tables-data`, `printable-reports`, `modals-toasts-notices`, `iconography`,
+  `voice-writing`, `prototyping`.
 - `guide/decisions.md` lists every judgement call with an id (`DS-nnn`). If a
   rule here conflicts with code you find in a product repo, the ledger wins
   unless the entry is marked `overturned`.

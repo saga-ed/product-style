@@ -297,6 +297,40 @@
 	--chip-neutral-bg: var(--gray-100);
 	--chip-neutral-text: var(--color-text-dark);
 
+	/* ── Print: paper, not the screen (DS-148) ─────────────────────────── */
+	/* The paper palette reads Tier 1 only, so a theme or high-contrast remap of
+	   Tier 2 never reaches a printed page. A report's own domain colours (the
+	   attendance marks, a survey's faces) stay in the product as Tier 3 aliases. */
+	--paper-bg: var(--white);
+	--paper-ink: var(--gray-900);
+	--paper-ink-soft: var(--gray-700);
+	--paper-muted: var(--gray-500);
+	--paper-rule: var(--gray-200);
+	--paper-fill: var(--gray-100);
+	--paper-fill-faint: var(--gray-50);
+	--paper-brand: var(--saga-blue);
+	--paper-success: var(--saga-green);
+	--paper-warning: var(--saga-orange);           /* a fill under --paper-ink, never text */
+	--paper-danger: var(--saga-clay);
+	/* US Letter. A sheet swaps the two for landscape; @page size cannot read a
+	   variable, so css/components.css repeats 8.5in × 11in there. */
+	--sheet-width: 8.5in;
+	--sheet-height: 11in;
+	--sheet-pad-y: 0.35in;
+	--sheet-pad-x: 0.45in;
+	/* Print type scale in px, never rem: the screen root grows with the window
+	   and the reader's text-size setting (DS-010, DS-020), and paper must not. */
+	--print-text-2xs: 9px;                          /* chips and marks in a dense grid */
+	--print-text-xs: 10px;                          /* notes, footer, legends */
+	--print-text-sm: 11px;                          /* body and table cells */
+	--print-text-md: 12px;                          /* section headings */
+	--print-text-lg: 16px;                          /* sheet title */
+	--print-text-xl: 20px;                          /* a stat's value */
+	--print-leading: 1.4;
+	--print-gap: 10px;                              /* between blocks on a sheet */
+	--print-cell-y: 3px;
+	--print-cell-x: 6px;
+
 	/* ── Deprecated aliases — keep dash/staff-admin/prototype CSS working.
 	   New code never writes these; remove once no consumer references them. */
 	--color-brand-teal: var(--color-primary);          /* was blue, not teal */
