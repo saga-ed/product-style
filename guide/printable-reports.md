@@ -61,7 +61,7 @@ Never shrink text to fit a page, and never let a sheet silently clip (DS-150).
 <section class="saga-sheet">
   <header class="saga-sheet__header">
     <div class="saga-sheet__heading">
-      <h1 class="saga-sheet__title">Student Sentiment Report</h1>
+      <h2 class="saga-sheet__title">Student Sentiment Report</h2>
       <p class="saga-sheet__meta">Lincoln Middle · Oct 1 – Oct 31, 2026</p>
     </div>
     <span class="saga-sheet__brand">Saga Education</span>
@@ -70,7 +70,7 @@ Never shrink text to fit a page, and never let a sheet silently clip (DS-150).
     <ul class="saga-sheet__stats">
       <li class="saga-sheet__stat"><span class="saga-sheet__stat-value">82%</span><span class="saga-sheet__stat-label">Completion</span></li>
     </ul>
-    <h2 class="saga-sheet__section-title">Needs attention</h2>
+    <h3 class="saga-sheet__section-title">Needs attention</h3>
     <table class="saga-report-table">…</table>
     <p class="saga-sheet__continued">Showing 32 of 45 students; every student is in the CSV download.</p>
   </div>
