@@ -1094,7 +1094,9 @@ the browser's margins and nothing is injected at runtime. While
 `body.saga-printing` is set (around `window.print()`, cleared on
 `afterprint`), every child of `<body>` except `.saga-print-root` is
 `display: none`; the preview is portalled to `<body>` and carries that class.
-Sheets are sized in inches, never `vh` (print `vh` is the first sheet's).
+Sheets are sized in inches, never `vh` (print `vh` is the first sheet's), and nothing inside a sheet
+may depend on a viewport-width media query: printing, the viewport is the paper (816px), so a screen
+breakpoint fires on paper only, where the preview cannot see it (found in the sentiment PDF).
 Verified in Chromium headless and Safari on 2026-11-06.
 Alternatives: #2050's `<svelte:head>` rules present only while its dialog is
 open, which needed the unnamed `@page { margin: 0 }` to be scoped in time.

@@ -129,6 +129,11 @@ across browsers (DS-149).
   removed at runtime.
 - **Never size anything in `vh`.** Print `vh` is measured from the first sheet,
   so a landscape sheet at `100vh` would take the portrait height.
+- **When printing, the viewport is the paper.** A media query on viewport width sees
+  the sheet (8.5in, 816px), so a screen layout's narrow breakpoint fires on paper
+  only, and the on-screen preview, measured at screen width, cannot show it. Pin
+  the layout of anything inside a sheet, such as a two-column chart pair, so it
+  does not depend on the viewport.
 - **Move focus after a tick.** Moving a focused node blurs it, so focus the
   preview's close button only after the portal has moved the preview.
 - **The file name is the document title.** Set `document.title` to the file
