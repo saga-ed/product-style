@@ -1055,7 +1055,9 @@ Status: accepted (Jeff 2026-11-06; product-style#7) · See it: /guide/printable-
 
 A report's Download PDF lays the report out as `.saga-sheet` pages in HTML,
 previews them at real size and calls `window.print()`; the person saves the
-PDF from the print dialog. Pages are built in data with row budgets before
+PDF from the print dialog. The report's button is Download PDF, but the
+preview's own button is **Print to PDF** (Jeff, 2026-11-07), because it opens the
+print dialog rather than handing over a file. Pages are built in data with row budgets before
 anything renders, so the preview's page count is the document's. saga-dash's
 attendance report PDF (saga-dash#2050) proved the mechanics in Chromium.
 Alternatives: jsPDF or pdfmake in the browser (the sentiment prototype used
