@@ -25,7 +25,10 @@ an embedded font before many student names will print, and rasterizes charts.
 2. **Render each page as a `.saga-sheet`.** The sheet is its real paper size
    on screen, so what the preview shows is what prints.
 3. **Preview, then print.** The preview lists the sheets in a scrolling
-   column. Download PDF turns on the print root and calls `window.print()`.
+   column. Its **Print to PDF** button turns on the print root and calls
+   `window.print()`. The report's own button stays **Download PDF**: that's
+   what the person wants. The preview's button says what actually happens next,
+   the print dialog, where they save the file.
 
 Row budgets depend on the type scale and on one line per row, which is why
 sheet text uses the fixed print scale and the report table never wraps.
@@ -152,7 +155,7 @@ A plain HTML page needs about thirty lines. The showcase's
     <div class="saga-print-preview__bar">
       <h2 class="saga-print-preview__title" id="pp-title">Download PDF</h2>
       <div class="saga-print-preview__actions">
-        <button class="saga-btn" id="pp-print">Download PDF</button>
+        <button class="saga-btn" id="pp-print">Print to PDF</button>
         <button class="saga-btn saga-btn--quiet saga-btn--icon" id="pp-close" aria-label="Close">✕</button>
       </div>
     </div>

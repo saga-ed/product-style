@@ -51,7 +51,7 @@
 
 <section class="demo-section">
 	<h2>Print preview</h2>
-	<p>The preview is portalled to <code>&lt;body&gt;</code> as the print root. Download PDF sets <code>body.saga-printing</code>, names the file through <code>document.title</code>, and prints only the sheets: page 1 portrait, page 2 landscape. In Safari and on iPhone or iPad, the note under the toolbar appears, because WebKit prints every sheet portrait (DS-153).</p>
+	<p>The preview is portalled to <code>&lt;body&gt;</code> as the print root. Its Print to PDF button sets <code>body.saga-printing</code>, names the file through <code>document.title</code>, and prints only the sheets: page 1 portrait, page 2 landscape. In Safari and on iPhone or iPad, the note under the toolbar appears, because WebKit prints every sheet portrait (DS-153).</p>
 	<div class="demo-row">
 		<button class="saga-btn" id="pp-open">Open the preview</button>
 	</div>
@@ -127,7 +127,7 @@
 			<h2 class="saga-print-preview__title" id="pp-title">Download PDF</h2>
 			<div class="saga-print-preview__controls"><span class="text-secondary">2 pages</span></div>
 			<div class="saga-print-preview__actions">
-				<button class="saga-btn" id="pp-print">Download PDF</button>
+				<button class="saga-btn" id="pp-print">Print to PDF</button>
 				<button class="saga-btn saga-btn--quiet saga-btn--icon" id="pp-close" aria-label="Close"><iconify-icon icon="material-symbols-light:close-rounded"></iconify-icon></button>
 			</div>
 			<p class="saga-print-preview__note" id="pp-note" hidden>Landscape pages print correctly in Chrome or Edge.</p>
