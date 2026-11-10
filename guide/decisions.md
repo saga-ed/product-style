@@ -458,7 +458,7 @@ guide fixes one hairline (`1px --color-border`) for every line in a table
 and reserves a 2px rule for the page-tab baseline only.
 
 ### DS-063 — Icon set is Material Symbols Light, outlined rounded, via iconify; CDN web component for prototypes
-Status: proposed · See it: /guide/iconography
+Status: overturned → DS-154 (Jeff 2026-11-10) · See it: /guide/iconography
 
 Dash-icons and cv3-icons both generate from `@iconify-json/material-symbols-light`
 (cv3 adds a few Fluent, MDI and Iconamoon glyphs for AV controls). The user
@@ -1155,3 +1155,26 @@ Chrome or Edge." (mixed) or "Choose Landscape in the print dialog."
 Alternatives: one orientation per document (still needs the person to pick
 Landscape in Safari); rotating landscape content onto portrait sheets in
 WebKit (the PDF reads sideways on screen).
+
+### DS-154 — Icons: Material Symbols Rounded, outlined at 24px and up, filled below 24px or on dark
+Status: accepted (Jeff 2026-11-10) · See it: /guide/iconography
+
+Replaces DS-063 (Material Symbols Light, which read thinner than the product).
+At 24px and larger on a light surface, icons are weight 400, outlined. Under
+24px, or on a dark surface (the nav, Connect's header and tiles), they are
+filled at weight 500. Line glyphs with no filled shape just take the weight.
+Fill also marks state at any size. Info and the sentiment faces stay outlined
+everywhere: a filled info disc pulls too much attention, and the outlined face
+is the classic smiley. A carefully designed UI may choose a variant on purpose,
+with the reason in its icon list. qboard's whiteboard tools are hand-picked
+and outside the rule.
+Apps name icons through a curated package (Connect: `cv3-icons`; dashboards
+and reports: `@saga-ed/ui-icons`), built from `@material-symbols/svg-400` and
+`@material-symbols/svg-500`. Prototypes use iconify's `material-symbols:` set,
+which stops at 400. The guide and its showcases moved off
+`material-symbols-light:` names in the same change. A dash survey found five
+icon sources and 13 stroke widths; the decision board is prototypes
+`/design_system/iconography`, and the record is
+`docs/decisions/iconography.md`.
+Alternatives: weight 400 everywhere, outlined (small row icons read light);
+keep Light 300 (rejected); `@iconify/svelte` at runtime (has no weight 500).

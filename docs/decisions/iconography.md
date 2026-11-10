@@ -1,11 +1,27 @@
 ---
-status: Proposed
+status: Accepted
 ---
 
 # Iconography: one rule for new icons, and what changes now
 
-Status: **PENDING**. Once resolved, a new DS entry supersedes DS-063 and
-`guide/iconography.md` is rewritten to match.
+Status: **RESOLVED 2026-11-10**. I1 to I4 are A, with Jeff's changes below;
+I5 is B. DS-154 supersedes DS-063, and `guide/iconography.md` is rewritten to
+match.
+
+## Resolution (Jeff, 2026-11-10)
+
+- **I1 = A**, with two exceptions:
+  - **Info is always outlined.** Filled, it gets too dark and pulls too much
+    attention.
+  - **Sentiment faces stay outlined.** That is the classic smiley.
+  - Exceptions like these are fine when someone carefully designs a
+    particular UI; the reason sits next to the icon in the app's icon list.
+- **I2 = A** and **I3 = A**, with the interim.
+- **I4 = A**, plus **success and close**. Twelve meanings change now: info,
+  warning, error, success, close, kebab, chevron, search, download, edit,
+  delete and menu. Everything else (avatar, cameras, time and so on) is tuned
+  in place.
+- **I5 = B.** No CI rule for now; the product-style guide is the rule.
 
 ## Context
 
@@ -152,12 +168,13 @@ Order of work once resolved:
 1. **product-style:** a new DS entry superseding DS-063, a rewrite of
    `guide/iconography.md`, and the starter and prototypes CLAUDE.md lines.
 2. **product-ui-components:** `@saga-ed/ui-icons` (generator plus a curated
-   list, starting with the ten meanings and the nav set), ui-svelte `<Icon>`
+   list, starting with the twelve meanings and the nav set), ui-svelte `<Icon>`
    with sizes, and `StatusIcon` and `InfoTip`. Swapping ui-svelte's internal
    icons moves every Tooltip info icon.
-3. **saga-dash:** re-point the dash-icons entries for the ten meanings, add the
-   ratchet and the rule file, then one icon-only PR for the hand-drawn copies.
-   The hosted pages (sentiment-pages, session-insights) each get one small PR.
+3. **saga-dash:** re-point the dash-icons entries for the twelve meanings, then
+   one icon-only PR for the hand-drawn copies. The hosted pages
+   (sentiment-pages, session-insights) each get one small PR. There is no
+   ratchet and no per-repo rule file (I5 = B).
 4. **Connect:** nothing now. New Connect icons follow I1 inside `cv3-icons`.
 
 ## Related artifacts

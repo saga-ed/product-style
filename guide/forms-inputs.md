@@ -95,7 +95,7 @@ the span holds the toggle.
   <div class="saga-input-adorn saga-input-adorn--end">
     <input class="saga-input" id="pw" type="password" autocomplete="new-password" spellcheck="false" autocapitalize="off" aria-describedby="pw-help pw-advisory">
     <span class="saga-input-adorn__end">
-      <button type="button" class="saga-btn saga-btn--quiet saga-btn--icon saga-btn--sm" aria-label="Show password" aria-controls="pw"><iconify-icon icon="material-symbols-light:visibility-outline-rounded"></iconify-icon></button>
+      <button type="button" class="saga-btn saga-btn--quiet saga-btn--icon saga-btn--sm" aria-label="Show password" aria-controls="pw"><iconify-icon icon="material-symbols:visibility-rounded"></iconify-icon></button>
     </span>
   </div>
   <span class="saga-help" id="pw-help">At least 8 characters.</span>
@@ -263,13 +263,13 @@ input with a calendar glyph in `--color-text-secondary` at the right
 ```html
 <div class="saga-datepicker">
   <button type="button" class="saga-datepicker__trigger" aria-haspopup="dialog" aria-expanded="true" aria-label="When: 10/12/2026">
-    <span>10/12/2026</span><iconify-icon icon="material-symbols-light:calendar-today-outline-rounded"></iconify-icon>
+    <span>10/12/2026</span><iconify-icon icon="material-symbols:calendar-today-rounded"></iconify-icon>
   </button>
   <div class="saga-datepicker__popover" role="dialog" aria-label="Choose a date">
     <div class="saga-datepicker__nav">
-      <button class="saga-btn saga-btn--quiet saga-btn--icon saga-btn--sm" aria-label="Previous month"><iconify-icon icon="material-symbols-light:chevron-left-rounded"></iconify-icon></button>
+      <button class="saga-btn saga-btn--quiet saga-btn--icon saga-btn--sm" aria-label="Previous month"><iconify-icon icon="material-symbols:chevron-left-rounded"></iconify-icon></button>
       <span class="saga-datepicker__month">October 2026</span>
-      <button class="saga-btn saga-btn--quiet saga-btn--icon saga-btn--sm" aria-label="Next month"><iconify-icon icon="material-symbols-light:chevron-right-rounded"></iconify-icon></button>
+      <button class="saga-btn saga-btn--quiet saga-btn--icon saga-btn--sm" aria-label="Next month"><iconify-icon icon="material-symbols:chevron-right-rounded"></iconify-icon></button>
     </div>
     <div class="saga-datepicker__grid" role="grid">
       <span class="saga-datepicker__weekday">Su</span> … <span class="saga-datepicker__weekday">Sa</span>

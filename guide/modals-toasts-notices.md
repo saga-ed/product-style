@@ -63,7 +63,7 @@ the nearest positioned ancestor instead of the viewport.
     <div class="saga-modal__header">
       <h2 class="saga-modal__title" id="m1">Edit Session</h2>
       <button class="saga-btn saga-btn--quiet saga-btn--icon saga-modal__close" aria-label="Close" value="cancel">
-        <iconify-icon icon="material-symbols-light:close-rounded"></iconify-icon>
+        <iconify-icon icon="material-symbols:close-rounded"></iconify-icon>
       </button>
     </div>
     <div class="saga-modal__body">...</div>
@@ -150,10 +150,10 @@ Behaviour:
 ```html
 <div class="saga-toast-stack" role="status" aria-live="polite">
   <div class="saga-toast saga-toast--success">
-    <span class="saga-toast__icon"><iconify-icon icon="material-symbols-light:check-circle-outline-rounded"></iconify-icon></span>
+    <span class="saga-toast__icon"><iconify-icon icon="material-symbols:check-circle-rounded"></iconify-icon></span>
     <span class="saga-toast__msg">Roster uploaded. 55 students added.</span>
     <button class="saga-toast__action">View roster</button>
-    <button class="saga-toast__close" aria-label="Dismiss"><iconify-icon icon="material-symbols-light:close-rounded"></iconify-icon></button>
+    <button class="saga-toast__close" aria-label="Dismiss"><iconify-icon icon="material-symbols:close-rounded"></iconify-icon></button>
   </div>
 </div>
 ```
@@ -198,9 +198,9 @@ collapse into one summary line with a "Review" expander.
 
 ```html
 <div class="saga-notice saga-notice--warning" role="status">
-  <span class="saga-notice__icon"><iconify-icon icon="material-symbols-light:warning-outline-rounded"></iconify-icon></span>
+  <span class="saga-notice__icon"><iconify-icon icon="material-symbols:warning-rounded"></iconify-icon></span>
   <div class="saga-notice__body">Maya Ellis is also in another pod this period. <button class="saga-notice__action">Remove from Rotation 2?</button></div>
-  <button class="saga-btn saga-btn--quiet saga-btn--icon saga-btn--sm saga-notice__dismiss" aria-label="Dismiss"><iconify-icon icon="material-symbols-light:close-rounded"></iconify-icon></button>
+  <button class="saga-btn saga-btn--quiet saga-btn--icon saga-btn--sm saga-notice__dismiss" aria-label="Dismiss"><iconify-icon icon="material-symbols:close-rounded"></iconify-icon></button>
 </div>
 ```
 
