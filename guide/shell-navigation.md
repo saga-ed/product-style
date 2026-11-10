@@ -187,14 +187,14 @@ a page frame instead of the viewport (a showcase scene, never an app) adds `.sag
       <div class="saga-select">
         <button type="button" class="saga-select__trigger" aria-haspopup="listbox" aria-expanded="false" aria-labelledby="prog-label"><span>Demo Program 08/17</span></button>
       </div>
-      <a class="saga-nav__link" href="#"><iconify-icon icon="material-symbols-light:settings-outline-rounded"></iconify-icon> Configure program</a>
+      <a class="saga-nav__link" href="#"><iconify-icon icon="material-symbols:settings-rounded"></iconify-icon> Configure program</a>
     </div>
     <ul class="saga-nav__items">
-      <li><a class="saga-nav__item" href="#"><iconify-icon icon="material-symbols-light:dashboard-outline-rounded"></iconify-icon> <span class="saga-nav__text">Dashboard</span></a></li>
-      <li><a class="saga-nav__item" href="#"><iconify-icon icon="material-symbols-light:calendar-month-outline-rounded"></iconify-icon> <span class="saga-nav__text">Sessions</span></a></li>
-      <li><a class="saga-nav__item" href="#" aria-current="page"><iconify-icon icon="material-symbols-light:group-outline-rounded"></iconify-icon> <span class="saga-nav__text">Rosters</span></a></li>
-      <li><a class="saga-nav__item" href="#"><iconify-icon icon="material-symbols-light:checklist-rounded"></iconify-icon> <span class="saga-nav__text">Surveys</span></a></li>
-      <li><a class="saga-nav__item" href="#"><iconify-icon icon="material-symbols-light:bar-chart-rounded"></iconify-icon> <span class="saga-nav__text">Reports</span></a></li>
+      <li><a class="saga-nav__item" href="#"><iconify-icon icon="material-symbols:dashboard-rounded"></iconify-icon> <span class="saga-nav__text">Dashboard</span></a></li>
+      <li><a class="saga-nav__item" href="#"><iconify-icon icon="material-symbols:calendar-month-rounded"></iconify-icon> <span class="saga-nav__text">Sessions</span></a></li>
+      <li><a class="saga-nav__item" href="#" aria-current="page"><iconify-icon icon="material-symbols:group-rounded"></iconify-icon> <span class="saga-nav__text">Rosters</span></a></li>
+      <li><a class="saga-nav__item" href="#"><iconify-icon icon="material-symbols:checklist-rounded"></iconify-icon> <span class="saga-nav__text">Surveys</span></a></li>
+      <li><a class="saga-nav__item" href="#"><iconify-icon icon="material-symbols:bar-chart-rounded"></iconify-icon> <span class="saga-nav__text">Reports</span></a></li>
     </ul>
     <div class="saga-nav__footer">
       <span class="saga-nav__label">District</span>
@@ -206,9 +206,9 @@ a page frame instead of the viewport (a showcase scene, never an app) adds `.sag
       <h1 class="saga-topbar__title">Demo Program 08/17</h1>
       <div class="saga-topbar__actions">
         <span class="saga-topbar__meta">8:34 PM</span>
-        <button class="saga-btn saga-btn--quiet saga-btn--icon" aria-label="Search this page"><iconify-icon icon="material-symbols-light:document-search-outline-rounded" class="saga-icon saga-icon--lg"></iconify-icon></button>
-        <button class="saga-btn saga-btn--quiet saga-btn--icon" aria-label="Notifications, 2 unread"><span class="saga-badge-anchor"><iconify-icon icon="material-symbols-light:notifications-outline-rounded" class="saga-icon saga-icon--lg"></iconify-icon><span class="saga-badge">2</span></span></button>
-        <button class="saga-btn saga-btn--quiet saga-btn--icon" aria-label="Menu"><iconify-icon icon="material-symbols-light:menu-rounded" class="saga-icon saga-icon--lg"></iconify-icon></button>
+        <button class="saga-btn saga-btn--quiet saga-btn--icon" aria-label="Search this page"><iconify-icon icon="material-symbols:document-search-outline-rounded" class="saga-icon saga-icon--lg"></iconify-icon></button>
+        <button class="saga-btn saga-btn--quiet saga-btn--icon" aria-label="Notifications, 2 unread"><span class="saga-badge-anchor"><iconify-icon icon="material-symbols:notifications-outline-rounded" class="saga-icon saga-icon--lg"></iconify-icon><span class="saga-badge">2</span></span></button>
+        <button class="saga-btn saga-btn--quiet saga-btn--icon" aria-label="Menu"><iconify-icon icon="material-symbols:menu-rounded" class="saga-icon saga-icon--lg"></iconify-icon></button>
       </div>
     </header>
     <main class="saga-page saga-scrollbar" id="main-content" tabindex="-1">

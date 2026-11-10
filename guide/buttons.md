@@ -65,7 +65,7 @@ both secondary.
 
 ```html
 <button class="saga-btn saga-btn--secondary">
-  <iconify-icon icon="material-symbols-light:upload-rounded"></iconify-icon>
+  <iconify-icon icon="material-symbols:upload-rounded"></iconify-icon>
   Upload roster
 </button>
 ```
@@ -87,7 +87,7 @@ is invisible in a shared tab and unreachable by keyboard (DS-123).
 
 ```html
 <button class="saga-btn saga-btn--quiet saga-btn--icon" aria-label="Edit student">
-  <iconify-icon icon="material-symbols-light:edit-outline-rounded"></iconify-icon>
+  <iconify-icon icon="material-symbols:edit-rounded"></iconify-icon>
 </button>
 ```
 
@@ -208,11 +208,11 @@ Two lighter relatives:
 
 ```html
 <button class="saga-btn saga-btn--secondary">
-  <span class="saga-btn__plus"><iconify-icon icon="material-symbols-light:add-rounded"></iconify-icon></span>
+  <span class="saga-btn__plus"><iconify-icon icon="material-symbols:add-rounded"></iconify-icon></span>
   Add student
 </button>
 <button class="saga-btn saga-btn--add">
-  <span class="saga-btn__plus"><iconify-icon icon="material-symbols-light:add-rounded"></iconify-icon></span>
+  <span class="saga-btn__plus"><iconify-icon icon="material-symbols:add-rounded"></iconify-icon></span>
   Add period
 </button>
 ```

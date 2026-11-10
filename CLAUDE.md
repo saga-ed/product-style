@@ -17,6 +17,7 @@ how Saga products look. Read this file, then the chapters you need.
 
 - Color: `--color-primary` (`#006298`) is the only action color. Teal `#1ececa` is decorative only and never carries white text. Danger is clay `#991a21`; warning and attention are amber. Never pink `#ff595a` for errors.
 - Type: Montserrat only. Root 15px, 17px at ≥1400, 19px at ≥1800. Body 400, emphasis 500, h1/h3 and buttons 600, h2 400.
+- Icons: Material Symbols Rounded. 24px and up: weight 400, outlined. Under 24px or on a dark surface: filled (weight 500 in apps, 400 from iconify in prototypes). Info and the sentiment faces stay outlined. Apps name icons through a curated icon package, never pasted SVG; never the Light (300) cut. Details and exceptions: `guide/iconography.md`.
 - Every color, spacing, radius, shadow and duration is a `var(--token)` from `css/tokens.css`. If a token is missing, use the nearest one and say so; do not invent a value.
 - One focus ring (`:focus-visible`, 2px blue). Never override it per component.
 - Tooltips and names: icon-only controls need `aria-label`; extra description is a painted tooltip tied with `aria-describedby`. `title=` alone is not a tooltip (invisible to keyboard and touch, inconsistently announced).

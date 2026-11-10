@@ -40,8 +40,8 @@ The roster grid (`dashboard_rosters_page.png`) is the reference table.
   <tbody>
     <tr>
       <td>
-        <button class="saga-btn saga-btn--quiet saga-btn--icon saga-btn--sm" aria-label="Edit Aaliyah L"><iconify-icon icon="material-symbols-light:edit-outline-rounded"></iconify-icon></button>
-        <button class="saga-btn saga-btn--quiet saga-btn--icon saga-btn--sm" aria-label="Locked"><iconify-icon icon="material-symbols-light:lock-outline-rounded"></iconify-icon></button>
+        <button class="saga-btn saga-btn--quiet saga-btn--icon saga-btn--sm" aria-label="Edit Aaliyah L"><iconify-icon icon="material-symbols:edit-rounded"></iconify-icon></button>
+        <button class="saga-btn saga-btn--quiet saga-btn--icon saga-btn--sm" aria-label="Locked"><iconify-icon icon="material-symbols:lock-rounded"></iconify-icon></button>
       </td>
       <td>Aaliyah L</td><td>sbx28-s21</td><td>training-sbx28-s21@saga.org</td>
     </tr>
@@ -86,9 +86,9 @@ dims by `--color-text-muted` text on `--color-bg-secondary`, never by opacity.
 ```html
 <ul class="saga-list">
   <li class="saga-list__row saga-list__row--edge" style="--_edge: var(--chip-regular)">
-    <span class="saga-list__handle"><iconify-icon icon="material-symbols-light:drag-indicator"></iconify-icon></span>
+    <span class="saga-list__handle"><iconify-icon icon="material-symbols:drag-indicator"></iconify-icon></span>
     <div class="saga-list__main"><span class="saga-list__title">Period 1</span> <span class="saga-list__meta">8:01 AM – 9:26 AM</span></div>
-    <div class="saga-list__end"><button class="saga-btn saga-btn--quiet saga-btn--icon saga-btn--sm" aria-label="Delete Period 1"><iconify-icon icon="material-symbols-light:delete-outline-rounded"></iconify-icon></button></div>
+    <div class="saga-list__end"><button class="saga-btn saga-btn--quiet saga-btn--icon saga-btn--sm" aria-label="Delete Period 1"><iconify-icon icon="material-symbols:delete-rounded"></iconify-icon></button></div>
   </li>
 </ul>
 ```

@@ -40,14 +40,14 @@
 			<div class="saga-select">
 				<button type="button" class="saga-select__trigger" aria-haspopup="listbox" aria-expanded="false" aria-labelledby="prog-label"><span>Demo Program 08/17</span></button>
 			</div>
-			<a class="saga-nav__link" href="#"><iconify-icon icon="material-symbols-light:settings-outline-rounded"></iconify-icon> Configure program</a>
+			<a class="saga-nav__link" href="#"><iconify-icon icon="material-symbols:settings-rounded"></iconify-icon> Configure program</a>
 		</div>
 		<ul class="saga-nav__items">
-			<li><a class="saga-nav__item" href="#"><iconify-icon icon="material-symbols-light:dashboard-outline-rounded"></iconify-icon> <span class="saga-nav__text">Dashboard</span></a></li>
-			<li><a class="saga-nav__item" href="#"><iconify-icon icon="material-symbols-light:calendar-month-outline-rounded"></iconify-icon> <span class="saga-nav__text">Sessions</span></a></li>
-			<li><a class="saga-nav__item" href="#" aria-current="page"><iconify-icon icon="material-symbols-light:group-outline-rounded"></iconify-icon> <span class="saga-nav__text">Rosters</span></a></li>
-			<li><a class="saga-nav__item" href="#"><iconify-icon icon="material-symbols-light:checklist-rounded"></iconify-icon> <span class="saga-nav__text">Surveys</span></a></li>
-			<li><a class="saga-nav__item" href="#"><iconify-icon icon="material-symbols-light:bar-chart-rounded"></iconify-icon> <span class="saga-nav__text">Reports</span></a></li>
+			<li><a class="saga-nav__item" href="#"><iconify-icon icon="material-symbols:dashboard-rounded"></iconify-icon> <span class="saga-nav__text">Dashboard</span></a></li>
+			<li><a class="saga-nav__item" href="#"><iconify-icon icon="material-symbols:calendar-month-rounded"></iconify-icon> <span class="saga-nav__text">Sessions</span></a></li>
+			<li><a class="saga-nav__item" href="#" aria-current="page"><iconify-icon icon="material-symbols:group-rounded"></iconify-icon> <span class="saga-nav__text">Rosters</span></a></li>
+			<li><a class="saga-nav__item" href="#"><iconify-icon icon="material-symbols:checklist-rounded"></iconify-icon> <span class="saga-nav__text">Surveys</span></a></li>
+			<li><a class="saga-nav__item" href="#"><iconify-icon icon="material-symbols:bar-chart-rounded"></iconify-icon> <span class="saga-nav__text">Reports</span></a></li>
 		</ul>
 		<div class="saga-nav__footer">
 			<span class="saga-nav__label">District</span>
@@ -59,9 +59,9 @@
 			<h1 class="saga-topbar__title">Demo Program 08/17</h1>
 			<div class="saga-topbar__actions">
 				<span class="saga-topbar__meta">8:34 PM</span>
-				<button class="saga-btn saga-btn--quiet saga-btn--icon" aria-label="Search this page"><iconify-icon icon="material-symbols-light:document-search-outline-rounded" class="saga-icon saga-icon--lg"></iconify-icon></button>
-				<button class="saga-btn saga-btn--quiet saga-btn--icon" aria-label="Notifications, 2 unread"><span class="saga-badge-anchor"><iconify-icon icon="material-symbols-light:notifications-outline-rounded" class="saga-icon saga-icon--lg"></iconify-icon><span class="saga-badge">2</span></span></button>
-				<button class="saga-btn saga-btn--quiet saga-btn--icon" aria-label="Menu"><iconify-icon icon="material-symbols-light:menu-rounded" class="saga-icon saga-icon--lg"></iconify-icon></button>
+				<button class="saga-btn saga-btn--quiet saga-btn--icon" aria-label="Search this page"><iconify-icon icon="material-symbols:document-search-outline-rounded" class="saga-icon saga-icon--lg"></iconify-icon></button>
+				<button class="saga-btn saga-btn--quiet saga-btn--icon" aria-label="Notifications, 2 unread"><span class="saga-badge-anchor"><iconify-icon icon="material-symbols:notifications-outline-rounded" class="saga-icon saga-icon--lg"></iconify-icon><span class="saga-badge">2</span></span></button>
+				<button class="saga-btn saga-btn--quiet saga-btn--icon" aria-label="Menu"><iconify-icon icon="material-symbols:menu-rounded" class="saga-icon saga-icon--lg"></iconify-icon></button>
 			</div>
 		</header>
 		<main class="saga-page saga-scrollbar">
@@ -72,11 +72,11 @@
 				<div class="saga-tabs__end"><label class="saga-check"><input type="checkbox" class="saga-toggle" role="switch"> Show Entire District</label></div>
 			</div>
 			<div class="saga-page__toolbar" style="margin-top:var(--space-md)">
-				<button class="saga-btn saga-btn--secondary"><span class="saga-btn__plus"><iconify-icon icon="material-symbols-light:add-rounded"></iconify-icon></span> Add Student</button>
-				<button class="saga-btn saga-btn--secondary"><iconify-icon icon="material-symbols-light:upload-rounded"></iconify-icon> Upload Roster</button>
-				<button class="saga-btn saga-btn--secondary"><iconify-icon icon="material-symbols-light:download-rounded"></iconify-icon> Download Roster</button>
+				<button class="saga-btn saga-btn--secondary"><span class="saga-btn__plus"><iconify-icon icon="material-symbols:add-rounded"></iconify-icon></span> Add Student</button>
+				<button class="saga-btn saga-btn--secondary"><iconify-icon icon="material-symbols:upload-rounded"></iconify-icon> Upload Roster</button>
+				<button class="saga-btn saga-btn--secondary"><iconify-icon icon="material-symbols:download-rounded"></iconify-icon> Download Roster</button>
 				<div class="saga-page__toolbar-end">
-					<div class="saga-search" style="width:20rem"><input class="saga-input" type="search" placeholder="Search whole name, Student ID, school…" aria-label="Search students"><span class="saga-search__icon"><iconify-icon icon="material-symbols-light:search-rounded"></iconify-icon></span></div>
+					<div class="saga-search" style="width:20rem"><input class="saga-input" type="search" placeholder="Search whole name, Student ID, school…" aria-label="Search students"><span class="saga-search__icon"><iconify-icon icon="material-symbols:search-rounded"></iconify-icon></span></div>
 				</div>
 			</div>
 			<div class="saga-page__toolbar"><button class="saga-btn saga-btn--sm">Show Bulk Actions</button></div>
@@ -94,7 +94,7 @@
 	const tb = document.querySelector('#roster tbody');
 	for (const [f, l, id] of rows) {
 		const tr = document.createElement('tr');
-		tr.innerHTML = '<td class="saga-table__actions"><button class="saga-btn saga-btn--quiet saga-btn--icon" aria-label="Edit"><iconify-icon icon="material-symbols-light:edit-outline-rounded"></iconify-icon></button><button class="saga-btn saga-btn--quiet saga-btn--icon" aria-label="Lock"><iconify-icon icon="material-symbols-light:lock-outline"></iconify-icon></button></td>'
+		tr.innerHTML = '<td class="saga-table__actions"><button class="saga-btn saga-btn--quiet saga-btn--icon" aria-label="Edit"><iconify-icon icon="material-symbols:edit-rounded"></iconify-icon></button><button class="saga-btn saga-btn--quiet saga-btn--icon" aria-label="Lock"><iconify-icon icon="material-symbols:lock-rounded"></iconify-icon></button></td>'
 			+ '<td></td><td></td><td></td><td></td><td></td><td>Sandbox High</td>';
 		const c = tr.querySelectorAll('td');
 		c[1].textContent = f + ' ' + l.slice(0, 1); c[2].textContent = id; c[3].textContent = f; c[4].textContent = l;
