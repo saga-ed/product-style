@@ -171,6 +171,35 @@ text. A badge never shows zero; hide it instead.
 **Avatars** that accompany people in chips and cards are 26px circles,
 `--color-primary-light` fill, `--color-primary` initials in `--text-xs` bold.
 
+## Times
+
+A clock time shown in a card, row or table is `.saga-time`: an inline-flex
+wrapper around a `<time>` with tabular digits, which never wraps. In Svelte it
+is `<Time>` from `@saga-ed/ui-svelte`, which picks the zone, builds the hover
+and the screen-reader copy; never format a wall-clock time by hand (see
+[voice and writing](voice-writing.md#numbers-dates-and-times)).
+
+When the time shown lands on another calendar day than the program's (a viewer
+in another zone), a `.saga-day-shift` marker follows the digits (DS-155):
+
+| Variant | Where | Look |
+|---|---|---|
+| `data-variant="glyph"` | dense read-only times | ☾› next day, ‹☾ previous; bold `--color-text-dark`, slightly larger than the digits |
+| `data-variant="weekday"` | inside the time field | "WED" on `--chip-neutral-bg`, `--radius-xs` |
+
+The marker is `aria-hidden`; its meaning is read from the `.saga-time-sr` copy
+("12:30 AM (this is the next day in your timezone)"). Its text goes in a
+`.saga-day-shift__glyph` child, which sits out of flow, so an edited time's
+dashed underline on `.saga-time` never paints across the marker.
+
+```html
+<span class="saga-time">
+  <time datetime="00:30">12:30 AM</time>
+  <span class="saga-day-shift" data-variant="glyph" aria-hidden="true"><span class="saga-day-shift__glyph">&#x263E;&#xFE0E;&#x203A;</span></span>
+  <span class="saga-time-sr">12:30 AM (this is the next day in your timezone)</span>
+</span>
+```
+
 ## Progress and skeleton bars
 
 A **progress bar** is a 6px track in `--color-bg-tertiary`, `--radius-full`,

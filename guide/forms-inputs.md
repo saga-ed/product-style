@@ -300,8 +300,9 @@ a list on focus (`time_picker.png`):
   the one place the ring sits inside the control instead of outside it.
 
 - When the time lands on another calendar day than the date being edited
-  (a viewer in another zone), a `.saga-chip--square` naming that weekday
-  ("WED") sits inside the input's right end, not beside it, so the field keeps
+  (a viewer in another zone), a weekday chip naming that day
+  (`.saga-day-shift[data-variant="weekday"]`, "WED", DS-155; `.saga-chip--square`
+  before 0.1.12) sits inside the input's right end, not beside it, so the field keeps
   its width. The field is a `.saga-input-adorn.saga-input-adorn--end` wrapper
   holding the input and a `.saga-input-adorn__end` span; the input reserves the
   chip's room so typed text never runs under it (DS-139). The span is

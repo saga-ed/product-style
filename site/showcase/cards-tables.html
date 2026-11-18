@@ -405,6 +405,30 @@
 </section>
 
 <section class="demo-section">
+	<h2>Times</h2>
+	<p>A shown time and its day-shift marker (DS-155). The third is an edited time: its dashed underline stays off the marker, whose text sits out of flow. The last is the time field's weekday chip.</p>
+	<div class="demo-row" style="align-items:center">
+		<span class="saga-time"><time datetime="13:05/13:50">1:05–1:50 PM</time></span>
+		<span class="saga-time"><time datetime="00:30">12:30 AM</time><span class="saga-day-shift" data-variant="glyph" aria-hidden="true"><span class="saga-day-shift__glyph">&#x263E;&#xFE0E;&#x203A;</span></span><span class="saga-time-sr">12:30 AM (this is the next day in your timezone)</span></span>
+		<span class="saga-time" style="text-decoration:underline dashed var(--color-primary)"><time datetime="21:30">9:30 PM</time><span class="saga-day-shift" data-variant="glyph" aria-hidden="true"><span class="saga-day-shift__glyph">&#x2039;&#x263E;&#xFE0E;</span></span><span class="saga-time-sr">9:30 PM (this is the previous day in your timezone)</span></span>
+		<div class="saga-input-adorn saga-input-adorn--end" style="max-width:9rem">
+			<input class="saga-input" value="12:30 AM" aria-label="Start time" aria-describedby="time-dayshift">
+			<span class="saga-input-adorn__end"><span class="saga-day-shift" data-variant="weekday" aria-hidden="true"><span class="saga-day-shift__glyph">WED</span></span></span>
+			<span class="sr-only" id="time-dayshift">12:30 AM (this is the next day in your timezone)</span>
+		</div>
+	</div>
+<pre class="demo-snippet"><code>&lt;span class=&quot;saga-time&quot;&gt;&lt;time datetime=&quot;13:05/13:50&quot;&gt;1:05–1:50 PM&lt;/time&gt;&lt;/span&gt;
+&lt;span class=&quot;saga-time&quot;&gt;
+	&lt;time datetime=&quot;00:30&quot;&gt;12:30 AM&lt;/time&gt;
+	&lt;span class=&quot;saga-day-shift&quot; data-variant=&quot;glyph&quot; aria-hidden=&quot;true&quot;&gt;&lt;span class=&quot;saga-day-shift__glyph&quot;&gt;&amp;#x263E;&amp;#xFE0E;&amp;#x203A;&lt;/span&gt;&lt;/span&gt;
+	&lt;span class=&quot;saga-time-sr&quot;&gt;12:30 AM (this is the next day in your timezone)&lt;/span&gt;
+&lt;/span&gt;
+&lt;span class=&quot;saga-input-adorn__end&quot;&gt;
+	&lt;span class=&quot;saga-day-shift&quot; data-variant=&quot;weekday&quot; aria-hidden=&quot;true&quot;&gt;&lt;span class=&quot;saga-day-shift__glyph&quot;&gt;WED&lt;/span&gt;&lt;/span&gt;
+&lt;/span&gt;</code></pre>
+</section>
+
+<section class="demo-section">
 	<h2>Calendar</h2>
 	<p>Month grid. A cell with sessions fills its event block blue; out-of-month days are muted, and the same block in a past or future month takes the blue tint.</p>
 	<div class="demo-row demo-row--stack">

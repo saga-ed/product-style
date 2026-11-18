@@ -1178,3 +1178,26 @@ icon sources and 13 stroke widths; the decision board is prototypes
 `docs/decisions/iconography.md`.
 Alternatives: weight 400 everywhere, outlined (small row icons read light);
 keep Light 300 (rejected); `@iconify/svelte` at runtime (has no weight 500).
+
+### DS-155 — A shown time is `.saga-time`; its day-shift marker keeps its text out of flow
+Status: proposed (Current Sessions lane 2026-11-18; the shared-DOM call ruled by nneri) · See it: /guide/tables-data#times
+
+saga-dash core-ui's `<Time>` and DayShiftMarker move to `@saga-ed/ui-svelte`
+(phase-4 P4.5 wave 3, product-ui-components#42), and a library component ships
+no CSS, so their scoped rules move here. `.saga-time` is the inline-flex wrapper
+(tabular digits, no wrapping); `.saga-time-sr` is its screen-reader copy of the
+zone hover. `.saga-day-shift` marks a time shown on another calendar day than
+the program's: `data-variant="glyph"` (☾› / ‹☾) on dense read-only times,
+`data-variant="weekday"` ("WED") inside the time field.
+The marker's text sits in an absolutely positioned `.saga-day-shift__glyph`.
+That is dash's rule, kept because it is load-bearing: inside the inline-flex
+`.saga-time` the marker is a flex item, so an edited time's dashed underline
+would otherwise paint across it, and no descendant style can cancel a propagated
+decoration. One DOM serves both consumers; the time field's weekday chip leaves
+`.saga-chip--square` (chip padding and in-flow text are what the rule forbids)
+and keeps the neutral chip colours. Sizes are rem, not dash's px, so they follow
+the root ladder (DS-010) but not a small host font.
+The range format is unchanged here: `<Time>` keeps its compact "1:05–1:50 PM",
+which DS-061 (proposed) lists as a Tier 3 app form.
+Alternatives: keep `.saga-chip--square` for the weekday variant (its padding and
+in-flow text fight the out-of-flow box); px sizes as in dash (off the ladder).
