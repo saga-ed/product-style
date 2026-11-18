@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Saga prototype — [name]</title>
 <!--
-  Saga prototype starter · generated from https://github.com/saga-ed/product-style (v0.1.11)
+  Saga prototype starter · generated from https://github.com/saga-ed/product-style (v0.1.12)
   Guide: https://style.wootdev.com  ·  Agents: read https://style.wootdev.com/CLAUDE.md
   This file may be published on a public site, so every name, score and date is
   invented. Anything violet (.ptag / .standin) is prototype chrome, not proposed UI.
@@ -1037,6 +1037,39 @@ iconify-icon { display: inline-block; vertical-align: -0.125em; }
 .saga-badge--attention { background: var(--color-attention-strong); }
 .saga-badge-anchor { position: relative; display: inline-flex; }
 .saga-badge-anchor > .saga-badge { position: absolute; top: calc(var(--space-xs) * -1); right: calc(var(--space-xs) * -1); }
+
+/* ── Times (DS-155) ──────────────────────────────────────────────────────────
+   A shown clock time (ui-svelte's <Time>, from saga-dash core-ui): the digits in a <time>, an optional
+   day-shift marker beside them, and a .saga-time-sr copy of the zone hover for screen readers. */
+.saga-time { display: inline-flex; align-items: center; gap: var(--space-xs); white-space: nowrap; }
+.saga-time time { font-variant-numeric: tabular-nums; }
+.saga-time-sr {
+	position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden;
+	clip: rect(0 0 0 0); clip-path: inset(50%); white-space: nowrap; border: 0;
+}
+/* The day-shift marker: the time shown lands on another calendar day than the program's. A glyph
+   (☾› next day, ‹☾ previous) on dense read-only times; a weekday chip ("WED") in the time field.
+   LOAD-BEARING: the text sits in .saga-day-shift__glyph, out of flow. Inside the inline-flex .saga-time
+   the marker is a blockified flex item, so an ancestor's text-decoration (an edited time's dashed
+   underline) propagates into in-flow text, and no descendant rule can cancel it; with no in-flow text
+   there is no line box for it to paint on. Hence the explicit box per variant, in rem: it follows the
+   root ladder but never shrinks with a small host font. `top`, not vertical-align, nudges the glyph
+   without growing the line. */
+.saga-day-shift {
+	position: relative; display: inline-flex; flex: none; box-sizing: border-box;
+	line-height: 1; font-weight: var(--weight-bold); white-space: nowrap; color: var(--color-text-dark);
+}
+.saga-day-shift__glyph { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; }
+.saga-day-shift[data-variant="glyph"] {
+	top: -1px; width: 1.4rem; height: 0.9375rem; font-size: var(--text-base); letter-spacing: 0.03em;
+	/* The crescent usually comes from a one-weight fallback symbol font, so font-weight alone does not
+	   darken it at this size. */
+	-webkit-text-stroke: 0.35px currentColor;
+}
+.saga-day-shift[data-variant="weekday"] {
+	width: 1.8rem; height: 1rem; font-size: 0.625rem; letter-spacing: 0.04em;
+	border-radius: var(--radius-xs); background: var(--chip-neutral-bg); color: var(--chip-neutral-text);
+}
 
 /* ── Notices ───────────────────────────────────────────────────────────────── */
 .saga-notice {
