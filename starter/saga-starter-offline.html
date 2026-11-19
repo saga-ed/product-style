@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Saga prototype — [name]</title>
 <!--
-  Saga prototype starter · generated from https://github.com/saga-ed/product-style (v0.1.12)
+  Saga prototype starter · generated from https://github.com/saga-ed/product-style (v0.1.13)
   Guide: https://style.wootdev.com  ·  Agents: read https://style.wootdev.com/CLAUDE.md
   This file may be published on a public site, so every name, score and date is
   invented. Anything violet (.ptag / .standin) is prototype chrome, not proposed UI.
@@ -543,7 +543,9 @@ iconify-icon { display: inline-block; vertical-align: -0.125em; }
 	transition: background var(--motion-fast) var(--ease-out), color var(--motion-fast) var(--ease-out), border-color var(--motion-fast) var(--ease-out), filter var(--motion-fast) var(--ease-out);
 }
 .saga-btn > iconify-icon, .saga-btn > svg { font-size: 1.2em; width: 1em; height: 1em; flex-shrink: 0; }
-.saga-btn:not(:disabled, [aria-disabled="true"]):hover { background: var(--_bg-hover); filter: var(--_hover-filter); }
+/* DS-156: the hover rule restates the label colour. base.css's `a:hover` (0,1,1) outranks `.saga-btn` (0,1,0), so
+   without it an <a class="saga-btn"> took the link hover colour: dark blue on the primary hover fill, i.e. no label. */
+.saga-btn:not(:disabled, [aria-disabled="true"]):hover { background: var(--_bg-hover); color: var(--_fg); filter: var(--_hover-filter); }
 .saga-btn:not(:disabled, [aria-disabled="true"]):active { filter: brightness(0.86); }
 
 .saga-btn--primary { --_bg: var(--btn-surface-primary); --_bg-hover: var(--btn-surface-primary-hover); --_fg: var(--btn-text-primary); --_border: transparent; } /* explicit alias of the default */
@@ -597,7 +599,7 @@ iconify-icon { display: inline-block; vertical-align: -0.125em; }
 /* Disabled is a fill, never opacity (DS-016/017). */
 .saga-btn:disabled, .saga-btn[aria-disabled="true"] {
 	--_bg: var(--btn-surface-disabled); --_fg: var(--btn-text-disabled); --_border: transparent;
-	cursor: not-allowed; filter: none;
+	color: var(--_fg); cursor: not-allowed; filter: none; /* color: DS-156, a disabled <a> under base.css's a:hover */
 }
 .saga-btn--dashed:disabled, .saga-btn--dashed[aria-disabled="true"], .saga-btn--secondary:disabled, .saga-btn--secondary[aria-disabled="true"] { --_border: var(--btn-surface-disabled); --_bg: var(--color-bg); }
 

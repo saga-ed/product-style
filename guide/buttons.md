@@ -39,6 +39,8 @@ around it.
 | Affirmative | `.saga-btn--affirmative` | `--btn-surface-affirmative` (green `#20912d`) | white | none | rare: a positive terminal action in a flow that also has a danger button |
 | Caution | `.saga-btn--caution` | `--color-warning-strong` (amber `#b45309`) | white | none | the confirming button of a caution confirm only (see [modals](modals-toasts-notices.md#confirm-dialog)) |
 
+Any intent works on an `<a>` that navigates as well as on a `<button>`, and it looks the same at rest, on hover and disabled: the button's colours win over the link's (DS-156).
+
 Quiet hovers to `--btn-surface-quiet-hover` (`--color-primary-light`, the
 soft blue). Secondary hovers to the same soft blue when it is an action, and to
 `--color-bg-tertiary` grey when it is a neutral surface such as a close button.
