@@ -1201,3 +1201,22 @@ The range format is unchanged here: `<Time>` keeps its compact "1:05–1:50 PM",
 which DS-061 (proposed) lists as a Tier 3 app form.
 Alternatives: keep `.saga-chip--square` for the weekday variant (its padding and
 in-flow text fight the out-of-flow box); px sizes as in dash (off the ladder).
+
+### DS-156 — A link styled as a button keeps the button's colours on hover
+Status: proposed (Current Sessions lane 2026-11-19, from a hover measurement) · See it: /showcase/buttons
+
+base.css's `a:hover { color: var(--color-primary-hover) }` has specificity
+(0,1,1). That outranks `.saga-btn { color: var(--_fg) }` at (0,1,0), and the
+button's hover rule set only the background and filter. So an
+`<a class="saga-btn">` took the link hover colour. On a primary button that is
+#004f7a text on the #004f7a hover fill: the label vanished. Secondary and quiet
+anchors turned dark blue, and a disabled anchor lost its disabled grey. A
+`<button>` was unaffected. The buttons showcase had it, on its "Open report"
+link.
+The fix restates `color: var(--_fg)` in the hover rule (0,3,0) and in the
+disabled rule (0,2,0), so every intent hovers the same on `<a>` and
+`<button>`. The quiet icon button's own hover colour (0,4,0) still wins, and
+loading's transparent label is unchanged.
+Alternatives: scope base.css's link hover to `a:not(.saga-btn):hover`
+(rejected: base.css would have to know about components); leave anchors to
+each app (rejected: every app would have to repeat the fix).
